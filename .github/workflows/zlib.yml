@@ -32,6 +32,7 @@ jobs:
           mkdir /zlib
           cd zlib-${{ vars.ZLIB_VERSION }}
           msbuild INSTALL.vcxproj /p:Configuration=Release
+          copy \zlib\lib\zlib.lib \zlib\lib\zdll.lib
 
       - name: Upload
         uses: actions/upload-artifact@v4
