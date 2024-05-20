@@ -13,7 +13,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v3
         with:
           workflow: zlib.yml 
-          workflow_search: success
+          workflow_conclusion: success
           name: zlib-${{ vars.ZLIB_VERSION }}-win64
           path: /build
           if_no_artifact_found: fail
