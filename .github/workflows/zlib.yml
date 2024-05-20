@@ -29,14 +29,13 @@ jobs:
           cd zlib-${{ vars.ZLIB_VERSION }}
           msbuild RUN_TESTS.vcxproj /p:Configuration=Release
 
-      - name: Package the build output
+      - name: Install the code
         run: |
-          cd ${{ vars.GITHUB_WORKSPACE }}/build
-          tar zcvf zlib-${{ vars.ZLIB_VERSION }}-${{ vars.RUNNER_ARCH }}.tar.gz zlib
+          msbuild INSTALL.vcxproj /p:Configuration=Release
 
       - name: Upload the build
         uses: actions/upload-artifact@v4
         with:
-          name: zlib-${{ vars.ZLIB_VERSION }}-${{ vars.RUNNER_ARCH }}
-          path: ${{ vars.GITHUB_WORKSPACE }}/build/zlib-${{ vars.ZLIB_VERSION }}-${{ vars.RUNNER_ARCH }}.tar.gz
+          name: zlib-${{ vars.ZLIB_VERSION }}
+          path: ${{ vars.GITHUB_WORKSPACE }}/build/zlib
       
