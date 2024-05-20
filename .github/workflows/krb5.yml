@@ -20,7 +20,7 @@ jobs:
         run: |
           cd krb5-${{ vars.KRB5_VERSION }}\src
           mkdir /krb5
-          $env:KRB_INSTALL_DIR = "/krb5"
+          $env:KRB_INSTALL_DIR = "\krb5"
           nmake -f Makefile.in prep-windows
 
       - name: Add 64 bit VC++ tools to the path
@@ -32,7 +32,7 @@ jobs:
         run: | 
           cd krb5-${{ vars.KRB5_VERSION }}\src
           $env:PATH += ";" + $env:WindowsSdkVerBinPath + "\x86"
-          $env:KRB_INSTALL_DIR = "/krb5"
+          $env:KRB_INSTALL_DIR = "\krb5"
           set KRB_INSTALL_DIR=/krb5
           nmake NODEBUG=1
 
@@ -40,7 +40,7 @@ jobs:
         run: |
           cd krb5-${{ vars.KRB5_VERSION }}\src
           $env:PATH += ";" + $env:WindowsSdkVerBinPath + "\x86"
-          $env:KRB_INSTALL_DIR = "/krb5"
+          $env:KRB_INSTALL_DIR = "\krb5"
           nmake install NODEBUG=1
 
       - name: Upload the build
