@@ -5,15 +5,29 @@ jobs:
   build-postgresql:
     runs-on: windows-latest
     steps:
-      - name: Create build directory
-        run: mkdir /build
+      - name: Download OpenSSL
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: openssl.yml 
+          workflow_conclusion: success
+          name: zlib-${{ vars.OPENSSL_VERSION }}-win64
+          path: /build/openssl
+          if_no_artifact_found: fail
+
+      - name: Download krb5
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: krb5.yml 
+          workflow_conclusion: success
+          name: krb5-${{ vars.KRB5_VERSION }}-win64
+          path: /build/krb5
+          if_no_artifact_found: fail
           
       - name: Download zlib
-        id: download-artifact
         uses: dawidd6/action-download-artifact@v3
         with:
           workflow: zlib.yml 
           workflow_conclusion: success
           name: zlib-${{ vars.ZLIB_VERSION }}-win64
-          path: /build
+          path: /build/zlib
           if_no_artifact_found: fail
