@@ -67,6 +67,7 @@ jobs:
           >> config.pl echo 1;
          
           >> buildenv.pl echo $ENV{PATH} = "\\build\\openssl\\bin;\\build\\zlib\\bin;$ENV{PATH}";
+        shell: cmd
           
       - name: Build
         run: | 
