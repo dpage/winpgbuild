@@ -13,33 +13,22 @@ jobs:
 
       - name: Add 32 bit VC++ tools to the path
         uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: amd64_x86
         
       - name: Configure the code
         run: |
           cd krb5-${{ vars.KRB5_VERSION }}\src
-          mkdir /krb5
-          $env:KRB_INSTALL_DIR = "\krb5"
           nmake -f Makefile.in prep-windows
-
-      - name: Add 64 bit VC++ tools to the path
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: amd64
           
       - name: Build the code
         run: | 
           cd krb5-${{ vars.KRB5_VERSION }}\src
           $env:PATH += ";" + $env:WindowsSdkVerBinPath + "\x86"
-          $env:KRB_INSTALL_DIR = "\krb5"
-          set KRB_INSTALL_DIR=/krb5
           nmake NODEBUG=1
 
       - name: Install the code
         run: |
+          mkdir /krb5
           cd krb5-${{ vars.KRB5_VERSION }}\src
-          $env:PATH += ";" + $env:WindowsSdkVerBinPath + "\x86"
           $env:KRB_INSTALL_DIR = "\krb5"
           nmake install NODEBUG=1
 
