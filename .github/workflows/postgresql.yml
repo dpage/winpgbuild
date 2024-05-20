@@ -5,12 +5,12 @@ jobs:
   build-postgresql:
     runs-on: windows-latest
     steps:
-      - name: Download OpenSSL
+      - name: Download openssl
         uses: dawidd6/action-download-artifact@v3
         with:
           workflow: openssl.yml 
           workflow_conclusion: success
-          name: zlib-${{ vars.OPENSSL_VERSION }}-win64
+          name: openssl-${{ vars.OPENSSL_VERSION }}-win64
           path: /build/openssl
           if_no_artifact_found: fail
 
