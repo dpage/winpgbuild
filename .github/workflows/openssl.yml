@@ -1,0 +1,37 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-openssl:
+    runs-on: windows-latest
+    steps:
+      - name: Retrieve the source code
+        run: | 
+          echo "Retrieving OpenSSL version ${{ vars.OPENSSL_VERSION }}."
+          curl https://www.openssl.org/source/openssl-${{ vars.OPENSSL_VERSION }}.tar.gz -o ./openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
+          tar zxvf openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
+        
+      - name: Build the code
+        run: | 
+          echo "Building OpenSSL version ${{ vars.OPENSSL_VERSION }}."
+          cd openssl-${{ vars.OPENSSL_VERSION }}
+          mkdir /openssl
+          perl Configure VC-WIN64A no-asm --prefix=\openssl no-ssl3 no-comp
+          nmake
+
+      - name: Test the code
+        run: | 
+          echo "Testing OpenSSL version ${{ vars.OPENSSL_VERSION }}."
+          cd openssl-${{ vars.OPENSSL_VERSION }}
+          nmake test
+
+      - name: Install the code
+        run: |
+          cd openssl-${{ vars.OPENSSL_VERSION }}
+          nmake install
+
+      - name: Upload the build
+        uses: actions/upload-artifact@v4
+        with:
+          name: openssl-${{ vars.OPENSSL_VERSION }}-win64
+          path: /openssl
