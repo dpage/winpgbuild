@@ -7,7 +7,6 @@ jobs:
     steps:
       - name: Retrieve the source code
         run: | 
-          echo "Retrieving OpenSSL version ${{ vars.OPENSSL_VERSION }}."
           curl https://www.openssl.org/source/openssl-${{ vars.OPENSSL_VERSION }}.tar.gz -o ./openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
           tar zxvf openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
 
@@ -16,7 +15,6 @@ jobs:
         
       - name: Build the code
         run: | 
-          echo "Building OpenSSL version ${{ vars.OPENSSL_VERSION }}."
           cd openssl-${{ vars.OPENSSL_VERSION }}
           mkdir /openssl
           perl Configure VC-WIN64A no-asm --prefix=\openssl no-ssl3 no-comp
@@ -24,7 +22,6 @@ jobs:
 
       - name: Test the code
         run: | 
-          echo "Testing OpenSSL version ${{ vars.OPENSSL_VERSION }}."
           cd openssl-${{ vars.OPENSSL_VERSION }}
           nmake test
 
