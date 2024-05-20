@@ -31,14 +31,14 @@ jobs:
       - name: Build the code
         run: | 
           cd krb5-${{ vars.KRB5_VERSION }}\src
-          set PATH=%PATH%;"%WindowsSdkVerBinPath%"\x86
+          set PATH=%PATH%;"%WindowsSdkVerBinPath%\x86"
           set KRB_INSTALL_DIR=/krb5
           nmake NODEBUG=1
 
       - name: Install the code
         run: |
           cd krb5-${{ vars.KRB5_VERSION }}\src
-          set PATH=%PATH%;"%WindowsSdkVerBinPath%"\x86
+          set PATH=%PATH%;"%WindowsSdkVerBinPath%\x86"
           set KRB_INSTALL_DIR=/krb5
           nmake install NODEBUG=1
 
