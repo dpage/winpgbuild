@@ -14,12 +14,14 @@ jobs:
       - name: Build the code
         run: | 
           echo "Building zlib version ${{ vars.ZLIB_VERSION }}."
-          cd zlib-1.2.11
-          cmake -G "Visual Studio 17 2022" .
+          cd zlib-${{ vars.ZLIB_VERSION }}
+          mkdir ${{ vars.GITHUB_WORKSPACE }}/build
+          mkdir ${{ vars.GITHUB_WORKSPACE }}/build/zlib
+          cmake -DCMAKE_INSTALL_PREFIX=${{ vars.GITHUB_WORKSPACE }}/build/zlib -G "Visual Studio 17 2022" .
           msbuild ALL_BUILD.vcxproj /p:Configuration=Release
 
       - name: Test the code
         run: | 
           echo "Testing zlib version ${{ vars.ZLIB_VERSION }}."
-          cd zlib-1.2.11
+          cd zlib-${{ vars.ZLIB_VERSION }}
           msbuild RUN_TESTS.vcxproj /p:Configuration=Release
