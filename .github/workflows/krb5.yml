@@ -1,0 +1,49 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-krb5:
+    runs-on: windows-latest
+    steps:
+      - name: Retrieve the source code
+        run: | 
+          echo "Retrieving MIT Kerberos version ${{ vars.KRB5_VERSION }}."
+          curl https://kerberos.org/dist/krb5/1.21/krb5-${{ vars.KRB5_VERSION }}.tar.gz -o ./krb5-${{ vars.KRB5_VERSION }}.tar.gz
+          tar zxvf krb5-${{ vars.KRB5_VERSION }}.tar.gz
+
+      - name: Add 32 bit VC++ tools to the path
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64_x86
+        
+      - name: Configure the code
+        run: |
+          cd krb5-${{ vars.KRB5_VERSION }}\src
+          mkdir /krb5
+          set KRB_INSTALL_DIR=/krb5
+          nmake -f Makefile.in prep-windows
+
+      - name: Add 64 bit VC++ tools to the path
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+          
+      - name: Build the code
+        run: | 
+          cd krb5-${{ vars.KRB5_VERSION }}\src
+          set PATH=%PATH%;"%WindowsSdkVerBinPath%"\x86
+          set KRB_INSTALL_DIR=/krb5
+          nmake NODEBUG=1
+
+      - name: Install the code
+        run: |
+          cd krb5-${{ vars.KRB5_VERSION }}\src
+          set PATH=%PATH%;"%WindowsSdkVerBinPath%"\x86
+          set KRB_INSTALL_DIR=/krb5
+          nmake install NODEBUG=1
+
+      - name: Upload the build
+        uses: actions/upload-artifact@v4
+        with:
+          name: krb5-${{ vars.KRB5_VERSION }}-win64
+          path: /krb5
