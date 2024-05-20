@@ -5,32 +5,35 @@ jobs:
   build-openssl:
     runs-on: windows-latest
     steps:
-      - name: Retrieve the source code
+      - uses: ilammy/msvc-dev-cmd@v1
+            
+      - name: Download
         run: | 
           curl https://www.openssl.org/source/openssl-${{ vars.OPENSSL_VERSION }}.tar.gz -o ./openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
           tar zxvf openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
 
-      - name: Add VC++ tools to the path
-        uses: ilammy/msvc-dev-cmd@v1
-        
-      - name: Build the code
+      - name: Configure
         run: | 
           cd openssl-${{ vars.OPENSSL_VERSION }}
-          mkdir /openssl
           perl Configure VC-WIN64A no-asm --prefix=\openssl no-ssl3 no-comp
+          
+      - name: Build
+        run: | 
+          cd openssl-${{ vars.OPENSSL_VERSION }}
           nmake
 
-      - name: Test the code
+      - name: Test
         run: | 
           cd openssl-${{ vars.OPENSSL_VERSION }}
           nmake test
 
-      - name: Install the code
+      - name: Install
         run: |
+          mkdir /openssl
           cd openssl-${{ vars.OPENSSL_VERSION }}
           nmake install
 
-      - name: Upload the build
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: openssl-${{ vars.OPENSSL_VERSION }}-win64
