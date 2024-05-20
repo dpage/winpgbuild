@@ -31,3 +31,64 @@ jobs:
           name: zlib-${{ vars.ZLIB_VERSION }}-win64
           path: /build/zlib
           if_no_artifact_found: fail
+
+      - name: Download
+        run: | 
+          curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_VERSION }}/postgresql-${{ vars.POSTGRESQL_VERSION }}.tar.gz -o ./postgresql-${{ vars.POSTGRESQL_VERSION }}.tar.gz
+          tar zxvf postgresql-${{ vars.POSTGRESQL_VERSION }}.tar.gz
+          
+      - name: Configure
+        run: | 
+          cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
+          
+          >> config.pl echo # Configuration arguments for vcbuild.
+          >> config.pl echo use strict;
+          >> config.pl echo use warnings;
+          >> config.pl echo.
+          >> config.pl echo our $config = {
+          >> config.pl echo 	asserts   =^> 0,        # --enable-cassert
+          >> config.pl echo 	ldap      =^> 1,        # --with-ldap
+          >> config.pl echo 	extraver  =^> undef,    # --with-extra-version=^<string^>
+          >> config.pl echo 	gss       =^> '\build\krb5',    # --with-gssapi=^<path^>
+          >> config.pl echo 	icu       =^> undef,    # --with-icu=^<path^>
+          >> config.pl echo 	nls       =^> undef,    # --enable-nls=^<path^>
+          >> config.pl echo 	tap_tests =^> undef,    # --enable-tap-tests
+          >> config.pl echo 	tcl       =^> undef,    # --with-tcl=^<path^>
+          >> config.pl echo 	perl      =^> undef,    # --with-perl
+          >> config.pl echo 	python    =^> undef,    # --with-python=^<path^>
+          >> config.pl echo 	openssl   =^> '\build\openssl',    # --with-openssl=^<path^>
+          >> config.pl echo 	uuid      =^> undef,    # --with-ossp-uuid
+          >> config.pl echo 	xml       =^> undef,    # --with-libxml=^<path^>
+          >> config.pl echo 	xslt      =^> undef,    # --with-libxslt=^<path^>
+          >> config.pl echo 	iconv     =^> undef,    # (not in configure, path to iconv)
+          >> config.pl echo 	zlib      =^> '\build\zlib'     # --with-zlib=^<path^>
+          >> config.pl echo };
+          >> config.pl echo.
+          >> config.pl echo 1;
+         
+          >> buildenv.pl echo $ENV{PATH} = "\\build\\openssl\\bin;\\build\\zlib\\bin;$ENV{PATH}";
+          
+      - name: Build
+        run: | 
+          cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
+          perl build.pl Release
+          
+      - name: Test
+        run: | 
+          cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
+          perl vcregress.pl check
+          
+      - name: Install
+        run: |
+          mkdir /postgresql
+          cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
+          perl install.pl \postgresql
+          copy \build\zlib\bin\zlib.dll \postgresql\bin
+          copy \build\openssl\bin\libssl-1_1-x64.dll \postgresql\bin
+          copy \build\openssl\bin\libcrypto-1_1-x64.dll \postgresql\bin
+          
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: postgresql-${{ vars.OPENSSL_VERSION }}-win64
+          path: /postgresql
