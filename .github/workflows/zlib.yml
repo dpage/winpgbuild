@@ -12,6 +12,7 @@ jobs:
           tar -zxvf zlib-${{ vars.ZLIB_VERSION }}.tar.gz
 
       - name: Build the code
+        uses: microsoft/setup-msbuild@v2
         run: | 
           echo "Building zlib version ${{ vars.ZLIB_VERSION }}."
           cd zlib-${{ vars.ZLIB_VERSION }}
@@ -21,6 +22,7 @@ jobs:
           msbuild ALL_BUILD.vcxproj /p:Configuration=Release
 
       - name: Test the code
+        uses: microsoft/setup-msbuild@v2
         run: | 
           echo "Testing zlib version ${{ vars.ZLIB_VERSION }}."
           cd zlib-${{ vars.ZLIB_VERSION }}
