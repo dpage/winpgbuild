@@ -10,6 +10,9 @@ jobs:
           echo "Retrieving OpenSSL version ${{ vars.OPENSSL_VERSION }}."
           curl https://www.openssl.org/source/openssl-${{ vars.OPENSSL_VERSION }}.tar.gz -o ./openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
           tar zxvf openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
+
+      - name: Add VC++ tools to the path
+        uses: ilammy/msvc-dev-cmd@v1
         
       - name: Build the code
         run: | 
