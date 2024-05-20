@@ -5,6 +5,8 @@ jobs:
   build-postgresql:
     runs-on: windows-latest
     steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+    
       - name: Download openssl
         uses: dawidd6/action-download-artifact@v3
         with:
@@ -87,6 +89,11 @@ jobs:
           copy \build\zlib\bin\zlib.dll \postgresql\bin
           copy \build\openssl\bin\libssl-1_1-x64.dll \postgresql\bin
           copy \build\openssl\bin\libcrypto-1_1-x64.dll \postgresql\bin
+          copy \build\krb5\bin\kinit.exe \postgresql\bin
+          copy \build\krb5\bin\krb5_64.dll \postgresql\bin
+          copy \build\krb5\bin\comerr64.dll \postgresql\bin
+          copy \build\krb5\bin\k5sprt64.dll \postgresql\bin
+          copy \build\krb5\bin\gssapi64.dll \postgresql\bin
           
       - name: Upload
         uses: actions/upload-artifact@v4
