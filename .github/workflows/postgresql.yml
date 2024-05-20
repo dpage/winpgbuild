@@ -1,0 +1,19 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-postgresql:
+    runs-on: windows-latest
+    steps:
+      - name: Create build directory
+        run: mkdir /build
+          
+      - name: Download zlib
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: zlib.yml 
+          workflow_search: success
+          name: zlib-${{ vars.ZLIB_VERSION }}-win64
+          path: /build
+          if_no_artifact_found: fail
