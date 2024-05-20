@@ -10,9 +10,11 @@ jobs:
           echo "Retrieving zlib version ${{ vars.ZLIB_VERSION }}."
           curl https://zlib.net/zlib-${{ vars.ZLIB_VERSION }}.tar.gz -o ./zlib-${{ vars.ZLIB_VERSION }}.tar.gz
           tar -zxvf zlib-${{ vars.ZLIB_VERSION }}.tar.gz
-
-      - name: Build the code
+          
+      - name: Add msbuild to the path
         uses: microsoft/setup-msbuild@v2
+        
+      - name: Build the code
         run: | 
           echo "Building zlib version ${{ vars.ZLIB_VERSION }}."
           cd zlib-${{ vars.ZLIB_VERSION }}
@@ -22,7 +24,6 @@ jobs:
           msbuild ALL_BUILD.vcxproj /p:Configuration=Release
 
       - name: Test the code
-        uses: microsoft/setup-msbuild@v2
         run: | 
           echo "Testing zlib version ${{ vars.ZLIB_VERSION }}."
           cd zlib-${{ vars.ZLIB_VERSION }}
