@@ -8,9 +8,8 @@ jobs:
       - name: Retrieve the source code
         run: | 
           echo "Retrieving zlib version ${{ vars.ZLIB_VERSION }}."
-          curl https://zlib.net/zlib-${{ vars.ZLIB_VERSION }}.tar.gz -o zlib-${{ vars.ZLIB_VERSION }}.tar.gz
-          gunzip zlib-${{ vars.ZLIB_VERSION }}.tar.gz
-          tar -xvf zlib-${{ vars.ZLIB_VERSION }}.tar
+          curl https://zlib.net/zlib-${{ vars.ZLIB_VERSION }}.tar.gz -o ./zlib-${{ vars.ZLIB_VERSION }}.tar.gz
+          tar -zxvf zlib-${{ vars.ZLIB_VERSION }}.tar.gz
 
       - name: Build the code
         run: | 
