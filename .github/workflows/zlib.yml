@@ -7,7 +7,6 @@ jobs:
     steps:
       - name: Retrieve the source code
         run: | 
-          echo "Retrieving zlib version ${{ vars.ZLIB_VERSION }}."
           curl https://zlib.net/zlib-${{ vars.ZLIB_VERSION }}.tar.gz -o ./zlib-${{ vars.ZLIB_VERSION }}.tar.gz
           tar zxvf zlib-${{ vars.ZLIB_VERSION }}.tar.gz
           
@@ -16,7 +15,6 @@ jobs:
         
       - name: Build the code
         run: | 
-          echo "Building zlib version ${{ vars.ZLIB_VERSION }}."
           cd zlib-${{ vars.ZLIB_VERSION }}
           mkdir /zlib
           cmake -DCMAKE_INSTALL_PREFIX=/zlib -G "Visual Studio 17 2022" .
@@ -24,7 +22,6 @@ jobs:
 
       - name: Test the code
         run: | 
-          echo "Testing zlib version ${{ vars.ZLIB_VERSION }}."
           cd zlib-${{ vars.ZLIB_VERSION }}
           msbuild RUN_TESTS.vcxproj /p:Configuration=Release
 
