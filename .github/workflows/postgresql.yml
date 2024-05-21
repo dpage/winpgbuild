@@ -62,7 +62,7 @@ jobs:
           >> config.pl echo 	asserts   =^> 0,        # --enable-cassert
           >> config.pl echo 	ldap      =^> 1,        # --with-ldap
           >> config.pl echo 	extraver  =^> undef,    # --with-extra-version=^<string^>
-          >> config.pl echo 	gss       =^> '',    # --with-gssapi=^<path^>
+          >> config.pl echo 	gss       =^> undef,    # --with-gssapi=^<path^>
           >> config.pl echo 	icu       =^> undef,    # --with-icu=^<path^>
           >> config.pl echo 	nls       =^> undef,    # --enable-nls=^<path^>
           >> config.pl echo 	tap_tests =^> undef,    # --enable-tap-tests
