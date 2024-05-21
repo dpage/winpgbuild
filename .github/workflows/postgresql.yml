@@ -25,11 +25,6 @@ jobs:
           path: /build/zlib
           if_no_artifact_found: fail
 
-      - name: HACK ZLIB TO ENSURE POSTGRESQL FINDS EVERYTHING
-        run: |
-          cd \build\zlib
-          copy lib\zlib.lib lib\zdll.lib
-
       - name: Download
         run: | 
           curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_VERSION }}/postgresql-${{ vars.POSTGRESQL_VERSION }}.tar.gz -o ./postgresql-${{ vars.POSTGRESQL_VERSION }}.tar.gz
