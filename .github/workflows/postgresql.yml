@@ -90,6 +90,7 @@ jobs:
       - name: Test
         run: | 
           cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
+          $env:PATH += ";\build\krb5\bin;\build\openssl\bin;\build\zlib\bin"
           perl vcregress.pl check
           
       - name: Install
@@ -109,5 +110,12 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: postgresql-${{ vars.OPENSSL_VERSION }}-win64
+          name: postgresql-${{ vars.POSTGRESQL_VERSION }}-win64
           path: /postgresql
+
+      - name: Upload Build Tree
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: postgresql-${{ vars.POSTGRESQL_VERSION }}-win64-buildtree
+          path: postgresql-${{ vars.POSTGRESQL_VERSION }}
