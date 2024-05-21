@@ -5,33 +5,38 @@ jobs:
   build-zlib:
     runs-on: windows-latest
     steps:
-      - uses: microsoft/setup-msbuild@v2
+      - uses: ilammy/msvc-dev-cmd@v1
       
       - name: Download
         run: | 
           curl https://zlib.net/zlib-${{ vars.ZLIB_VERSION }}.tar.gz -o ./zlib-${{ vars.ZLIB_VERSION }}.tar.gz
           tar zxvf zlib-${{ vars.ZLIB_VERSION }}.tar.gz
-
-      - name: Configure
-        run: | 
-          cd zlib-${{ vars.ZLIB_VERSION }}
-          cmake -DCMAKE_INSTALL_PREFIX=/zlib -G "Visual Studio 17 2022" .
           
       - name: Build
         run: | 
           cd zlib-${{ vars.ZLIB_VERSION }}
-          msbuild ALL_BUILD.vcxproj /p:Configuration=Release
-
-      - name: Test
-        run: | 
-          cd zlib-${{ vars.ZLIB_VERSION }}
-          msbuild RUN_TESTS.vcxproj /p:Configuration=Release
+          nmake -f win32/Makefile.msc
 
       - name: Install
         run: |
-          mkdir /zlib
           cd zlib-${{ vars.ZLIB_VERSION }}
-          msbuild INSTALL.vcxproj /p:Configuration=Release
+          
+          mkdir /zlib
+          
+          mkdir /zlib/bin
+          copy zlib1.dll /zlib/bin/
+          copy zlib1.pdb /zlib/bin/
+
+          mkdir /zlib/include
+          copy zlib.h /zlib/include/
+          copy zconf.h /zlib/include/
+
+          mkdir /zlib/lib
+          copy zlib.lib /zlib/lib/
+          copy zlib.pdb /zlib/lib/
+          copy zdll.lib /zlib/lib/
+          copy zdll.exp /zlib/lib/
+          
 
       - name: Upload
         uses: actions/upload-artifact@v4
