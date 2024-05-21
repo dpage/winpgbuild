@@ -78,7 +78,7 @@ jobs:
           mkdir /postgresql
           cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
           perl install.pl \postgresql
-          copy \build\zlib\bin\zlib.dll \postgresql\bin
+          copy \build\zlib\bin\zlib1.dll \postgresql\bin
           copy \build\openssl\bin\libssl-3-x64.dll \postgresql\bin
           copy \build\openssl\bin\libcrypto-3-x64.dll \postgresql\bin
           
