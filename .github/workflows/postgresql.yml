@@ -37,15 +37,13 @@ jobs:
       - name: HACK KRB5 TO ENSURE POSTGRESQL FINDS EVERYTHING
         run: |
           cd \build\krb5
-          mkdir amd64
-          move bin amd64/
-          move include amd64/
-          move lib amd64/
+          mkdir lib\amd64
+          copy lib\*.lib lib\amd64\
 
       - name: HACK ZLIB TO ENSURE POSTGRESQL FINDS EVERYTHING
         run: |
           cd \build\zlib
-          move lib\zlib.lib lib\zdll.lib
+          copy lib\zlib.lib lib\zdll.lib
 
       - name: Download
         run: | 
@@ -102,11 +100,11 @@ jobs:
           copy \build\zlib\bin\zlib.dll \postgresql\bin
           copy \build\openssl\bin\libssl-1_1-x64.dll \postgresql\bin
           copy \build\openssl\bin\libcrypto-1_1-x64.dll \postgresql\bin
-          copy \build\krb5\amd64\bin\kinit.exe \postgresql\bin
-          copy \build\krb5\amd64\bin\krb5_64.dll \postgresql\bin
-          copy \build\krb5\amd64\bin\comerr64.dll \postgresql\bin
-          copy \build\krb5\amd64\bin\k5sprt64.dll \postgresql\bin
-          copy \build\krb5\amd64\bin\gssapi64.dll \postgresql\bin
+          copy \build\krb5\bin\kinit.exe \postgresql\bin
+          copy \build\krb5\bin\krb5_64.dll \postgresql\bin
+          copy \build\krb5\bin\comerr64.dll \postgresql\bin
+          copy \build\krb5\bin\k5sprt64.dll \postgresql\bin
+          copy \build\krb5\bin\gssapi64.dll \postgresql\bin
           
       - name: Upload
         uses: actions/upload-artifact@v4
