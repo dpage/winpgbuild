@@ -100,6 +100,7 @@ jobs:
 
       - name: Upload initdb log
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: postgresql-${{ vars.POSTGRESQL_VERSION }}-win64
           path: D:/a/winpgbuild/winpgbuild/postgresql-16.3/src/test/regress/log/initdb.log
