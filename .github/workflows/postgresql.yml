@@ -6,7 +6,16 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
-    
+
+      - name: Download libxml2
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: libxml2.yml 
+          workflow_conclusion: success
+          name: openssl-${{ vars.LIBXML2_VERSION }}-win64
+          path: /build/libxml2
+          if_no_artifact_found: fail
+          
       - name: Download openssl
         uses: dawidd6/action-download-artifact@v3
         with:
@@ -51,7 +60,7 @@ jobs:
           >> config.pl echo 	python    =^> undef,    # --with-python=^<path^>
           >> config.pl echo 	openssl   =^> '\build\openssl',    # --with-openssl=^<path^>
           >> config.pl echo 	uuid      =^> undef,    # --with-ossp-uuid
-          >> config.pl echo 	xml       =^> undef,    # --with-libxml=^<path^>
+          >> config.pl echo 	xml       =^> '\build\libxml2',    # --with-libxml=^<path^>
           >> config.pl echo 	xslt      =^> undef,    # --with-libxslt=^<path^>
           >> config.pl echo 	iconv     =^> undef,    # (not in configure, path to iconv)
           >> config.pl echo 	zlib      =^> '\build\zlib'     # --with-zlib=^<path^>
@@ -78,9 +87,10 @@ jobs:
           mkdir /postgresql
           cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
           perl install.pl \postgresql
-          copy \build\zlib\bin\zlib1.dll \postgresql\bin
+          copy \build\libxml2\bin\libxml2.dll \postgresql\bin
           copy \build\openssl\bin\libssl-3-x64.dll \postgresql\bin
           copy \build\openssl\bin\libcrypto-3-x64.dll \postgresql\bin
+          copy \build\zlib\bin\zlib1.dll \postgresql\bin
           
       - name: Upload
         uses: actions/upload-artifact@v4
