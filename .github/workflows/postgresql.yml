@@ -79,7 +79,7 @@ jobs:
       - name: Test
         run: | 
           cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
-          $env:PATH += ";\build\openssl\bin;\build\zlib\bin"
+          $env:PATH += ";\build\libxml2\bin;\build\openssl\bin;\build\zlib\bin"
           perl vcregress.pl check
           
       - name: Install
@@ -97,10 +97,3 @@ jobs:
         with:
           name: postgresql-${{ vars.POSTGRESQL_VERSION }}-win64
           path: /postgresql
-
-      - name: Upload initdb log
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: postgresql-${{ vars.POSTGRESQL_VERSION }}-win64
-          path: D:/a/winpgbuild/winpgbuild/postgresql-16.3/src/test/regress/log/initdb.log
