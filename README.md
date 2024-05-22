@@ -9,7 +9,7 @@ These are listed below in square brackets.
 ### Dependencies
 
 * MIT Kerberos (krb5) [KRB5_VERSION]. Note that this isn't used in the PostgreSQL build as it will cause compile errors.
-* OpenSSL (openssl) [OPENSSL_VERSION]
+* OpenSSL [OPENSSL_VERSION]
 * zlib [ZLIB_VERSION]
 
 ### PostgreSQL
