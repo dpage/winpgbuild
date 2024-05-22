@@ -1,0 +1,43 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-libxml2:
+    runs-on: windows-latest
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Download zlib
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: zlib.yml 
+          workflow_conclusion: success
+          name: zlib-${{ vars.ZLIB_VERSION }}-win64
+          path: /build/zlib
+          if_no_artifact_found: fail
+          
+      - name: Download
+        run: | 
+          curl https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${{ vars.LIBXML2_VERSION }}/libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz -o ./libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz
+          tar zxvf libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz
+
+      - name: Configure
+        run: | 
+          cd libxml2-v${{ vars.LIBXML2_VERSION }}
+          cmake -B build -D CMAKE_INSTALL_PREFIX=/libxml2 -D LIBXML2_WITH_ICONV=OFF -D LIBXML2_WITH_LZMA=OFF -D LIBXML2_WITH_PYTHON=OFF -D ZLIB_LIBRARY=/build/zlib/lib/zdll.lib -D ZLIB_INCLUDE_DIR=/build/zlib/include
+          
+      - name: Build
+        run: | 
+          cd libxml2-v${{ vars.LIBXML2_VERSION }}
+          cmake --build build --config Release
+
+      - name: Install
+        run: |
+          cd libxml2-v${{ vars.LIBXML2_VERSION }}
+          cmake --install build
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: libxml2-v${{ vars.LIBXML2_VERSION }}-win64
+          path: /libxml2
