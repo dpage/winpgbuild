@@ -12,6 +12,7 @@ jobs:
         run: | 
           curl https://github.com/xtuple/ossp-uuid/archive/refs/tags/v${{ vars.OSSP_UUID_VERSION }}.tar.gz -o ./ossp-uuid-${{ vars.OSSP_UUID_VERSION }}.tar.gz
           tar zxvf ossp-uuid-${{ vars.OSSP_UUID_VERSION }}.tar.gz
+        shell: bash
 
       - name: Configure
         run: | 
