@@ -28,14 +28,14 @@ jobs:
         # Manual installation, as .exe extensions aren't handled properly
         run: |
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
-          mkdir /ossp-uuid
-          mkdir /ossp-uuid/bin
-          mkdir /ossp-uuid/include
-          mkdir /ossp-uuid/lib
+          mkdir \ossp-uuid
+          mkdir \ossp-uuid\bin
+          mkdir \ossp-uuid\include
+          mkdir \ossp-uuid\lib
 
-          copy .libs/uuid.exe /ossp-uuid/bin
-          copy uuid.h /ossp-uuid/include
-          copy .libs/libuuid.lai /ossp-uuid/lib/uuid.lib
+          copy .libs\uuid.exe \ossp-uuid\bin
+          copy uuid.h \ossp-uuid\include
+          copy .libs/libuuid.lai \ossp-uuid\lib\uuid.lib
         shell: cmd
 
       - name: Debug
