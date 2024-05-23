@@ -36,17 +36,15 @@ jobs:
           cp .libs/uuid.exe /ossp-uuid/bin
           cp uuid.h /ossp-uuid/include
           cp .libs/libuuid.lai /ossp-uuid/lib/uuid.lib
-          cd /ossp-uuid
-          pwd
-          ls -alR
         shell: bash
+
+      - name: Debug
+        run: |
+          ls -alR /ossp-uuid
 
       - name: Upload
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
-          path: 
-            /ossp-uuid/bin
-            /ossp-uuid/include
-            /ossp-uuid/lib
+          path: /ossp-uuid
