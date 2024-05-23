@@ -39,5 +39,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: libxml2-v${{ vars.LIBXML2_VERSION }}-win64
+          name: libxml2-${{ vars.LIBXML2_VERSION }}-win64
           path: /libxml2
