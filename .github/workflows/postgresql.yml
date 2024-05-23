@@ -68,7 +68,7 @@ jobs:
           >> config.pl echo 	perl      =^> undef,    # --with-perl
           >> config.pl echo 	python    =^> undef,    # --with-python=^<path^>
           >> config.pl echo 	openssl   =^> '\build\openssl',    # --with-openssl=^<path^>
-          >> config.pl echo 	uuid      =^> undef,    # --with-ossp-uuid
+          >> config.pl echo 	uuid      =^> 1,    # --with-ossp-uuid
           >> config.pl echo 	xml       =^> '\build\libxml2',    # --with-libxml=^<path^>
           >> config.pl echo 	xslt      =^> '\build\libxslt',    # --with-libxslt=^<path^>
           >> config.pl echo 	iconv     =^> undef,    # (not in configure, path to iconv)
