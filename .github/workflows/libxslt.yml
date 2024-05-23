@@ -27,7 +27,7 @@ jobs:
           
       - name: Download
         run: | 
-          curl https://gitlab.gnome.org/GNOME/libxslt/-/archive/v${{ vars.LIBXSLT_VERSION }}/libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz -o ./libxslt-v${{ vars.LIBXML2_VERSION }}.tar.gz
+          curl https://gitlab.gnome.org/GNOME/libxslt/-/archive/v${{ vars.LIBXSLT_VERSION }}/libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz -o ./libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz
           tar zxvf libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz
 
       - name: Configure
