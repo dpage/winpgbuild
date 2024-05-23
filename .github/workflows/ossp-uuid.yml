@@ -27,6 +27,7 @@ jobs:
       - name: Install
         run: |
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
+          ls -alR
 
           # Manual installation, as .exe extensions aren't handled properly
           mkdir -p /ossp-uuid/bin
