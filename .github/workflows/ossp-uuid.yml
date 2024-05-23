@@ -34,8 +34,7 @@ jobs:
           mkdir -p /ossp-uuid/include
           mkdir -p /ossp-uuid/lib
 
-          cp uuid.exe /ossp-uuid/bin
-          cp uuid.dll /ossp-uuid/bin
+          cp .libs/uuid.exe /ossp-uuid/bin
           cp uuid.h /ossp-uuid/include
           cp .libs/libuuid.lai /ossp-uuid/lib/uuid.lib
         shell: bash
