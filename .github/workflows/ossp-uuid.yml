@@ -25,14 +25,13 @@ jobs:
         shell: bash
 
       - name: Install
+        # Manual installation, as .exe extensions aren't handled properly
         run: |
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
-          ls -alR
-
-          # Manual installation, as .exe extensions aren't handled properly
-          mkdir -p /ossp-uuid/bin
-          mkdir -p /ossp-uuid/include
-          mkdir -p /ossp-uuid/lib
+          mkdir /ossp-uuid
+          mkdir /ossp-uuid/bin
+          mkdir /ossp-uuid/include
+          mkdir /ossp-uuid/lib
 
           cp .libs/uuid.exe /ossp-uuid/bin
           cp uuid.h /ossp-uuid/include
