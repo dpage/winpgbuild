@@ -40,7 +40,7 @@ jobs:
 
       - name: Debug
         run: |
-          ls -alR /ossp-uuid
+          dir /s \ossp-uuid
 
       - name: Upload
         uses: actions/upload-artifact@v4
