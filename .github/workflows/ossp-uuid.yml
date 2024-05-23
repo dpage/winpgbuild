@@ -38,11 +38,6 @@ jobs:
           copy .libs/libuuid.lai \ossp-uuid\lib\uuid.lib
         shell: cmd
 
-      - name: Debug
-        run: |
-          dir /s \ossp-uuid
-        shell: cmd
-
       - name: Upload
         uses: actions/upload-artifact@v4
         if: always()
