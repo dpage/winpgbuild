@@ -62,6 +62,8 @@ jobs:
           >> config.pl echo 	extraver  =^> undef,    # --with-extra-version=^<string^>
           >> config.pl echo 	gss       =^> undef,    # --with-gssapi=^<path^>
           >> config.pl echo 	icu       =^> undef,    # --with-icu=^<path^>
+          >> config.pl echo 	lz4       =^> undef,    # --with-lz4=^<path^>
+          >> config.pl echo 	zstd      =^> undef,    # --with-zstd=^<path^>
           >> config.pl echo 	nls       =^> undef,    # --enable-nls=^<path^>
           >> config.pl echo 	tap_tests =^> undef,    # --enable-tap-tests
           >> config.pl echo 	tcl       =^> undef,    # --with-tcl=^<path^>
@@ -77,7 +79,7 @@ jobs:
           >> config.pl echo.
           >> config.pl echo 1;
          
-          >> buildenv.pl echo $ENV{PATH} = "\\build\\openssl\\bin;\\build\\zlib\\bin;$ENV{PATH}";
+          >> buildenv.pl echo $ENV{PATH} = "\\build\\openssl\\bin;$ENV{PATH}";
         shell: cmd
           
       - name: Build
