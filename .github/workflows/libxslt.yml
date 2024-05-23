@@ -33,7 +33,7 @@ jobs:
       - name: Configure
         run: | 
           cd libxslt-v${{ vars.LIBXSLT_VERSION }}/win32
-          cscript configure.js prefix=/libxslt compiler=msvc zlib=yes include=/build/zlib/include;/build/libxml2/include/libxml2 lib=/build/zlib/lib;/build/libxml2/lib
+          cscript configure.js prefix=/libxslt compiler=msvc zlib=yes include="/build/zlib/include;/build/libxml2/include/libxml2" lib="/build/zlib/lib;/build/libxml2/lib"
 
       - name: Build
         run: | 
