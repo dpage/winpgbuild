@@ -33,6 +33,15 @@ jobs:
           name: openssl-${{ vars.OPENSSL_VERSION }}-win64
           path: /build/openssl
           if_no_artifact_found: fail
+
+      - name: Download ossp-uuid
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: ossp-uuid.yml 
+          workflow_conclusion: success
+          name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
+          path: /build/ossp-uuid
+          if_no_artifact_found: fail
           
       - name: Download zlib
         uses: dawidd6/action-download-artifact@v3
