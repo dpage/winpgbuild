@@ -1,0 +1,52 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-libxslt:
+    runs-on: windows-latest
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Download libxml2
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: libxml2.yml 
+          workflow_conclusion: success
+          name: libxml2-${{ vars.LIBXML2_VERSION }}-win64
+          path: /build/libxml2
+          if_no_artifact_found: fail
+
+      - name: Download zlib
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: zlib.yml 
+          workflow_conclusion: success
+          name: zlib-${{ vars.ZLIB_VERSION }}-win64
+          path: /build/zlib
+          if_no_artifact_found: fail
+          
+      - name: Download
+        run: | 
+          curl https://gitlab.gnome.org/GNOME/libxslt/-/archive/v${{ vars.LIBXSLT_VERSION }}/libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz -o ./libxslt-v${{ vars.LIBXML2_VERSION }}.tar.gz
+          tar zxvf libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz
+
+      - name: Configure
+        run: | 
+          cd libxslt-v${{ vars.LIBXSLT_VERSION }}/win32
+          cscript configure.js prefix=/libxslt compiler=msvc zlib=yes include=\build\zlib\include;\build\libxml2\include\libxml2 lib=\build\zlib\lib;\build\libxml2\lib
+
+      - name: Build
+        run: | 
+          cd libxslt-v${{ vars.LIBXSLT_VERSION }}/win32
+          nmake -f Makefile.msvc
+
+      - name: Install
+        run: |
+          cd libxslt-v${{ vars.LIBXSLT_VERSION }}/win32
+          nmake -f Makefile.msvc install
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: libxslt-${{ vars.LIBXSLT_VERSION }}-win64
+          path: /libxslt
