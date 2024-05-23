@@ -15,8 +15,6 @@ jobs:
       - name: Configure
         run: | 
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
-          # Fix Makefile.in for Windows
-          sed -i 's/install -c -s -m 755 uuid/install -c -s -m 755 uuid.exe/g' Makefile.in
           ./configure --prefix=/ossp-uuid
         shell: bash
           
@@ -29,7 +27,17 @@ jobs:
       - name: Install
         run: |
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
-          make install
+
+          # Manual installation, as .exe extensions aren't handled properly
+          mkdir -p /ossp-uuid/bin
+          mkdir -p /ossp-uuid/include
+          mkdir -p /ossp-uuid/lib
+
+          cp uuid.exe /ossp-uuid/bin
+          cp uuid.dll /ossp-uuid/bin
+          cp uuid.h /ossp-uuid/include
+          cp .libs/libuuid.lai /ossp-uuid/lib/libuuid.la
+          cp .libs/libuuid.a /ossp-uuid/lib/libuuid.a
         shell: bash
 
       - name: Upload
@@ -37,3 +45,10 @@ jobs:
         with:
           name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
           path: /ossp-uuid
+
+      - name: Upload tree
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-tree
+          path: ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
