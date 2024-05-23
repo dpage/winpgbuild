@@ -46,4 +46,4 @@ jobs:
         if: always()
         with:
           name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
-          path: /ossp-uuid
+          path: /ossp-uuid/*
