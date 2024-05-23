@@ -14,19 +14,19 @@ jobs:
 
       - name: Configure
         run: | 
-          cd ossp-uuid-${{ vars.OSSP_UUID_VERSION }}
+          cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
           ./configure --prefix=/ossp-uuid
         shell: bash
           
       - name: Build
         run: | 
-          cd ossp-uuid-${{ vars.OSSP_UUID_VERSION }}
+          cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
           make all
         shell: bash
 
       - name: Install
         run: |
-          cd ossp-uuid-${{ vars.OSSP_UUID_VERSION }}
+          cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
           make install
         shell: bash
 
