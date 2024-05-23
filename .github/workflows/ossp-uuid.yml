@@ -38,6 +38,7 @@ jobs:
           cp .libs/libuuid.lai /ossp-uuid/lib/uuid.lib
           cd /ossp-uuid
           pwd
+          ls -alR
         shell: bash
 
       - name: Upload
