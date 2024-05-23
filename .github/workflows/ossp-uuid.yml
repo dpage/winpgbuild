@@ -36,6 +36,7 @@ jobs:
           cp .libs/uuid.exe /ossp-uuid/bin
           cp uuid.h /ossp-uuid/include
           cp .libs/libuuid.lai /ossp-uuid/lib/uuid.lib
+          pwd
         shell: bash
 
       - name: Upload
