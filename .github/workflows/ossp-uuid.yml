@@ -51,4 +51,6 @@ jobs:
         if: always()
         with:
           name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-tree
-          path: ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
+          path: |
+            ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
+            ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}/.**
