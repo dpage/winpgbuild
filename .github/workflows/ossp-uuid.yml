@@ -5,12 +5,10 @@ jobs:
   build-ossp-uuid:
     runs-on: windows-latest
     steps:
-      - uses: ilammy/msvc-dev-cmd@v1
-          
       - name: Download
-        # We get this from the old xtuble Github repo, as OSSP is basically unavailable these days
+        # We get this from the Debian repo, as OSSP is basically unavailable these days
         run: | 
-          curl https://github.com/xtuple/ossp-uuid/archive/refs/tags/v${{ vars.OSSP_UUID_VERSION }}.tar.gz -o ./ossp-uuid-${{ vars.OSSP_UUID_VERSION }}.tar.gz
+          curl https://salsa.debian.org/debian/ossp-uuid/-/archive/upstream/${{ vars.OSSP_UUID_VERSION }}/ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz -o ./ossp-uuid-${{ vars.OSSP_UUID_VERSION }}.tar.gz
           tar zxvf ossp-uuid-${{ vars.OSSP_UUID_VERSION }}.tar.gz
         shell: bash
 
