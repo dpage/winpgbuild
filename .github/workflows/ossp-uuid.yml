@@ -33,14 +33,15 @@ jobs:
           mkdir /ossp-uuid/include
           mkdir /ossp-uuid/lib
 
-          cp .libs/uuid.exe /ossp-uuid/bin
-          cp uuid.h /ossp-uuid/include
-          cp .libs/libuuid.lai /ossp-uuid/lib/uuid.lib
-        shell: bash
+          copy .libs/uuid.exe /ossp-uuid/bin
+          copy uuid.h /ossp-uuid/include
+          copy .libs/libuuid.lai /ossp-uuid/lib/uuid.lib
+        shell: cmd
 
       - name: Debug
         run: |
           dir /s \ossp-uuid
+        shell: cmd
 
       - name: Upload
         uses: actions/upload-artifact@v4
