@@ -8,7 +8,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Set dashed version number
-        run: echo "ICU_VERSION_DASHED=${ICU_VERSION/./-/}" >> $GITHUB_ENV
+        run: echo "ICU_VERSION_DASHED=$(echo ${{ vars.ICU_VERSION }} | sed 's/\./-/g')" >> $GITHUB_ENV
         shell: bash
         
       - name: Show dashed version number
