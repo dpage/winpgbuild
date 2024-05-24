@@ -1,0 +1,52 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-zlib:
+    runs-on: windows-latest
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Set dashed version number
+        run: echo "ICU_VERSION_DASHED=${$ICU_VERSION/./-/}" >> $GITHUB_ENV
+        shell: bash
+        
+      - name: Show dashed version number
+        run: echo $ICU_VERSION_DASHED
+        shell: bash
+      # - name: Download
+      #   run: | 
+      #     curl https://zlib.net/zlib-${{ vars.ZLIB_VERSION }}.tar.gz -o ./zlib-${{ vars.ZLIB_VERSION }}.tar.gz
+      #     tar zxvf zlib-${{ vars.ZLIB_VERSION }}.tar.gz
+          
+      # - name: Build
+      #   run: | 
+      #     cd zlib-${{ vars.ZLIB_VERSION }}
+      #     nmake -f win32/Makefile.msc
+
+      # - name: Install
+      #   run: |
+      #     cd zlib-${{ vars.ZLIB_VERSION }}
+          
+      #     mkdir /zlib
+          
+      #     mkdir /zlib/bin
+      #     copy zlib1.dll /zlib/bin/
+      #     copy zlib1.pdb /zlib/bin/
+
+      #     mkdir /zlib/include
+      #     copy zlib.h /zlib/include/
+      #     copy zconf.h /zlib/include/
+
+      #     mkdir /zlib/lib
+      #     copy zlib.lib /zlib/lib/
+      #     copy zlib.pdb /zlib/lib/
+      #     copy zdll.lib /zlib/lib/
+      #     copy zdll.exp /zlib/lib/
+          
+
+      # - name: Upload
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: zlib-${{ vars.ZLIB_VERSION }}-win64
+      #     path: /zlib
