@@ -12,6 +12,7 @@ These are listed below in square brackets.
 * libxslt [LIBXSLT_VERSION]
 * MIT Kerberos (krb5) [KRB5_VERSION]. Note that this isn't used in the PostgreSQL build as it will cause compile errors.
 * OpenSSL [OPENSSL_VERSION]
+* ossp-uuid [OSSP_UUID_VERSION]. Note that this isn't used in the PostgreSQL build as only mingw libraries are currently created.
 * zlib [ZLIB_VERSION]
 
 ### PostgreSQL
@@ -19,4 +20,4 @@ These are listed below in square brackets.
 The PostgreSQL version is specified in the POSTGRESQL_VERSION repository variable.
 Currently supported versions of PostgreSQL <= 16 should work. All dependencies 
 should automatically be included in the build, *except* for MIT Kerberos (the gssapi
-configuration option).
+configuration option) and ossp-uuid.
