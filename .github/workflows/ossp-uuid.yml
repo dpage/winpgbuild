@@ -36,6 +36,8 @@ jobs:
           copy .libs\uuid.exe \ossp-uuid\bin
           copy uuid.h \ossp-uuid\include
           copy .libs/libuuid.lai \ossp-uuid\lib\uuid.lib
+
+          dir .libs\
         shell: cmd
 
       - name: Upload
