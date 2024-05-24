@@ -12,7 +12,9 @@ jobs:
         shell: bash
         
       - name: Show dashed version number
-        run: echo $ICU_VERSION_DASHED
+        run: |
+          echo "Dashed version: $ICU_VERSION_DASHED"
+          cat $GITHUB_ENV
         shell: bash
       # - name: Download
       #   run: | 
