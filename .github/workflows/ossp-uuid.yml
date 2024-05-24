@@ -15,7 +15,7 @@ jobs:
       - name: Configure
         run: | 
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
-          ./configure --prefix=/ossp-uuid
+          ./configure --prefix=/ossp-uuid --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --target=x86_64-w64-mingw32
         shell: bash
           
       - name: Build
