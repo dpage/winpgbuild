@@ -13,7 +13,7 @@ jobs:
           workflow: libxml2.yml 
           workflow_conclusion: success
           name: libxml2-${{ vars.LIBXML2_VERSION }}-win64
-          path: /build/libxml2
+          path: /builddeps
           if_no_artifact_found: fail
 
       - name: Download libxslt
@@ -22,7 +22,7 @@ jobs:
           workflow: libxslt.yml 
           workflow_conclusion: success
           name: libxslt-${{ vars.LIBXSLT_VERSION }}-win64
-          path: /build/libxslt
+          path: /builddeps
           if_no_artifact_found: fail
           
       - name: Download openssl
@@ -31,7 +31,7 @@ jobs:
           workflow: openssl.yml 
           workflow_conclusion: success
           name: openssl-${{ vars.OPENSSL_VERSION }}-win64
-          path: /build/openssl
+          path: /builddeps
           if_no_artifact_found: fail
 
       - name: Download ossp-uuid
@@ -40,7 +40,7 @@ jobs:
           workflow: ossp-uuid.yml 
           workflow_conclusion: success
           name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
-          path: /build/ossp-uuid
+          path: /builddeps
           if_no_artifact_found: fail
           
       - name: Download zlib
@@ -49,7 +49,7 @@ jobs:
           workflow: zlib.yml 
           workflow_conclusion: success
           name: zlib-${{ vars.ZLIB_VERSION }}-win64
-          path: /build/zlib
+          path: /builddeps
           if_no_artifact_found: fail
 
       - name: Download
@@ -78,17 +78,17 @@ jobs:
           >> config.pl echo 	tcl       =^> undef,    # --with-tcl=^<path^>
           >> config.pl echo 	perl      =^> undef,    # --with-perl
           >> config.pl echo 	python    =^> undef,    # --with-python=^<path^>
-          >> config.pl echo 	openssl   =^> '\build\openssl',    # --with-openssl=^<path^>
-          >> config.pl echo 	uuid      =^> '\build\ossp-uuid',    # --with-ossp-uuid
-          >> config.pl echo 	xml       =^> '\build\libxml2',    # --with-libxml=^<path^>
-          >> config.pl echo 	xslt      =^> '\build\libxslt',    # --with-libxslt=^<path^>
+          >> config.pl echo 	openssl   =^> '\builddeps',    # --with-openssl=^<path^>
+          >> config.pl echo 	uuid      =^> undef,    # --with-ossp-uuid
+          >> config.pl echo 	xml       =^> '\builddeps',    # --with-libxml=^<path^>
+          >> config.pl echo 	xslt      =^> '\builddeps',    # --with-libxslt=^<path^>
           >> config.pl echo 	iconv     =^> undef,    # (not in configure, path to iconv)
-          >> config.pl echo 	zlib      =^> '\build\zlib'     # --with-zlib=^<path^>
+          >> config.pl echo 	zlib      =^> '\builddeps'     # --with-zlib=^<path^>
           >> config.pl echo };
           >> config.pl echo.
           >> config.pl echo 1;
          
-          >> buildenv.pl echo $ENV{PATH} = "\\build\\openssl\\bin;$ENV{PATH}";
+          >> buildenv.pl echo $ENV{PATH} = "\\builddeps\\bin;$ENV{PATH}";
         shell: cmd
           
       - name: Build
@@ -99,7 +99,7 @@ jobs:
       - name: Test
         run: | 
           cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
-          $env:PATH += ";\build\libxml2\bin;\build\libxslt\bin;\build\openssl\bin;\build\zlib\bin"
+          $env:PATH += ";\builddeps\bin"
           perl vcregress.pl check
           
       - name: Install
@@ -107,11 +107,11 @@ jobs:
           mkdir /postgresql
           cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
           perl install.pl \postgresql
-          copy \build\libxml2\bin\libxml2.dll \postgresql\bin
-          copy \build\libxslt\bin\libxslt.dll \postgresql\bin
-          copy \build\openssl\bin\libssl-3-x64.dll \postgresql\bin
-          copy \build\openssl\bin\libcrypto-3-x64.dll \postgresql\bin
-          copy \build\zlib\bin\zlib1.dll \postgresql\bin
+          copy \builddeps\bin\libxml2.dll \postgresql\bin
+          copy \builddeps\bin\libxslt.dll \postgresql\bin
+          copy \builddeps\bin\libssl-3-x64.dll \postgresql\bin
+          copy \builddeps\bin\libcrypto-3-x64.dll \postgresql\bin
+          copy \builddeps\bin\zlib1.dll \postgresql\bin
           
       - name: Upload
         uses: actions/upload-artifact@v4
