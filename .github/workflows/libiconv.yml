@@ -5,52 +5,58 @@ jobs:
   build-libiconv:
     runs-on: windows-latest
     steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: git mingw-w64-ucrt-x86_64-gcc
+          
       - name: Debug
         run: | 
           mkdir /foo
-        shell: bash
+        shell: msys2 {0}
         
       - name: Env
         run: | 
           set
-        shell: bash
+        shell: msys2 {0}
 
       - name: PWD
         run: | 
           pwd
-        shell: bash
+        shell: msys2 {0}
 
       - name: mnt
         run: | 
           ls -al /mnt/
-        shell: bash
+        shell: msys2 {0}
         
       - name: Download
         run: | 
           curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
           tar zxvf libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
-        shell: bash
+        shell: msys2 {0}
 
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           ./configure --prefix=//d/a/libiconv
-        shell: bash
+        shell: msys2 {0}
           
       - name: Build
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           make all
-        shell: bash
+        shell: msys2 {0}
 
       - name: Install
         run: |
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           make install
 
-          copy \libiconv\include\libiconv.dll.a \libiconv\include\iconv.lib
-          copy \libiconv\include\libcharset.dll.a \libiconv\include\charset.lib
-        shell: cmd
+          cp \libiconv\include\libiconv.dll.a \libiconv\include\iconv.lib
+          cp \libiconv\include\libcharset.dll.a \libiconv\include\charset.lib
+        shell: msys2 {0}
 
       - name: Upload
         uses: actions/upload-artifact@v4
