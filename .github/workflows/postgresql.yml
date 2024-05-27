@@ -7,6 +7,15 @@ jobs:
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
+      - name: Download icu
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: icu.yml 
+          workflow_conclusion: success
+          name: icu-${{ vars.ICU_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+          
       - name: Download libxml2
         uses: dawidd6/action-download-artifact@v3
         with:
@@ -70,7 +79,7 @@ jobs:
           >> config.pl echo 	ldap      =^> 1,        # --with-ldap
           >> config.pl echo 	extraver  =^> undef,    # --with-extra-version=^<string^>
           >> config.pl echo 	gss       =^> undef,    # --with-gssapi=^<path^>
-          >> config.pl echo 	icu       =^> undef,    # --with-icu=^<path^>
+          >> config.pl echo 	icu       =^> '\builddeps',    # --with-icu=^<path^>
           >> config.pl echo 	lz4       =^> undef,    # --with-lz4=^<path^>
           >> config.pl echo 	zstd      =^> undef,    # --with-zstd=^<path^>
           >> config.pl echo 	nls       =^> undef,    # --enable-nls=^<path^>
