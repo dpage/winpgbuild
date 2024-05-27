@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: Download
         run: | 
-          curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
+          curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
           tar zxvf libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
         shell: bash
 
