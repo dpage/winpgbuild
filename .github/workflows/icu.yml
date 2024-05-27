@@ -24,15 +24,15 @@ jobs:
           
           mkdir /icu
            
-          mkdir /icu/bin
-          copy bin64/* /icu/bin/
+          mkdir /icu/bin64
+          copy bin64/* /icu/bin64/
 
           mkdir /icu/include
           mkdir /icu/include/unicode
           copy include/unicode/* /icu/include/unicode/
 
-          mkdir /icu/lib
-          copy lib64/* /icu/lib/
+          mkdir /icu/lib64
+          copy lib64/* /icu/lib64/
 
       - name: Upload
         uses: actions/upload-artifact@v4
