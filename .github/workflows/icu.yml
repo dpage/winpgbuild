@@ -2,10 +2,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-zlib:
+  build-icu:
     runs-on: windows-latest
     steps:
-      - uses: microsoft/setup-msbuild@v2
+      - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download
         run: | 
