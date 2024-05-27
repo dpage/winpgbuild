@@ -37,6 +37,10 @@ jobs:
           cp /libiconv/lib/libcharset.dll.a /libiconv/lib/charset.lib
         shell: msys2 {0}
 
+      - name: Debug
+        run: find / -name iconv.lib
+        shell: bash
+
       - name: Upload
         uses: actions/upload-artifact@v4
         if: always()
