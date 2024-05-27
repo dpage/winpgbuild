@@ -116,10 +116,13 @@ jobs:
           mkdir /postgresql
           cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
           perl install.pl \postgresql
+          copy \builddeps\bin64\icuuc*.dll \postgresql\bin
+          copy \builddeps\bin64\icudt*.dll \postgresql\bin
+          copy \builddeps\bin64\icuin*.dll \postgresql\bin
           copy \builddeps\bin\libxml2.dll \postgresql\bin
           copy \builddeps\bin\libxslt.dll \postgresql\bin
-          copy \builddeps\bin\libssl-3-x64.dll \postgresql\bin
-          copy \builddeps\bin\libcrypto-3-x64.dll \postgresql\bin
+          copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin
+          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql\bin
           copy \builddeps\bin\zlib1.dll \postgresql\bin
           
       - name: Upload
