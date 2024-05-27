@@ -19,7 +19,7 @@ jobs:
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
-          ./configure --prefix=$(pwd)/build/libiconv
+          ./configure --prefix=/libiconv
         shell: msys2 {0}
           
       - name: Build
@@ -33,8 +33,8 @@ jobs:
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           make install
 
-          cp build/libiconv/lib/libiconv.dll.a build/libiconv/lib/iconv.lib
-          cp build/libiconv/lib/libcharset.dll.a build/libiconv/lib/charset.lib
+          cp /libiconv/lib/libiconv.dll.a /libiconv/lib/iconv.lib
+          cp /libiconv/lib/libcharset.dll.a /libiconv/lib/charset.lib
         shell: msys2 {0}
 
       - name: Upload
@@ -42,4 +42,4 @@ jobs:
         if: always()
         with:
           name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
-          path: /d/a/winpgbuild/winpgbuild/libiconv-${{ vars.LIBICONV_VERSION }}/build/libiconv
+          path: /libiconv
