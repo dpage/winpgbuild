@@ -16,7 +16,7 @@ jobs:
       - name: Build
         run: | 
           cd icu
-          msbuild source\allinone\allinone.sln /p:Configuration=Release /p:Platform=x64
+          devenv.com source\allinone\allinone.sln /build "Release|x64"
 
       # - name: Install
       #   run: |
