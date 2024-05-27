@@ -8,6 +8,7 @@ These are listed below in square brackets.
 
 ### Dependencies
 
+* icu [ICU_VERSION]
 * libxml2 [LIBXML2_VERSION]
 * libxslt [LIBXSLT_VERSION]
 * MIT Kerberos (krb5) [KRB5_VERSION]. Note that this isn't used in the PostgreSQL build as it will cause compile errors.
