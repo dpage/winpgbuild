@@ -42,4 +42,4 @@ jobs:
         if: always()
         with:
           name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
-          path: ${GITHUB_WORKSPACE}/libiconv-${{ vars.LIBICONV_VERSION }}/build/libiconv
+          path: /d/a/winpgbuild/winpgbuild/libiconv-${{ vars.LIBICONV_VERSION }}/build/libiconv
