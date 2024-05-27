@@ -97,7 +97,7 @@ jobs:
           >> config.pl echo.
           >> config.pl echo 1;
          
-          >> buildenv.pl echo $ENV{PATH} = "\\builddeps\\bin;$ENV{PATH}";
+          >> buildenv.pl echo $ENV{PATH} = "\\builddeps\\bin;\\builddeps\\bin64;$ENV{PATH}";
         shell: cmd
           
       - name: Build
@@ -108,7 +108,7 @@ jobs:
       - name: Test
         run: | 
           cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
-          $env:PATH += ";\builddeps\bin"
+          $env:PATH += ";\builddeps\bin;\builddeps\bin64"
           perl vcregress.pl check
           
       - name: Install
