@@ -5,9 +5,19 @@ jobs:
   build-libiconv:
     runs-on: windows-latest
     steps:
-      - name: Debug
+      - name: Env
         run: | 
           set
+        shell: bash
+
+      - name: PWD
+        run: | 
+          pwd
+        shell: bash
+
+      - name: mnt
+        run: | 
+          ls -al /mnt/
         shell: bash
         
       - name: Download
