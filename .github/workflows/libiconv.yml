@@ -13,7 +13,7 @@ jobs:
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
-          ./configure --prefix=/libiconv
+          ./configure --prefix=/libiconv --disable-relocatable
         shell: bash
           
       - name: Build
