@@ -7,24 +7,9 @@ jobs:
     steps:
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: UCRT64
+          msystem: mingw64
           update: true
-          install: mingw-w64-ucrt-x86_64-gcc
-          
-      - name: Debug
-        run: | 
-          mkdir /foo
-        shell: msys2 {0}
-        
-      - name: Env
-        run: | 
-          set
-        shell: msys2 {0}
-
-      - name: PWD
-        run: | 
-          pwd
-        shell: msys2 {0}
+          install: mingw-w64-x86_64-gcc make
         
       - name: Download
         run: | 
@@ -35,7 +20,7 @@ jobs:
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
-          ./configure --prefix=//d/a/libiconv
+          ./configure --prefix=/libiconv
         shell: msys2 {0}
           
       - name: Build
