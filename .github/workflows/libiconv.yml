@@ -9,7 +9,7 @@ jobs:
         with:
           msystem: mingw64
           update: true
-          install: mingw-w64-x86_64-gcc
+          install: mingw-w64-x86_64-gcc make
 
       - name: Download
         run: | 
