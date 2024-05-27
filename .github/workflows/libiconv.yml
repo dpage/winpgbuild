@@ -35,7 +35,7 @@ jobs:
 
           cp ${GITHUB_WORKSPACE}/build/libiconv/lib/libiconv.dll.a ${GITHUB_WORKSPACE}/build/libiconv/lib/iconv.lib
           cp ${GITHUB_WORKSPACE}/build/libiconv/lib/libcharset.dll.a ${GITHUB_WORKSPACE}/build/libiconv/lib/charset.lib
-        shell: bash
+        shell: msys2 {0}
 
       - name: Upload
         uses: actions/upload-artifact@v4
