@@ -5,6 +5,11 @@ jobs:
   build-libiconv:
     runs-on: windows-latest
     steps:
+      - name: Debug
+        run: | 
+          mkdir /foo
+        shell: bash
+        
       - name: Env
         run: | 
           set
