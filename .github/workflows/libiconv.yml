@@ -9,7 +9,7 @@ jobs:
         with:
           msystem: UCRT64
           update: true
-          install: git mingw-w64-ucrt-x86_64-gcc
+          install: mingw-w64-ucrt-x86_64-gcc
           
       - name: Debug
         run: | 
@@ -24,11 +24,6 @@ jobs:
       - name: PWD
         run: | 
           pwd
-        shell: msys2 {0}
-
-      - name: mnt
-        run: | 
-          ls -al /mnt/
         shell: msys2 {0}
         
       - name: Download
