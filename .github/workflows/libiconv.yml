@@ -19,7 +19,7 @@ jobs:
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
-          ./configure --prefix=/libiconv
+          ./configure --prefix=${GITHUB_WORKSPACE}/build/libiconv
         shell: msys2 {0}
           
       - name: Build
@@ -33,8 +33,8 @@ jobs:
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           make install
 
-          cp /libiconv/lib/libiconv.dll.a /libiconv/lib/iconv.lib
-          cp /libiconv/lib/libcharset.dll.a /libiconv/lib/charset.lib
+          cp ${GITHUB_WORKSPACE}/build/libiconv/lib/libiconv.dll.a ${GITHUB_WORKSPACE}/build/libiconv/lib/iconv.lib
+          cp ${GITHUB_WORKSPACE}/build/libiconv/lib/libcharset.dll.a ${GITHUB_WORKSPACE}/build/libiconv/lib/charset.lib
         shell: bash
 
       - name: Upload
@@ -42,4 +42,4 @@ jobs:
         if: always()
         with:
           name: libiconv-${{ vars.OSSP_UUID_VERSION }}-win64
-          path: /libiconv
+          path: ${GITHUB_WORKSPACE}/build/libiconv
