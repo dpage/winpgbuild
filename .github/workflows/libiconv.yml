@@ -14,7 +14,7 @@ jobs:
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
-          ./configure --prefix=/libiconv
+          ./configure --prefix=//d/a/libiconv
         shell: bash
           
       - name: Build
