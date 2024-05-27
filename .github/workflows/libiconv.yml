@@ -5,6 +5,11 @@ jobs:
   build-libiconv:
     runs-on: windows-latest
     steps:
+      - name: Debug
+        run: | 
+          set
+        shell: bash
+        
       - name: Download
         run: | 
           curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
