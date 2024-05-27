@@ -34,8 +34,8 @@ jobs:
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           make install
 
-          cp /libiconv/include/libiconv.dll.a /libiconv/include/iconv.lib
-          cp /libiconv/include/libcharset.dll.a /libiconv/include/charset.lib
+          cp /libiconv/lib/libiconv.dll.a /libiconv/lib/iconv.lib
+          cp /libiconv/lib/libcharset.dll.a /libiconv/lib/charset.lib
         shell: msys2 {0}
 
       - name: Upload
