@@ -5,12 +5,6 @@ jobs:
   build-libiconv:
     runs-on: windows-latest
     steps:
-      - uses: msys2/setup-msys2@v2
-        with:
-          msystem: mingw64
-          update: true
-          install: mingw-w64-x86_64-gcc make
-
       - name: Download
         run: | 
           curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
@@ -20,13 +14,13 @@ jobs:
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           ./configure --prefix=/libiconv
-        shell: msys2 {0}
+        shell: bash
           
       - name: Build
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           make all
-        shell: msys2 {0}
+        shell: bash
 
       - name: Install
         run: |
@@ -35,10 +29,6 @@ jobs:
 
           cp /libiconv/lib/libiconv.dll.a /libiconv/lib/iconv.lib
           cp /libiconv/lib/libcharset.dll.a /libiconv/lib/charset.lib
-        shell: msys2 {0}
-
-      - name: Debug
-        run: find / -name iconv.lib
         shell: bash
 
       - name: Upload
