@@ -11,6 +11,14 @@ jobs:
           update: true
           install: mingw-w64-x86_64-gcc make
 
+      - name: Bash Env
+        run: env
+        shell: bash
+
+      - name: Msys2 Env
+        run: env
+        shell: msys2 {0}
+
       - name: Download
         run: | 
           curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
