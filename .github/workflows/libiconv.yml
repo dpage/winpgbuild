@@ -9,45 +9,37 @@ jobs:
         with:
           msystem: mingw64
           update: true
-          # install: mingw-w64-x86_64-gcc make
+          install: mingw-w64-x86_64-gcc make
 
-      - name: Bash Path
-        run: pwd
-        shell: bash
+      - name: Download
+        run: | 
+          curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
+          tar zxvf libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
 
-      - name: Msys2 Path
-        run: pwd
+      - name: Configure
+        run: | 
+          cd libiconv-${{ vars.LIBICONV_VERSION }}
+          ./configure --prefix=$(pwd)/build/libiconv
+        shell: msys2 {0}
+          
+      - name: Build
+        run: | 
+          cd libiconv-${{ vars.LIBICONV_VERSION }}
+          make all
         shell: msys2 {0}
 
-      # - name: Download
-      #   run: | 
-      #     curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
-      #     tar zxvf libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
+      - name: Install
+        run: |
+          cd libiconv-${{ vars.LIBICONV_VERSION }}
+          make install
 
-      # - name: Configure
-      #   run: | 
-      #     cd libiconv-${{ vars.LIBICONV_VERSION }}
-      #     ./configure --prefix=${GITHUB_WORKSPACE}/build/libiconv
-      #   shell: msys2 {0}
-          
-      # - name: Build
-      #   run: | 
-      #     cd libiconv-${{ vars.LIBICONV_VERSION }}
-      #     make all
-      #   shell: msys2 {0}
+          cp build/libiconv/lib/libiconv.dll.a build/libiconv/lib/iconv.lib
+          cp build/libiconv/lib/libcharset.dll.a build/libiconv/lib/charset.lib
+        shell: msys2 {0}
 
-      # - name: Install
-      #   run: |
-      #     cd libiconv-${{ vars.LIBICONV_VERSION }}
-      #     make install
-
-      #     cp ${GITHUB_WORKSPACE}/build/libiconv/lib/libiconv.dll.a ${GITHUB_WORKSPACE}/build/libiconv/lib/iconv.lib
-      #     cp ${GITHUB_WORKSPACE}/build/libiconv/lib/libcharset.dll.a ${GITHUB_WORKSPACE}/build/libiconv/lib/charset.lib
-      #   shell: msys2 {0}
-
-      # - name: Upload
-      #   uses: actions/upload-artifact@v4
-      #   if: always()
-      #   with:
-      #     name: libiconv-${{ vars.OSSP_UUID_VERSION }}-win64
-      #     path: ${GITHUB_WORKSPACE}/build/libiconv
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
+          path: ${GITHUB_WORKSPACE}/libiconv-${{ vars.LIBICONV_VERSION }}/build/libiconv
