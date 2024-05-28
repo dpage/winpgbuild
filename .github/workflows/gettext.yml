@@ -15,8 +15,6 @@ jobs:
           cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
           export PATH=/usr/local/mingw32/bin:/usr/i686-w64-mingw32/sys-root/mingw/bin:$PATH
           ./configure --prefix=/gettext --disable-dependency-tracking \
-            CC=i686-w64-mingw32-gcc \
-            CXX=i686-w64-mingw32-g++ \
             CPPFLAGS="-I/usr/local/mingw32/include -Wall" \
             LDFLAGS="-L/usr/local/mingw32/lib"
         shell: bash
