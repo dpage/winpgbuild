@@ -24,7 +24,7 @@ jobs:
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
-          ./configure --prefix=/libiconv
+          ./configure --prefix=build
           
       - name: Build
         run: | 
@@ -36,12 +36,12 @@ jobs:
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           make install
 
-          cp /libiconv/lib/libiconv.dll.a /libiconv/lib/iconv.lib
-          cp /libiconv/lib/libcharset.dll.a /libiconv/lib/charset.lib
+          cp build/lib/libiconv.dll.a build/lib/iconv.lib
+          cp build/lib/libcharset.dll.a build/lib/charset.lib
 
       - name: Upload
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
-          path: /libiconv
+          path: libiconv-${{ vars.LIBICONV_VERSION }}/build
