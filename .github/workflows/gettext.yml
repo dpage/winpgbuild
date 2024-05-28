@@ -1,0 +1,36 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-gettext:
+    runs-on: windows-latest
+    steps:
+      - name: Download
+        run: | 
+          curl https://ftp.gnu.org/pub/gnu/gettext/gettext-${{ vars.GETTEXT_VERSION }}.tar.gz -o ./gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
+          tar zxvf gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
+
+      - name: Configure
+        run: | 
+          cd gettext-${{ vars.GETTEXT_VERSION }}
+          ./configure --prefix=/gettext --disable-dependency-tracking
+        shell: bash
+          
+      - name: Build
+        run: | 
+          cd gettext-${{ vars.GETTEXT_VERSION }}
+          make all
+        shell: bash
+
+      - name: Install
+        run: |
+          cd gettext-${{ vars.GETTEXT_VERSION }}
+          make install
+        shell: bash
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gettext-${{ vars.GETTEXT_VERSION }}-win64
+          path: /libiconv
