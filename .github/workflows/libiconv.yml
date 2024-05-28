@@ -4,7 +4,18 @@ on:
 jobs:
   build-libiconv:
     runs-on: windows-latest
+    
+    defaults:
+      run:
+        shell: msys2 {0}
+        
     steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          update: true
+          install: mingw-w64-x86_64-gcc make
+          
       - name: Download
         run: | 
           curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
@@ -13,14 +24,12 @@ jobs:
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
-          ./configure --prefix=/libiconv --disable-relocatable
-        shell: bash
+          ./configure --prefix=/libiconv
           
       - name: Build
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           make all
-        shell: bash
 
       - name: Install
         run: |
@@ -29,7 +38,6 @@ jobs:
 
           cp /libiconv/lib/libiconv.dll.a /libiconv/lib/iconv.lib
           cp /libiconv/lib/libcharset.dll.a /libiconv/lib/charset.lib
-        shell: bash
 
       - name: Upload
         uses: actions/upload-artifact@v4
