@@ -28,7 +28,7 @@ configuration option) and ossp-uuid.
 
 The following dependencies are yet to be worked on:
 
-* nls
+* gettext
 * lz4
 * zstd
 * Perl
