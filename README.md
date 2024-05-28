@@ -23,3 +23,14 @@ The PostgreSQL version is specified in the POSTGRESQL_VERSION repository variabl
 Currently supported versions of PostgreSQL <= 16 should work. All dependencies 
 should automatically be included in the build, *except* for MIT Kerberos (the gssapi
 configuration option) and ossp-uuid.
+
+## TODO
+
+The following dependencies are yet to be worked on:
+
+* nls
+* lz4
+* zstd
+* Perl
+* Python
+* TCL
