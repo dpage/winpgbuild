@@ -15,6 +15,15 @@ jobs:
           name: icu-${{ vars.ICU_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
+
+      - name: Download libiconv
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: libiconv.yml 
+          workflow_conclusion: success
+          name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
           
       - name: Download libxml2
         uses: dawidd6/action-download-artifact@v3
@@ -91,7 +100,7 @@ jobs:
           >> config.pl echo 	uuid      =^> undef,    # --with-ossp-uuid
           >> config.pl echo 	xml       =^> '\builddeps',    # --with-libxml=^<path^>
           >> config.pl echo 	xslt      =^> '\builddeps',    # --with-libxslt=^<path^>
-          >> config.pl echo 	iconv     =^> undef,    # (not in configure, path to iconv)
+          >> config.pl echo 	iconv     =^> '\builddeps',    # (not in configure, path to iconv)
           >> config.pl echo 	zlib      =^> '\builddeps'     # --with-zlib=^<path^>
           >> config.pl echo };
           >> config.pl echo.
@@ -119,6 +128,7 @@ jobs:
           copy \builddeps\bin64\icuuc*.dll \postgresql\bin
           copy \builddeps\bin64\icudt*.dll \postgresql\bin
           copy \builddeps\bin64\icuin*.dll \postgresql\bin
+          copy \builddeps\bin\libiconv.dll \postgresql\bin
           copy \builddeps\bin\libxml2.dll \postgresql\bin
           copy \builddeps\bin\libxslt.dll \postgresql\bin
           copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin
