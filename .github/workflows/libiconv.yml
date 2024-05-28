@@ -24,7 +24,7 @@ jobs:
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
-          ./configure --prefix=./build
+          ./configure --prefix=$(pwd)/build
           
       - name: Build
         run: | 
