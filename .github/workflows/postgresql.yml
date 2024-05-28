@@ -128,7 +128,7 @@ jobs:
           copy \builddeps\bin64\icuuc*.dll \postgresql\bin
           copy \builddeps\bin64\icudt*.dll \postgresql\bin
           copy \builddeps\bin64\icuin*.dll \postgresql\bin
-          copy \builddeps\bin\libiconv.dll \postgresql\bin
+          copy \builddeps\bin\libiconv-2.dll \postgresql\bin
           copy \builddeps\bin\libxml2.dll \postgresql\bin
           copy \builddeps\bin\libxslt.dll \postgresql\bin
           copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin
