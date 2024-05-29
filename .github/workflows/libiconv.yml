@@ -41,7 +41,7 @@ jobs:
 
       - name: Upload
         uses: actions/upload-artifact@v4
-        if: always()
         with:
+          if-no-files-found: error
           name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
           path: libiconv-${{ vars.LIBICONV_VERSION }}/winpgbuild
