@@ -4,7 +4,17 @@ on:
 jobs:
   build-gettext:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+        
     steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          update: true
+          install: mingw-w64-x86_64-gcc make
+          
       - name: Download
         run: | 
           curl https://ftp.gnu.org/pub/gnu/gettext/gettext-${{ vars.GETTEXT_VERSION }}.tar.gz -o ./gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
@@ -13,25 +23,17 @@ jobs:
       - name: Configure
         run: | 
           cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
-          export PATH=/usr/local/mingw32/bin:/usr/i686-w64-mingw32/sys-root/mingw/bin:$PATH
-          ./configure --prefix=/gettext --disable-dependency-tracking \
-            CPPFLAGS="-I/usr/local/mingw32/include -Wall" \
-            LDFLAGS="-L/usr/local/mingw32/lib"
-        shell: bash
+          ./configure --prefix=/gettext --disable-dependency-tracking
           
       - name: Build
         run: | 
           cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
-          export PATH=/usr/local/mingw32/bin:/usr/i686-w64-mingw32/sys-root/mingw/bin:$PATH
           make all
-        shell: bash
 
       - name: Install
         run: |
           cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
-          export PATH=/usr/local/mingw32/bin:/usr/i686-w64-mingw32/sys-root/mingw/bin:$PATH
           make install
-        shell: bash
 
       - name: Upload
         uses: actions/upload-artifact@v4
