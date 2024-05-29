@@ -4,18 +4,27 @@ on:
 jobs:
   build-ossp-uuid:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+        
     steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          update: true
+          install: mingw-w64-x86_64-gcc make
+          
       - name: Download
         # We get this from the Debian repo, as OSSP is basically unavailable these days
         run: | 
           curl https://salsa.debian.org/debian/ossp-uuid/-/archive/upstream/${{ vars.OSSP_UUID_VERSION }}/ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz -o ./ossp-uuid-${{ vars.OSSP_UUID_VERSION }}.tar.gz
           tar zxvf ossp-uuid-${{ vars.OSSP_UUID_VERSION }}.tar.gz
-        shell: bash
 
       - name: Configure
         run: | 
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
-          ./configure --prefix=/ossp-uuid --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --target=x86_64-w64-mingw32
+          ./configure --prefix=$(pwd)/winpgbuild
         shell: bash
           
       - name: Build
@@ -28,22 +37,21 @@ jobs:
         # Manual installation, as .exe extensions aren't handled properly
         run: |
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
-          mkdir \ossp-uuid
-          mkdir \ossp-uuid\bin
-          mkdir \ossp-uuid\include
-          mkdir \ossp-uuid\lib
+          mkdir winpgbuild
+          mkdir winpgbuild/bin
+          mkdir winpgbuild/include
+          mkdir winpgbuild/lib
 
-          copy .libs\uuid.exe \ossp-uuid\bin
-          copy uuid.h \ossp-uuid\include
-          copy .libs/libuuid.a \ossp-uuid\lib
-          copy .libs/libuuid.a \ossp-uuid\lib\uuid.lib
-          copy .libs/libuuid.la \ossp-uuid\lib
-          copy .libs/libuuid.lai \ossp-uuid\lib
-        shell: cmd
+          copy .libs/uuid.exe winpgbuild/bin
+          copy uuid.h winpgbuild/include
+          copy .libs/libuuid.a winpgbuild/lib
+          copy .libs/libuuid.a winpgbuild/lib/uuid.lib
+          copy .libs/libuuid.la winpgbuild/lib
+          copy .libs/libuuid.lai winpgbuild/lib
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
-          path: /ossp-uuid
+          path: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}/pgwinbuild
