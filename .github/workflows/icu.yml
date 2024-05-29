@@ -37,5 +37,6 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
+          if-no-files-found: error
           name: icu-${{ vars.ICU_VERSION }}-win64
           path: /icu
