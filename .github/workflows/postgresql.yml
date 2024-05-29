@@ -100,13 +100,13 @@ jobs:
           >> config.pl echo 	icu       =^> '\builddeps',    # --with-icu=^<path^>
           >> config.pl echo 	lz4       =^> undef,    # --with-lz4=^<path^>
           >> config.pl echo 	zstd      =^> undef,    # --with-zstd=^<path^>
-          >> config.pl echo 	nls       =^> '\builddeps',    # --enable-nls=^<path^>
+          >> config.pl echo 	nls       =^> undef,    # --enable-nls=^<path^>
           >> config.pl echo 	tap_tests =^> undef,    # --enable-tap-tests
           >> config.pl echo 	tcl       =^> undef,    # --with-tcl=^<path^>
           >> config.pl echo 	perl      =^> undef,    # --with-perl
           >> config.pl echo 	python    =^> undef,    # --with-python=^<path^>
           >> config.pl echo 	openssl   =^> '\builddeps',    # --with-openssl=^<path^>
-          >> config.pl echo 	uuid      =^> undef,    # --with-ossp-uuid
+          >> config.pl echo 	uuid      =^> '\builddeps',    # --with-ossp-uuid
           >> config.pl echo 	xml       =^> '\builddeps',    # --with-libxml=^<path^>
           >> config.pl echo 	xslt      =^> '\builddeps',    # --with-libxslt=^<path^>
           >> config.pl echo 	iconv     =^> '\builddeps',    # (not in configure, path to iconv)
