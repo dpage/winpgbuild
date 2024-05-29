@@ -54,4 +54,4 @@ jobs:
         with:
           if-no-files-found: error
           name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
-          path: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}/pgwinbuild
+          path: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}/winpgbuild
