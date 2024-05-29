@@ -22,20 +22,20 @@ jobs:
         run: |
           cd icu
           
-          mkdir /icu
+          mkdir winpgbuild
            
-          mkdir /icu/bin64
-          copy bin64/* /icu/bin64/
+          mkdir winpgbuild/bin64
+          copy bin64/* winpgbuild/bin64/
 
-          mkdir /icu/include
-          mkdir /icu/include/unicode
-          copy include/unicode/* /icu/include/unicode/
+          mkdir winpgbuild/include
+          mkdir winpgbuild/include/unicode
+          copy include/unicode/* winpgbuild/include/unicode/
 
-          mkdir /icu/lib64
-          copy lib64/* /icu/lib64/
+          mkdir winpgbuild/lib64
+          copy lib64/* winpgbuild/lib64/
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: icu-${{ vars.ICU_VERSION }}-win64
-          path: /icu
+          path: icu-${{ vars.ICU_VERSION }}/winpgbuild
