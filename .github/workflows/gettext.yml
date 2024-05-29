@@ -22,12 +22,14 @@ jobs:
       - name: Build
         run: | 
           cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
+          export PATH=/usr/local/mingw32/bin:/usr/i686-w64-mingw32/sys-root/mingw/bin:$PATH
           make all
         shell: bash
 
       - name: Install
         run: |
           cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
+          export PATH=/usr/local/mingw32/bin:/usr/i686-w64-mingw32/sys-root/mingw/bin:$PATH
           make install
         shell: bash
 
