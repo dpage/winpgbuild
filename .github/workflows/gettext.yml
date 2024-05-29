@@ -35,6 +35,9 @@ jobs:
           cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
           make install
 
+          cp winpgbuild/lib/libintl.dll.a winpgbuild/lib/intl.lib
+          cp winpgbuild/lib/libasprintf.dll.a winpgbuild/lib/asprintf.lib
+
       - name: Upload
         uses: actions/upload-artifact@v4
         if: always()
