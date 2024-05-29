@@ -7,6 +7,15 @@ jobs:
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
+      - name: Download gettext
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: gettext.yml 
+          workflow_conclusion: success
+          name: gettext-${{ vars.GETTEXT_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
       - name: Download icu
         uses: dawidd6/action-download-artifact@v3
         with:
@@ -91,7 +100,7 @@ jobs:
           >> config.pl echo 	icu       =^> '\builddeps',    # --with-icu=^<path^>
           >> config.pl echo 	lz4       =^> undef,    # --with-lz4=^<path^>
           >> config.pl echo 	zstd      =^> undef,    # --with-zstd=^<path^>
-          >> config.pl echo 	nls       =^> undef,    # --enable-nls=^<path^>
+          >> config.pl echo 	nls       =^> '\builddeps',    # --enable-nls=^<path^>
           >> config.pl echo 	tap_tests =^> undef,    # --enable-tap-tests
           >> config.pl echo 	tcl       =^> undef,    # --with-tcl=^<path^>
           >> config.pl echo 	perl      =^> undef,    # --with-perl
@@ -129,6 +138,7 @@ jobs:
           copy \builddeps\bin64\icudt*.dll \postgresql\bin
           copy \builddeps\bin64\icuin*.dll \postgresql\bin
           copy \builddeps\bin\libiconv-2.dll \postgresql\bin
+          copy \builddeps\bin\libintl-8.dll \postgresql\bin
           copy \builddeps\bin\libxml2.dll \postgresql\bin
           copy \builddeps\bin\libxslt.dll \postgresql\bin
           copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin
