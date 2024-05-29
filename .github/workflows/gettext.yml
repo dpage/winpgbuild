@@ -22,17 +22,17 @@ jobs:
 
       - name: Configure
         run: | 
-          cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
+          cd gettext-${{ vars.GETTEXT_VERSION }}
           ./configure --prefix=$(pwd)/winpgbuild --disable-dependency-tracking
           
       - name: Build
         run: | 
-          cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
+          cd gettext-${{ vars.GETTEXT_VERSION }}
           make all
 
       - name: Install
         run: |
-          cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
+          cd gettext-${{ vars.GETTEXT_VERSION }}
           make install
 
           cp winpgbuild/lib/libintl.dll.a winpgbuild/lib/libintl.lib
@@ -43,4 +43,4 @@ jobs:
         with:
           if-no-files-found: error
           name: gettext-${{ vars.GETTEXT_VERSION }}-win64
-          path: gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime/winpgbuild
+          path: gettext-${{ vars.GETTEXT_VERSION }}/winpgbuild
