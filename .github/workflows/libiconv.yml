@@ -24,7 +24,7 @@ jobs:
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
-          ./configure --prefix=$(pwd)/build
+          ./configure --prefix=$(pwd)/winpgbuild
           
       - name: Build
         run: | 
@@ -36,12 +36,12 @@ jobs:
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           make install
 
-          cp build/lib/libiconv.dll.a build/lib/iconv.lib
-          cp build/lib/libcharset.dll.a build/lib/charset.lib
+          cp winpgbuild/lib/libiconv.dll.a winpgbuild/lib/iconv.lib
+          cp winpgbuild/lib/libcharset.dll.a winpgbuild/lib/charset.lib
 
       - name: Upload
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
-          path: libiconv-${{ vars.LIBICONV_VERSION }}/build
+          path: libiconv-${{ vars.LIBICONV_VERSION }}/winpgbuild
