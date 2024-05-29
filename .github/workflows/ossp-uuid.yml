@@ -18,8 +18,8 @@ jobs:
       - name: Download
         # We get this from the Debian repo, as OSSP is basically unavailable these days
         run: | 
-          curl https://salsa.debian.org/debian/ossp-uuid/-/archive/upstream/${{ vars.OSSP_UUID_VERSION }}/ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz -o ./ossp-uuid-${{ vars.OSSP_UUID_VERSION }}.tar.gz
-          tar zxvf ossp-uuid-${{ vars.OSSP_UUID_VERSION }}.tar.gz
+          curl https://salsa.debian.org/debian/ossp-uuid/-/archive/upstream/${{ vars.OSSP_UUID_VERSION }}/ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz -o ./ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz
+          tar zxvf ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz
 
       - name: Configure
         run: | 
@@ -54,4 +54,4 @@ jobs:
         with:
           if-no-files-found: error
           name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
-          path: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}/winpgbuild
+          path: ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}/winpgbuild
