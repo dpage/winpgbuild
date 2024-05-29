@@ -42,12 +42,12 @@ jobs:
           mkdir winpgbuild/include
           mkdir winpgbuild/lib
 
-          copy .libs/uuid.exe winpgbuild/bin
-          copy uuid.h winpgbuild/include
-          copy .libs/libuuid.a winpgbuild/lib
-          copy .libs/libuuid.a winpgbuild/lib/uuid.lib
-          copy .libs/libuuid.la winpgbuild/lib
-          copy .libs/libuuid.lai winpgbuild/lib
+          cp .libs/uuid.exe winpgbuild/bin
+          cp uuid.h winpgbuild/include
+          cp .libs/libuuid.a winpgbuild/lib
+          cp .libs/libuuid.a winpgbuild/lib/uuid.lib
+          cp .libs/libuuid.la winpgbuild/lib
+          cp .libs/libuuid.lai winpgbuild/lib
 
       - name: Upload
         uses: actions/upload-artifact@v4
