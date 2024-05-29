@@ -23,7 +23,7 @@ jobs:
       - name: Configure
         run: | 
           cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
-          ./configure --prefix=/gettext --disable-dependency-tracking
+          ./configure --prefix=$(pwd)/winpgbuild --disable-dependency-tracking
           
       - name: Build
         run: | 
@@ -40,4 +40,4 @@ jobs:
         if: always()
         with:
           name: gettext-${{ vars.GETTEXT_VERSION }}-win64
-          path: /libiconv
+          path: gettext-${{ vars.GETTEXT_VERSION }}/winpgbuild
