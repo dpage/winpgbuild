@@ -9,22 +9,22 @@ jobs:
       
       - name: Download
         run: | 
-          curl -L https://github.com/facebook/zstd/releases/download/v${{ ZSTD_VERSION }}/zstd-${{ ZSTD_VERSION }}.tar.gz -o ./zstd-${{ ZSTD_VERSION }}.tar.gz
-          tar zxvf zstd-${{ ZSTD_VERSION }}.tar.gz
+          curl -L https://github.com/facebook/zstd/releases/download/v${{ vars.ZSTD_VERSION }}/zstd-${{ vars.ZSTD_VERSION }}.tar.gz -o ./zstd-${{ vars.ZSTD_VERSION }}.tar.gz
+          tar zxvf zstd-${{ vars.ZSTD_VERSION }}.tar.gz
 
       - name: Configure
         run: | 
-          cd zstd-${{ ZSTD_VERSION }}
+          cd zstd-${{ vars.ZSTD_VERSION }}
           devenv.com /upgrade build\VS2010\zstd.sln
 
       - name: Build
         run: | 
-          cd zstd-${{ ZSTD_VERSION }}
+          cd zstd-${{ vars.ZSTD_VERSION }}
           msbuild build\VS2010\zstd.sln -target:libzstd-dll /property:Configuration=Release /property:Platform=x64
 
       - name: Install
         run: |
-          cd zstd-${{ ZSTD_VERSION }}
+          cd zstd-${{ vars.ZSTD_VERSION }}
           
           mkdir \zstd
           
@@ -42,5 +42,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: zstd-${{ ZSTD_VERSION }}-win64
+          name: zstd-${{ vars.ZSTD_VERSION }}-win64
           path: /zstd
