@@ -9,7 +9,7 @@ jobs:
       
       - name: Download
         run: | 
-          curl https://github.com/lz4/lz4/releases/download/v${{ vars.LZ4_VERSION }}/lz4-${{ vars.LZ4_VERSION }}.tar.gz -o ./lz4-${{ vars.LZ4_VERSION }}.tar.gz
+          curl -L https://github.com/lz4/lz4/releases/download/v${{ vars.LZ4_VERSION }}/lz4-${{ vars.LZ4_VERSION }}.tar.gz -o ./lz4-${{ vars.LZ4_VERSION }}.tar.gz
           tar zxvf lz4-${{ vars.LZ4_VERSION }}.tar.gz
           
       - name: Build
