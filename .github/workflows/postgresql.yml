@@ -51,6 +51,15 @@ jobs:
           name: libxslt-${{ vars.LIBXSLT_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
+
+      - name: Download lz4
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: lz4.yml 
+          workflow_conclusion: success
+          name: lz4-${{ vars.LZ4_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
           
       - name: Download openssl
         uses: dawidd6/action-download-artifact@v3
@@ -98,7 +107,7 @@ jobs:
           >> config.pl echo 	extraver  =^> undef,    # --with-extra-version=^<string^>
           >> config.pl echo 	gss       =^> undef,    # --with-gssapi=^<path^>
           >> config.pl echo 	icu       =^> '\builddeps',    # --with-icu=^<path^>
-          >> config.pl echo 	lz4       =^> undef,    # --with-lz4=^<path^>
+          >> config.pl echo 	lz4       =^> '\builddeps',    # --with-lz4=^<path^>
           >> config.pl echo 	zstd      =^> undef,    # --with-zstd=^<path^>
           >> config.pl echo 	nls       =^> undef,    # --enable-nls=^<path^>
           >> config.pl echo 	tap_tests =^> undef,    # --enable-tap-tests
@@ -143,6 +152,7 @@ jobs:
           copy \builddeps\bin\libxslt.dll \postgresql\bin
           copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin
           copy \builddeps\bin\libcrypto-*-x64.dll \postgresql\bin
+          copy \builddeps\bin\liblz4.dll \postgresql\bin
           copy \builddeps\bin\zlib1.dll \postgresql\bin
           
       - name: Upload
