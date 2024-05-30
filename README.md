@@ -12,10 +12,12 @@ These are listed below in square brackets.
 * iconv [ICONV_VERSION]
 * libxml2 [LIBXML2_VERSION]
 * libxslt [LIBXSLT_VERSION]
+* lz4 [LZ4_VERSION]
 * MIT Kerberos (krb5) [KRB5_VERSION]. Note that this isn't used in the PostgreSQL build as it will cause compile errors.
 * OpenSSL [OPENSSL_VERSION]
 * ossp-uuid [OSSP_UUID_VERSION].
 * zlib [ZLIB_VERSION]
+* zstd [ZSTD_VERSION]
 
 ### PostgreSQL
 
@@ -26,11 +28,9 @@ configuration option).
 
 ## TODO
 
-The following dependencies are yet to be worked on:
+The following dependencies are yet to be completed:
 
 * gettext
-* lz4
-* zstd
 * Perl
 * Python
 * TCL
