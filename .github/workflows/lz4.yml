@@ -15,7 +15,7 @@ jobs:
       - name: Build
         run: | 
           cd lz4-${{ vars.LZ4_VERSION }}
-          msbuild build\VS2022\lz4.sln -target:liblz4-dll /property:Configuration=Release
+          msbuild build\VS2022\lz4.sln -target:liblz4-dll /property:Configuration=Release /property:Platform=x64
 
       - name: Install
         run: |
