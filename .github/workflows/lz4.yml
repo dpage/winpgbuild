@@ -31,7 +31,7 @@ jobs:
           copy lib\lz4.h /lz4/include/
 
           mkdir /lz4/lib
-          copy build\VS2022\bin\x64_Release\liblz4.lib /lz4/bin/
+          copy build\VS2022\bin\x64_Release\liblz4.lib /lz4/lib/
 
       - name: Upload
         uses: actions/upload-artifact@v4
