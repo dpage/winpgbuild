@@ -19,7 +19,7 @@ jobs:
 
       - name: Install
         run: |
-          lz4-${{ vars.LZ4_VERSION }}
+          cd lz4-${{ vars.LZ4_VERSION }}
           
           mkdir /lz4
           
