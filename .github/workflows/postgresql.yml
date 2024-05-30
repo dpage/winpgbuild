@@ -88,6 +88,15 @@ jobs:
           path: /builddeps
           if_no_artifact_found: fail
 
+      - name: Download zstd
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: zstd.yml 
+          workflow_conclusion: success
+          name: zstd-${{ vars.ZSTD_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
       - name: Download
         run: | 
           curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_VERSION }}/postgresql-${{ vars.POSTGRESQL_VERSION }}.tar.gz -o ./postgresql-${{ vars.POSTGRESQL_VERSION }}.tar.gz
@@ -108,7 +117,7 @@ jobs:
           >> config.pl echo 	gss       =^> undef,    # --with-gssapi=^<path^>
           >> config.pl echo 	icu       =^> '\builddeps',    # --with-icu=^<path^>
           >> config.pl echo 	lz4       =^> '\builddeps',    # --with-lz4=^<path^>
-          >> config.pl echo 	zstd      =^> undef,    # --with-zstd=^<path^>
+          >> config.pl echo 	zstd      =^> '\builddeps',    # --with-zstd=^<path^>
           >> config.pl echo 	nls       =^> undef,    # --enable-nls=^<path^>
           >> config.pl echo 	tap_tests =^> undef,    # --enable-tap-tests
           >> config.pl echo 	tcl       =^> undef,    # --with-tcl=^<path^>
@@ -140,20 +149,21 @@ jobs:
           
       - name: Install
         run: |
-          mkdir /postgresql
+          mkdir \postgresql
           cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
           perl install.pl \postgresql
-          copy \builddeps\bin64\icuuc*.dll \postgresql\bin
-          copy \builddeps\bin64\icudt*.dll \postgresql\bin
-          copy \builddeps\bin64\icuin*.dll \postgresql\bin
-          copy \builddeps\bin\libiconv-2.dll \postgresql\bin
-          copy \builddeps\bin\libintl-8.dll \postgresql\bin
-          copy \builddeps\bin\libxml2.dll \postgresql\bin
-          copy \builddeps\bin\libxslt.dll \postgresql\bin
-          copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin
-          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql\bin
-          copy \builddeps\bin\liblz4.dll \postgresql\bin
-          copy \builddeps\bin\zlib1.dll \postgresql\bin
+          copy \builddeps\bin64\icuuc*.dll \postgresql\bin\
+          copy \builddeps\bin64\icudt*.dll \postgresql\bin\
+          copy \builddeps\bin64\icuin*.dll \postgresql\bin\
+          copy \builddeps\bin\libiconv-2.dll \postgresql\bin\
+          copy \builddeps\bin\libintl-8.dll \postgresql\bin\
+          copy \builddeps\bin\libxml2.dll \postgresql\bin\
+          copy \builddeps\bin\libxslt.dll \postgresql\bin\
+          copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin\
+          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql\bin\
+          copy \builddeps\bin\liblz4.dll \postgresql\bin\
+          copy \builddeps\bin\libzstd.dll \postgresql\bin\
+          copy \builddeps\bin\zlib1.dll \postgresql\bin\
           
       - name: Upload
         uses: actions/upload-artifact@v4
