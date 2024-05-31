@@ -30,7 +30,14 @@ jobs:
           $env:KRB_INSTALL_DIR = "\krb5"
           nmake install NODEBUG=1
 
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: krb5-${{ vars.KRB5_VERSION }}-src
+          path: krb5-${{ vars.KRB5_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
