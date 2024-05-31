@@ -50,4 +50,4 @@ jobs:
         with:
           if-no-files-found: error
           name: gettext-${{ vars.GETTEXT_VERSION }}-win64
-          path: gettext-${{ vars.GETTEXT_VERSION }}/winpgbuild
+          path: gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime/winpgbuild
