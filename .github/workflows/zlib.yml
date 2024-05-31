@@ -37,8 +37,14 @@ jobs:
           copy zdll.lib /zlib/lib/
           copy zdll.exp /zlib/lib/
           
-
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: zlib-${{ vars.ZLIB_VERSION }}-src
+          path: zlib-${{ vars.ZLIB_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
