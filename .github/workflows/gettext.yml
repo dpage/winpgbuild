@@ -22,17 +22,17 @@ jobs:
 
       - name: Configure
         run: | 
-          cd gettext-${{ vars.GETTEXT_VERSION }}
+          cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
           ./configure --prefix=$(pwd)/winpgbuild --disable-dependency-tracking
           
       - name: Build
         run: | 
-          cd gettext-${{ vars.GETTEXT_VERSION }}
+          cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
           make all
 
       - name: Install
         run: |
-          cd gettext-${{ vars.GETTEXT_VERSION }}
+          cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
           make install
 
           cp winpgbuild/lib/libintl.dll.a winpgbuild/lib/libintl.lib
