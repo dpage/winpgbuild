@@ -33,7 +33,14 @@ jobs:
           cd openssl-${{ vars.OPENSSL_VERSION }}
           nmake install
 
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: openssl-${{ vars.OPENSSL_VERSION }}-src
+          path: openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
