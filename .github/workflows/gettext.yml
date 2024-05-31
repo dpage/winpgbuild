@@ -14,6 +14,15 @@ jobs:
           msystem: mingw64
           update: true
           install: mingw-w64-x86_64-gcc make
+
+      - name: Download libiconv
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: libiconv.yml 
+          workflow_conclusion: success
+          name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
           
       - name: Download
         run: | 
@@ -23,7 +32,7 @@ jobs:
       - name: Configure
         run: | 
           cd gettext-${{ vars.GETTEXT_VERSION }}/gettext-runtime
-          ./configure --prefix=$(pwd)/winpgbuild --disable-dependency-tracking
+          ./configure --prefix=$(pwd)/winpgbuild --disable-static --disable-dependency-tracking --enable-silent-rules --with-libiconv-prefix=/builddeps --disable-rpath --enable-nls --disable-csharp --disable-java --enable-threads=windows --enable-relocatable
           
       - name: Build
         run: | 
