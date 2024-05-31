@@ -169,8 +169,15 @@ jobs:
           copy \builddeps\bin\liblz4.dll \postgresql\bin\
           copy \builddeps\bin\libzstd.dll \postgresql\bin\
           copy \builddeps\bin\zlib1.dll \postgresql\bin\
+
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: postgresql-${{ matrix.version }}-src
+          path: postgresql-${{ matrix.version }}.tar.gz
           
-      - name: Upload
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
