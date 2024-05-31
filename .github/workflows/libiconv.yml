@@ -39,7 +39,14 @@ jobs:
           cp winpgbuild/lib/libiconv.dll.a winpgbuild/lib/iconv.lib
           cp winpgbuild/lib/libcharset.dll.a winpgbuild/lib/charset.lib
 
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: libiconv-${{ vars.LIBICONV_VERSION }}-src
+          path: libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
