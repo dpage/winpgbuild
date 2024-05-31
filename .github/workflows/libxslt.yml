@@ -45,7 +45,14 @@ jobs:
           cd libxslt-v${{ vars.LIBXSLT_VERSION }}/win32
           nmake -f Makefile.msvc install
 
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: libxslt-v${{ vars.LIBXSLT_VERSION }}-src
+          path: libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
