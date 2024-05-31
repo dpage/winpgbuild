@@ -21,7 +21,11 @@ These are listed below in square brackets.
 
 ### PostgreSQL
 
-The PostgreSQL version is specified in the POSTGRESQL_VERSION repository variable.
+The PostgreSQL versions are specified in the POSTGRESQL_VERSIONS repository variable,
+as a JSON style array, e.g.
+
+```[16.3, 15.7, 14.12, 13.15, 12.19]```
+
 Currently supported versions of PostgreSQL <= 16 should work. All dependencies 
 should automatically be included in the build, *except* for MIT Kerberos (the gssapi
 configuration option).
