@@ -123,7 +123,7 @@ jobs:
           >> config.pl echo 	icu       =^> '\builddeps',    # --with-icu=^<path^>
           >> config.pl echo 	lz4       =^> '\builddeps',    # --with-lz4=^<path^>
           >> config.pl echo 	zstd      =^> '\builddeps',    # --with-zstd=^<path^>
-          >> config.pl echo 	nls       =^> undef,    # --enable-nls=^<path^>
+          >> config.pl echo 	nls       =^> '\builddeps',    # --enable-nls=^<path^>
           >> config.pl echo 	tap_tests =^> undef,    # --enable-tap-tests
           >> config.pl echo 	tcl       =^> undef,    # --with-tcl=^<path^>
           >> config.pl echo 	perl      =^> undef,    # --with-perl
