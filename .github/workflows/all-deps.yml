@@ -5,8 +5,6 @@ jobs:
   build-all-deps:
     runs-on: windows-latest
     steps:
-      - uses: ilammy/msvc-dev-cmd@v1
-
       - name: Download gettext
         uses: dawidd6/action-download-artifact@v3
         with:
