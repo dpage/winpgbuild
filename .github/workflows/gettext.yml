@@ -38,7 +38,14 @@ jobs:
           cp winpgbuild/lib/libintl.dll.a winpgbuild/lib/libintl.lib
           cp winpgbuild/lib/libasprintf.dll.a winpgbuild/lib/libasprintf.lib
 
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: gettext-${{ vars.GETTEXT_VERSION }}-src
+          path: gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
