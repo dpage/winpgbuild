@@ -49,7 +49,14 @@ jobs:
           cp .libs/libuuid.la winpgbuild/lib
           cp .libs/libuuid.lai winpgbuild/lib
 
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}-src
+          path: ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
