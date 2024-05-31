@@ -3,6 +3,11 @@ on:
 
 jobs:
   build-postgresql:
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ${{ vars.POSTGRESQL_VERSIONS }}
+        
     runs-on: windows-latest
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
@@ -99,12 +104,12 @@ jobs:
 
       - name: Download
         run: | 
-          curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_VERSION }}/postgresql-${{ vars.POSTGRESQL_VERSION }}.tar.gz -o ./postgresql-${{ vars.POSTGRESQL_VERSION }}.tar.gz
-          tar zxvf postgresql-${{ vars.POSTGRESQL_VERSION }}.tar.gz
+          curl https://ftp.postgresql.org/pub/source/v${{ matrix.version }}/postgresql-${{ matrix.version }}.tar.gz -o ./postgresql-${{ matrix.version }}.tar.gz
+          tar zxvf postgresql-${{ matrix.version }}.tar.gz
           
       - name: Configure
         run: | 
-          cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
+          cd postgresql-${{ matrix.version }}\src\tools\msvc
           
           >> config.pl echo # Configuration arguments for vcbuild.
           >> config.pl echo use strict;
@@ -138,19 +143,19 @@ jobs:
           
       - name: Build
         run: | 
-          cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
+          cd postgresql-${{ matrix.version }}\src\tools\msvc
           perl build.pl Release
           
       - name: Test
         run: | 
-          cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
+          cd postgresql-${{ matrix.version }}\src\tools\msvc
           $env:PATH += ";\builddeps\bin;\builddeps\bin64"
           perl vcregress.pl check
           
       - name: Install
         run: |
           mkdir \postgresql
-          cd postgresql-${{ vars.POSTGRESQL_VERSION }}\src\tools\msvc
+          cd postgresql-${{ matrix.version }}\src\tools\msvc
           perl install.pl \postgresql
           copy \builddeps\bin64\icuuc*.dll \postgresql\bin\
           copy \builddeps\bin64\icudt*.dll \postgresql\bin\
@@ -169,5 +174,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: postgresql-${{ vars.POSTGRESQL_VERSION }}-win64
+          name: postgresql-${{ matrix.version }}-win64
           path: /postgresql
