@@ -36,7 +36,14 @@ jobs:
           cd libxml2-v${{ vars.LIBXML2_VERSION }}
           cmake --install build
 
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: libxml2-v${{ vars.LIBXML2_VERSION }}-src
+          path: libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
