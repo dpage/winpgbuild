@@ -33,7 +33,14 @@ jobs:
           mkdir /lz4/lib
           copy build\VS2022\bin\x64_Release\liblz4.lib /lz4/lib/
 
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: lz4-${{ vars.LZ4_VERSION }}-src
+          path: lz4-${{ vars.LZ4_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
