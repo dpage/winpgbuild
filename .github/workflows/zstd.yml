@@ -39,7 +39,14 @@ jobs:
           mkdir \zstd\lib
           copy build\VS2010\bin\x64_Release\libzstd.lib \zstd\lib\
 
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: zstd-${{ vars.ZSTD_VERSION }}-src
+          path: zstd-${{ vars.ZSTD_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
