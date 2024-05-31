@@ -34,7 +34,14 @@ jobs:
           mkdir /icu/lib64
           copy lib64/* /icu/lib64/
 
-      - name: Upload
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: icu-${{ vars.ICU_VERSION }}-src
+          path: icu4c-${{ vars.ICU_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
