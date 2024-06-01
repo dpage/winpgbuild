@@ -63,12 +63,12 @@ jobs:
       - name: Build
         run: | 
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          build
+          perl build.pl Release
           
       - name: Test
         run: | 
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          vcregress check
+          perl vcregress.pl check
           
       - name: Install
         run: |
