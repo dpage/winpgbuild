@@ -72,14 +72,19 @@ jobs:
       - name: Test
         run: | 
           cd postgresql-${{ matrix.version }}\src\tools\msvc
+          set PATH="D:\builddeps\bin;D:\builddeps\bin64:%PATH%"
           vcregress check
         shell: cmd
           
       - name: Install
         run: |
-          mkdir \postgresql
           cd postgresql-${{ matrix.version }}\src\tools\msvc
+          
+          set PATH="D:\builddeps\bin;D:\builddeps\bin64:%PATH%"
+          
+          mkdir \postgresql
           perl install.pl \postgresql
+          
           copy \builddeps\bin64\icuuc*.dll \postgresql\bin\
           copy \builddeps\bin64\icudt*.dll \postgresql\bin\
           copy \builddeps\bin64\icuin*.dll \postgresql\bin\
