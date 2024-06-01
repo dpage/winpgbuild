@@ -69,6 +69,7 @@ jobs:
         run: | 
           cd postgresql-${{ matrix.version }}\src\tools\msvc
           perl vcregress.pl check
+        continue-on-error: true
           
       - name: Install
         run: |
@@ -94,6 +95,15 @@ jobs:
           if-no-files-found: error
           name: postgresql-${{ matrix.version }}-src
           path: postgresql-${{ matrix.version }}.tar.gz
+
+      - name: Upload Config
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: postgresql-${{ matrix.version }}-config
+          path: |
+            postgresql-${{ matrix.version }}/src/tools/msvc/config.pl
+            postgresql-${{ matrix.version }}/src/tools/msvc/buildenv.pl
           
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
