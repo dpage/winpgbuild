@@ -37,6 +37,7 @@ jobs:
       - name: Build
         run: | 
           cd gettext-${{ vars.GETTEXT_VERSION }}
+          export CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types"
           make all
 
       - name: Install
