@@ -57,7 +57,7 @@ jobs:
           >> config.pl echo.
           >> config.pl echo 1;
          
-          >> buildenv.pl echo $ENV{PATH} = "\\builddeps\\bin;\\builddeps\\bin64;$ENV{PATH}";
+          >> buildenv.pl echo $ENV{PATH} = "D:\\builddeps\\bin;D:\\builddeps\\bin64;$ENV{PATH}";
 
           cd \builddeps
           pwd
@@ -72,15 +72,12 @@ jobs:
       - name: Test
         run: | 
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          set PATH="D:\builddeps\bin;D:\builddeps\bin64;%PATH%"
           vcregress check
         shell: cmd
           
       - name: Install
         run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          
-          set PATH="D:\builddeps\bin;D:\builddeps\bin64;%PATH%"
           
           mkdir \postgresql
           perl install.pl \postgresql
