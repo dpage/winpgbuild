@@ -59,7 +59,8 @@ jobs:
          
           >> buildenv.pl echo $ENV{PATH} = "\\builddeps\\bin;\\builddeps\\bin64;$ENV{PATH}";
 
-          echo %PATH%
+          cd \builddeps
+          pwd
         shell: cmd
           
       - name: Build
