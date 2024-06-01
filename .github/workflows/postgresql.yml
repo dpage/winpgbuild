@@ -72,7 +72,7 @@ jobs:
       - name: Test
         run: | 
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          set PATH="D:\builddeps\bin;D:\builddeps\bin64:%PATH%"
+          set PATH="D:\builddeps\bin;D:\builddeps\bin64;%PATH%"
           vcregress check
         shell: cmd
           
@@ -80,7 +80,7 @@ jobs:
         run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
           
-          set PATH="D:\builddeps\bin;D:\builddeps\bin64:%PATH%"
+          set PATH="D:\builddeps\bin;D:\builddeps\bin64;%PATH%"
           
           mkdir \postgresql
           perl install.pl \postgresql
