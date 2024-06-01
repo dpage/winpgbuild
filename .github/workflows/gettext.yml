@@ -29,6 +29,12 @@ jobs:
           curl https://ftp.gnu.org/pub/gnu/gettext/gettext-${{ vars.GETTEXT_VERSION }}.tar.gz -o ./gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
           tar zxvf gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
 
+      - name: Patch
+        run: |
+          curl https://raw.githubusercontent.com/dpage/gettext-tools-windows/master/patches/gettext-0.22-0001-build-failure-on-mingw-close-module.patch -o gettext-0.22-0001-build-failure-on-mingw-close-module.patch
+          cd gettext-${{ vars.GETTEXT_VERSION }}
+          patch -p1 < ..\gettext-0.22-0001-build-failure-on-mingw-close-module.patch
+
       - name: Configure
         run: | 
           cd gettext-${{ vars.GETTEXT_VERSION }}
