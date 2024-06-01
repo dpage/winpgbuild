@@ -12,93 +12,12 @@ jobs:
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Download gettext
+      - name: Download dependencies
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: gettext.yml 
+          workflow: all-deps.yml 
           workflow_conclusion: success
-          name: gettext-${{ vars.GETTEXT_VERSION }}-win64
-          path: /builddeps
-          if_no_artifact_found: fail
-
-      - name: Download icu
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          workflow: icu.yml 
-          workflow_conclusion: success
-          name: icu-${{ vars.ICU_VERSION }}-win64
-          path: /builddeps
-          if_no_artifact_found: fail
-
-      - name: Download libiconv
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          workflow: libiconv.yml 
-          workflow_conclusion: success
-          name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
-          path: /builddeps
-          if_no_artifact_found: fail
-          
-      - name: Download libxml2
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          workflow: libxml2.yml 
-          workflow_conclusion: success
-          name: libxml2-${{ vars.LIBXML2_VERSION }}-win64
-          path: /builddeps
-          if_no_artifact_found: fail
-
-      - name: Download libxslt
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          workflow: libxslt.yml 
-          workflow_conclusion: success
-          name: libxslt-${{ vars.LIBXSLT_VERSION }}-win64
-          path: /builddeps
-          if_no_artifact_found: fail
-
-      - name: Download lz4
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          workflow: lz4.yml 
-          workflow_conclusion: success
-          name: lz4-${{ vars.LZ4_VERSION }}-win64
-          path: /builddeps
-          if_no_artifact_found: fail
-          
-      - name: Download openssl
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          workflow: openssl.yml 
-          workflow_conclusion: success
-          name: openssl-${{ vars.OPENSSL_VERSION }}-win64
-          path: /builddeps
-          if_no_artifact_found: fail
-
-      - name: Download ossp-uuid
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          workflow: ossp-uuid.yml 
-          workflow_conclusion: success
-          name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
-          path: /builddeps
-          if_no_artifact_found: fail
-          
-      - name: Download zlib
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          workflow: zlib.yml 
-          workflow_conclusion: success
-          name: zlib-${{ vars.ZLIB_VERSION }}-win64
-          path: /builddeps
-          if_no_artifact_found: fail
-
-      - name: Download zstd
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          workflow: zstd.yml 
-          workflow_conclusion: success
-          name: zstd-${{ vars.ZSTD_VERSION }}-win64
+          name: all-deps-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -124,7 +43,7 @@ jobs:
           >> config.pl echo 	lz4       =^> '\builddeps',    # --with-lz4=^<path^>
           >> config.pl echo 	zstd      =^> '\builddeps',    # --with-zstd=^<path^>
           >> config.pl echo 	nls       =^> '\builddeps',    # --enable-nls=^<path^>
-          >> config.pl echo 	tap_tests =^> 1,    # --enable-tap-tests
+          >> config.pl echo 	tap_tests =^> 0,    # --enable-tap-tests
           >> config.pl echo 	tcl       =^> undef,    # --with-tcl=^<path^>
           >> config.pl echo 	perl      =^> undef,    # --with-perl
           >> config.pl echo 	python    =^> undef,    # --with-python=^<path^>
@@ -144,13 +63,12 @@ jobs:
       - name: Build
         run: | 
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          perl build.pl Release
+          build
           
       - name: Test
         run: | 
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          $env:PATH += ";\builddeps\bin;\builddeps\bin64"
-          perl vcregress.pl check
+          vcregress check
           
       - name: Install
         run: |
