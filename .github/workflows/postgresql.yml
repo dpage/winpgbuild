@@ -63,13 +63,14 @@ jobs:
       - name: Build
         run: | 
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          perl build.pl Release
+          build
+        shell: cmd
           
       - name: Test
         run: | 
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          perl vcregress.pl check
-        continue-on-error: true
+          vcregress check
+        shell: cmd
           
       - name: Install
         run: |
@@ -88,6 +89,7 @@ jobs:
           copy \builddeps\bin\liblz4.dll \postgresql\bin\
           copy \builddeps\bin\libzstd.dll \postgresql\bin\
           copy \builddeps\bin\zlib1.dll \postgresql\bin\
+        shell: cmd
 
       - name: Upload Source
         uses: actions/upload-artifact@v4
