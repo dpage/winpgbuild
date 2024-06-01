@@ -33,12 +33,23 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/dpage/gettext-tools-windows/master/patches/gettext-0.22-0001-build-failure-on-mingw-close-module.patch -o gettext-0.22-0001-build-failure-on-mingw-close-module.patch
           cd gettext-${{ vars.GETTEXT_VERSION }}
-          patch -p1 < ..\gettext-0.22-0001-build-failure-on-mingw-close-module.patch
+          patch -p1 < ../gettext-0.22-0001-build-failure-on-mingw-close-module.patch
 
       - name: Configure
         run: | 
           cd gettext-${{ vars.GETTEXT_VERSION }}
-          ./configure CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types -Wno-error=implicit-function-declaration" --prefix=$(pwd)/winpgbuild --disable-static --disable-dependency-tracking --enable-silent-rules --with-libiconv-prefix=/builddeps --disable-rpath --enable-nls --disable-csharp --disable-java --enable-threads=windows --enable-relocatable
+          ./configure CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types -Wno-error=implicit-function-declaration" \
+            --prefix=$(pwd)/winpgbuild \
+            --disable-static \
+            --disable-dependency-tracking \
+            --enable-silent-rules \
+            --with-libiconv-prefix=/builddeps \
+            --disable-rpath \
+            --enable-nls \
+            --disable-csharp \
+            --disable-java \
+            --enable-threads=windows \
+            --enable-relocatable
           
       - name: Build
         run: | 
