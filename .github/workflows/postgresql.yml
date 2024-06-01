@@ -57,10 +57,10 @@ jobs:
           >> config.pl echo.
           >> config.pl echo 1;
          
-          >> buildenv.pl echo $ENV{PATH} = "D:\\builddeps\\bin;D:\\builddeps\\bin64;$ENV{PATH}";
+          >> buildenv.pl echo $ENV{PATH} = "\\builddeps\\bin;\\builddeps\\bin64;$ENV{PATH}";
 
           cd \builddeps
-          pwd
+          \builddeps\bin\msgfmt --help
         shell: cmd
           
       - name: Build
