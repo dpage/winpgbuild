@@ -32,12 +32,11 @@ jobs:
       - name: Configure
         run: | 
           cd gettext-${{ vars.GETTEXT_VERSION }}
-          ./configure --prefix=$(pwd)/winpgbuild --disable-static --disable-dependency-tracking --enable-silent-rules --with-libiconv-prefix=/builddeps --disable-rpath --enable-nls --disable-csharp --disable-java --enable-threads=windows --enable-relocatable
+          ./configure CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types" --prefix=$(pwd)/winpgbuild --disable-static --disable-dependency-tracking --enable-silent-rules --with-libiconv-prefix=/builddeps --disable-rpath --enable-nls --disable-csharp --disable-java --enable-threads=windows --enable-relocatable
           
       - name: Build
         run: | 
           cd gettext-${{ vars.GETTEXT_VERSION }}
-          export CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types"
           make all
 
       - name: Install
