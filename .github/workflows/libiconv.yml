@@ -24,7 +24,11 @@ jobs:
       - name: Configure
         run: | 
           cd libiconv-${{ vars.LIBICONV_VERSION }}
-          ./configure --prefix=$(pwd)/winpgbuild
+          ./configure --prefix=$(pwd)/winpgbuild \
+            --disable-static \
+            --disable-dependency-tracking \
+            --disable-rpath \
+            --disable-nls
           
       - name: Build
         run: | 
