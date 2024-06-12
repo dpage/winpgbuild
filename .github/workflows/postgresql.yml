@@ -43,7 +43,7 @@ jobs:
           >> config.pl echo 	lz4       =^> '\builddeps',    # --with-lz4=^<path^>
           >> config.pl echo 	zstd      =^> '\builddeps',    # --with-zstd=^<path^>
           >> config.pl echo 	nls       =^> '\builddeps',    # --enable-nls=^<path^>
-          >> config.pl echo 	tap_tests =^> 0,    # --enable-tap-tests
+          >> config.pl echo 	tap_tests =^> 1,    # --enable-tap-tests
           >> config.pl echo 	tcl       =^> undef,    # --with-tcl=^<path^>
           >> config.pl echo 	perl      =^> undef,    # --with-perl
           >> config.pl echo 	python    =^> undef,    # --with-python=^<path^>
@@ -58,9 +58,6 @@ jobs:
           >> config.pl echo 1;
          
           >> buildenv.pl echo $ENV{PATH} = "\\builddeps\\bin;\\builddeps\\bin64;$ENV{PATH}";
-
-          cd \builddeps
-          \builddeps\bin\msgfmt --help
         shell: cmd
           
       - name: Build
