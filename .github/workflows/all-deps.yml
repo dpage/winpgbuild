@@ -23,6 +23,15 @@ jobs:
           path: /builddeps
           if_no_artifact_found: fail
 
+      - name: Download krb5
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: krb5.yml 
+          workflow_conclusion: success
+          name: krb5-${{ vars.KRB5_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
       - name: Download libiconv
         uses: dawidd6/action-download-artifact@v3
         with:
