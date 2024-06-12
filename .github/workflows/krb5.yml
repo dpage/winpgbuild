@@ -24,11 +24,18 @@ jobs:
           nmake NODEBUG=1
 
       - name: Install
+        # We're only doing a 64 bit build, so we need to tweak things at the 
+        # end of the installation to make it look as it would if we had built
+        # both 32 and 64 bit together.
         run: |
-          mkdir /krb5
+          mkdir \krb5
           cd krb5-${{ vars.KRB5_VERSION }}\src
           $env:KRB_INSTALL_DIR = "\krb5"
           nmake install NODEBUG=1
+
+          mkdir \krb5\lib\amd64
+          move \krb5\lib\*.lib \krb5\lib\amd64\
+
 
       - name: Upload Source
         uses: actions/upload-artifact@v4
