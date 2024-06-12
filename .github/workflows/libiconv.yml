@@ -12,9 +12,9 @@ jobs:
     steps:
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: mingw64
+          msystem: UCRT64
           update: true
-          install: mingw-w64-x86_64-gcc make
+          install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
           
       - name: Download
         run: | 
