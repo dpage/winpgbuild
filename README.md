@@ -9,14 +9,16 @@ components to build. These are listed below in square brackets.
 
 ### Dependencies
 
+* gettext [GETTEXT_VERSION]
 * icu [ICU_VERSION]
 * iconv [ICONV_VERSION]
+* krb5 [KRB5_VERSION]. Note that this isn't used in the PostgreSQL build as it will cause compile errors.
 * libxml2 [LIBXML2_VERSION]
 * libxslt [LIBXSLT_VERSION]
 * lz4 [LZ4_VERSION]
 * MIT Kerberos (krb5) [KRB5_VERSION]. Note that this isn't used in the 
   PostgreSQL build as it will cause compile errors.
-* OpenSSL [OPENSSL_VERSION]
+* openssl [OPENSSL_VERSION]
 * ossp-uuid [OSSP_UUID_VERSION].
 * zlib [ZLIB_VERSION]
 * zstd [ZSTD_VERSION]
