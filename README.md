@@ -16,8 +16,6 @@ components to build. These are listed below in square brackets.
 * libxml2 [LIBXML2_VERSION]
 * libxslt [LIBXSLT_VERSION]
 * lz4 [LZ4_VERSION]
-* MIT Kerberos (krb5) [KRB5_VERSION]. Note that this isn't used in the 
-  PostgreSQL build as it will cause compile errors.
 * openssl [OPENSSL_VERSION]
 * ossp-uuid [OSSP_UUID_VERSION].
 * zlib [ZLIB_VERSION]
@@ -26,8 +24,7 @@ components to build. These are listed below in square brackets.
 ### PostgreSQL
 
 The PostgreSQL versions are specified in the POSTGRESQL_VERSIONS repository 
-variable,
-as a JSON style array, e.g.
+variable, as a JSON style array, e.g.
 
 ```[16.3, 15.7, 14.12, 13.15, 12.19]```
 
