@@ -36,6 +36,21 @@ jobs:
           mkdir \krb5\lib\amd64
           move \krb5\lib\*.lib \krb5\lib\amd64\
 
+      - name: Create pkgconfig File
+        run: |
+          mkdir \krb5\lib\pkgconfig
+
+          >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo prefix=${pcfiledir}/../..
+          >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo exec_prefix=${prefix}
+          >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo libdir=${prefix}/lib
+          >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo includedir=${prefix}/include
+
+          >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo Name: krb5-gssapi
+          >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo Version: ${{ vars.KRB5_VERSION }}
+          >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo Description: MIT kerberos library
+          >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo Libs: -L${libdir}/amd64 -lkrb5_64 -lgssapi64 -lcomerr64
+          >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo Cflags: -I${includedir} -I${includedir}/krb5
+        shell: cmd
 
       - name: Upload Source
         uses: actions/upload-artifact@v4
