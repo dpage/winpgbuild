@@ -1,0 +1,79 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-postgresql-dev:
+    strategy:
+      fail-fast: false
+        
+    runs-on: windows-latest
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Download dependencies
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: all-deps.yml 
+          workflow_conclusion: success
+          name: all-deps-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
+      - name: Download
+        run: | 
+          curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_DEV_VERSION }}/postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz -o ./postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
+          tar zxvf postgresql-${{ matrix.version }}.tar.gz
+          
+      - name: Configure
+        run: | 
+          cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}
+          
+          meson setup --wipe --pkg-config-path=\build64\lib\pkgconfig -Dextra_include_dirs=\build64\include -Dextra_lib_dirs=\build64\lib -Duuid=ossp --prefix=\postgresql-dev build
+        shell: cmd
+          
+      - name: Build
+        run: | 
+          cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
+          ninja
+        shell: cmd
+          
+      - name: Test
+        run: | 
+          cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
+          meson test
+        shell: cmd
+          
+      - name: Install
+        run: |
+          cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
+          
+          mkdir \postgresql
+          meson install
+          
+          copy \builddeps\bin64\icuuc*.dll \postgresql\bin\
+          copy \builddeps\bin64\icudt*.dll \postgresql\bin\
+          copy \builddeps\bin64\icuin*.dll \postgresql\bin\
+          copy \builddeps\bin\libiconv-2.dll \postgresql\bin\
+          copy \builddeps\bin\libintl-8.dll \postgresql\bin\
+          copy \builddeps\bin\libxml2.dll \postgresql\bin\
+          copy \builddeps\bin\libxslt.dll \postgresql\bin\
+          copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin\
+          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql\bin\
+          copy \builddeps\bin\liblz4.dll \postgresql\bin\
+          copy \builddeps\bin\libzstd.dll \postgresql\bin\
+          copy \builddeps\bin\zlib1.dll \postgresql\bin\
+        shell: cmd
+
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}-src
+          path: postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
+          
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}-win64
+          path: /postgresql
