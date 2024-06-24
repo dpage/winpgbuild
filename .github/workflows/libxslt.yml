@@ -45,6 +45,23 @@ jobs:
           cd libxslt-v${{ vars.LIBXSLT_VERSION }}/win32
           nmake -f Makefile.msvc install
 
+      - name: Create pkgconfig File
+        run: |
+          mkdir \libxslt\lib\pkgconfig
+
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo prefix=${pcfiledir}/../..
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo exec_prefix=${prefix}
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo libdir=${prefix}/lib
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo includedir=${prefix}/include
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo.
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo Name: libxslt
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo Version: ${{ vars.LIBXSLT_VERSION }}
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo Description: libxslt library
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo Requires: libxml-2.0 zlib
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo Libs: -L${libdir} -lxslt
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo Cflags: -I${includedir}/libxslt -I${includedir}/libexslt 
+        shell: cmd
+
       - name: Upload Source
         uses: actions/upload-artifact@v4
         with:

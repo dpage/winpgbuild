@@ -21,17 +21,33 @@ jobs:
         run: |
           cd lz4-${{ vars.LZ4_VERSION }}
           
-          mkdir /lz4
+          mkdir \lz4
           
-          mkdir /lz4/bin
+          mkdir \lz4\bin
           copy build\VS2022\bin\x64_Release\liblz4.dll /lz4/bin/
           copy build\VS2022\bin\x64_Release\liblz4.pdb /lz4/bin/
 
-          mkdir /lz4/include
-          copy lib\*.h /lz4/include/
+          mkdir \lz4\include
+          copy lib\*.h \lz4\include\
 
-          mkdir /lz4/lib
-          copy build\VS2022\bin\x64_Release\liblz4.lib /lz4/lib/
+          mkdir \lz4\lib
+          copy build\VS2022\bin\x64_Release\liblz4.lib \lz4\lib\
+
+      - name: Create pkgconfig File
+        run: |
+          mkdir \lz4\lib\pkgconfig
+
+          >> \lz4\lib\pkgconfig\liblz4.pc echo prefix=${pcfiledir}/../..
+          >> \lz4\lib\pkgconfig\liblz4.pc echo exec_prefix=${prefix}
+          >> \lz4\lib\pkgconfig\liblz4.pc echo libdir=${prefix}/lib
+          >> \lz4\lib\pkgconfig\liblz4.pc echo includedir=${prefix}/include
+          >> \lz4\lib\pkgconfig\liblz4.pc echo.
+          >> \lz4\lib\pkgconfig\liblz4.pc echo Name: liblz4
+          >> \lz4\lib\pkgconfig\liblz4.pc echo Version: ${{ vars.LZ4_VERSION }}
+          >> \lz4\lib\pkgconfig\liblz4.pc echo Description: lz4 compression library
+          >> \lz4\lib\pkgconfig\liblz4.pc echo Libs: -L${libdir} -llz4
+          >> \lz4\lib\pkgconfig\liblz4.pc echo Cflags: -I${includedir}
+        shell: cmd
 
       - name: Upload Source
         uses: actions/upload-artifact@v4

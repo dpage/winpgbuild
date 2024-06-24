@@ -43,7 +43,7 @@ jobs:
           >> \icu\lib\pkgconfig\icu-uc.pc echo exec_prefix=${prefix}
           >> \icu\lib\pkgconfig\icu-uc.pc echo libdir=${prefix}/lib64
           >> \icu\lib\pkgconfig\icu-uc.pc echo includedir=${prefix}/include
-
+          >> \icu\lib\pkgconfig\icu-uc.pc echo.
           >> \icu\lib\pkgconfig\icu-uc.pc echo Name: icu-uc
           >> \icu\lib\pkgconfig\icu-uc.pc echo Description: ICU library
           >> \icu\lib\pkgconfig\icu-uc.pc echo Version: ${{ vars.ICU_VERSION }}

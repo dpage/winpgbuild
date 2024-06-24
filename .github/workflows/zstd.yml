@@ -39,6 +39,24 @@ jobs:
           mkdir \zstd\lib
           copy build\VS2010\bin\x64_Release\libzstd.lib \zstd\lib\
 
+      - name: Create pkgconfig File
+        run: |
+          mkdir \zstd\lib\pkgconfig
+
+          >> \zstd\lib\pkgconfig\libzstd.pc echo prefix=${pcfiledir}/../..
+          >> \zstd\lib\pkgconfig\libzstd.pc echo exec_prefix=${prefix}
+          >> \zstd\lib\pkgconfig\libzstd.pc echo libdir=${prefix}/lib
+          >> \zstd\lib\pkgconfig\libzstd.pc echo includedir=${prefix}/include
+          >> \zstd\lib\pkgconfig\libzstd.pc echo.
+          >> \zstd\lib\pkgconfig\libzstd.pc echo Name: zstd
+          >> \zstd\lib\pkgconfig\libzstd.pc echo Description: fast lossless compression algorithm library
+          >> \zstd\lib\pkgconfig\libzstd.pc echo URL: https://facebook.github.io/zstd/
+          >> \zstd\lib\pkgconfig\libzstd.pc echo Version: ${{ vars.ZSTD_VERSION }}
+          >> \zstd\lib\pkgconfig\libzstd.pc echo Libs: -L${libdir} -lzstd
+          >> \zstd\lib\pkgconfig\libzstd.pc echo Libs.private: 
+          >> \zstd\lib\pkgconfig\libzstd.pc echo Cflags: -I${includedir}
+        shell: cmd
+
       - name: Upload Source
         uses: actions/upload-artifact@v4
         with:

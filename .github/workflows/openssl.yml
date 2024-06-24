@@ -29,9 +29,25 @@ jobs:
 
       - name: Install
         run: |
-          mkdir /openssl
+          mkdir \openssl
           cd openssl-${{ vars.OPENSSL_VERSION }}
           nmake install
+
+      - name: Create pkgconfig File
+        run: |
+          mkdir \openssl\lib\pkgconfig
+
+          >> \openssl\lib\pkgconfig\openssl.pc echo prefix=${pcfiledir}/../..
+          >> \openssl\lib\pkgconfig\openssl.pc echo exec_prefix=${prefix}
+          >> \openssl\lib\pkgconfig\openssl.pc echo libdir=${prefix}/lib
+          >> \openssl\lib\pkgconfig\openssl.pc echo includedir=${prefix}/include
+          >> \openssl\lib\pkgconfig\openssl.pc echo.
+          >> \openssl\lib\pkgconfig\openssl.pc echo Name: openssl
+          >> \openssl\lib\pkgconfig\openssl.pc echo Description: openssl encryption library
+          >> \openssl\lib\pkgconfig\openssl.pc echo Version: ${{ vars.OPENSSL_VERSION }}
+          >> \openssl\lib\pkgconfig\openssl.pc echo Libs: -L${libdir} -lcrypto -lssl
+          >> \openssl\lib\pkgconfig\openssl.pc echo Cflags: -I${includedir}
+        shell: cmd
 
       - name: Upload Source
         uses: actions/upload-artifact@v4

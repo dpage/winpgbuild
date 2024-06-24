@@ -49,6 +49,23 @@ jobs:
           cp .libs/libuuid.la winpgbuild/lib
           cp .libs/libuuid.lai winpgbuild/lib
 
+      - name: Create pkgconfig File
+        run: |
+          cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
+          mkdir lib\pkgconfig
+
+          >> lib\pkgconfig\ossp-uuid.pc echo prefix=${pcfiledir}/../..
+          >> lib\pkgconfig\ossp-uuid.pc echo exec_prefix=${prefix}
+          >> lib\pkgconfig\ossp-uuid.pc echo libdir=${prefix}/lib
+          >> lib\pkgconfig\ossp-uuid.pc echo includedir=${prefix}/include
+          >> lib\pkgconfig\ossp-uuid.pc echo.
+          >> lib\pkgconfig\ossp-uuid.pc echo Name: ossp-uuid
+          >> lib\pkgconfig\ossp-uuid.pc echo Description: ossp uuid library
+          >> lib\pkgconfig\ossp-uuid.pc echo Version: ${{ vars.OSSP_UUID_VERSION }}
+          >> lib\pkgconfig\ossp-uuid.pc echo Libs: -L${libdir} -luuid
+          >> lib\pkgconfig\ossp-uuid.pc echo Cflags: -I${includedir}
+        shell: cmd
+
       - name: Upload Source
         uses: actions/upload-artifact@v4
         with:

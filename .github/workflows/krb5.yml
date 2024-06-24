@@ -44,7 +44,7 @@ jobs:
           >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo exec_prefix=${prefix}
           >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo libdir=${prefix}/lib
           >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo includedir=${prefix}/include
-
+          >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo.
           >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo Name: krb5-gssapi
           >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo Version: ${{ vars.KRB5_VERSION }}
           >> \krb5\lib\pkgconfig\krb5-gssapi.pc echo Description: MIT kerberos library
