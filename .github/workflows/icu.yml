@@ -22,17 +22,34 @@ jobs:
         run: |
           cd icu
           
-          mkdir /icu
+          mkdir \icu
            
-          mkdir /icu/bin64
-          copy bin64/* /icu/bin64/
+          mkdir \icu\bin64
+          copy bin64\* \icu\bin64\
 
-          mkdir /icu/include
-          mkdir /icu/include/unicode
-          copy include/unicode/* /icu/include/unicode/
+          mkdir \icu\include
+          mkdir \icu\include/unicode
+          copy include\unicode\* \icu\include\unicode\/
 
-          mkdir /icu/lib64
-          copy lib64/* /icu/lib64/
+          mkdir \icu\lib64
+          copy lib64\* \icu\lib64\
+
+      - name: Create pkgconfig File
+        run: |
+          mkdir \icu\lib
+          mkdir \icu\lib\pkgconfig
+
+          >> \icu\lib\pkgconfig\icu-uc.pc echo prefix=${pcfiledir}/../..
+          >> \icu\lib\pkgconfig\icu-uc.pc echo exec_prefix=${prefix}
+          >> \icu\lib\pkgconfig\icu-uc.pc echo libdir=${prefix}/lib64
+          >> \icu\lib\pkgconfig\icu-uc.pc echo includedir=${prefix}/include
+
+          >> \icu\lib\pkgconfig\icu-uc.pc echo Name: icu-uc
+          >> \icu\lib\pkgconfig\icu-uc.pc echo Description: ICU library
+          >> \icu\lib\pkgconfig\icu-uc.pc echo Version: ${{ vars.ICU_VERSION }}
+          >> \icu\lib\pkgconfig\icu-uc.pc echo Libs: -L${libdir} -licuin -licuuc -licudt
+          >> \icu\lib\pkgconfig\icu-uc.pc echo Cflags: -I${includedir}
+        shell: cmd
 
       - name: Upload Source
         uses: actions/upload-artifact@v4
