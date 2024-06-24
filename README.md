@@ -38,6 +38,14 @@ for more information.
 
 The following dependencies are yet to be completed:
 
+* Readline
 * Perl
 * Python
 * TCL
+
+The following dependencies haven't been supported on Windows but potentially 
+could be in the future under Meson.
+
+* Bonjour
+* LLVM
+
