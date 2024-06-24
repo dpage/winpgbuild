@@ -8,8 +8,6 @@ jobs:
         
     runs-on: windows-latest
     steps:
-      - uses: ilammy/msvc-dev-cmd@v1
-
       - name: Download dependencies
         uses: dawidd6/action-download-artifact@v3
         with:
@@ -22,7 +20,7 @@ jobs:
       - name: Download
         run: | 
           curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_DEV_VERSION }}/postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz -o ./postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
-          tar zxvf postgresql-${{ matrix.version }}.tar.gz
+          tar zxvf postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
           
       - name: Configure
         run: | 
