@@ -52,7 +52,7 @@ jobs:
       - name: Create pkgconfig File
         run: |
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
-          mkdir lib/pkgconfig
+          mkdir winpgbuild/lib/pkgconfig
 
           cat << EOF > lib/pkgconfig/ossp-uuid.pc
           prefix=${pcfiledir}/../..
