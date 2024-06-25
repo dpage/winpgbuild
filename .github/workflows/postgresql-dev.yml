@@ -32,21 +32,17 @@ jobs:
       - name: Configure
         run: | 
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}
-          
           meson setup --wipe --pkg-config-path=\builddeps\lib\pkgconfig -Dextra_include_dirs=\builddeps\include -Dextra_lib_dirs=\builddeps\lib -Duuid=ossp --prefix=\postgresql-dev build
-        shell: cmd
           
       - name: Build
         run: | 
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
           ninja
-        shell: cmd
           
       - name: Test
         run: | 
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
           meson test
-        shell: cmd
           
       - name: Install
         run: |
@@ -67,7 +63,6 @@ jobs:
           copy \builddeps\bin\liblz4.dll \postgresql\bin\
           copy \builddeps\bin\libzstd.dll \postgresql\bin\
           copy \builddeps\bin\zlib1.dll \postgresql\bin\
-        shell: cmd
 
       - name: Upload Source
         uses: actions/upload-artifact@v4
