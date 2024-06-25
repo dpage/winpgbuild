@@ -24,8 +24,10 @@ jobs:
           curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_DEV_VERSION }}/postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz -o ./postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
           tar zxvf postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
 
-      - name: Install Meson
-        run: pip install meson ninja
+      - name: Install Meson and Flex etc
+        run: |
+          pip install meson ninja
+          choco install winflexbison3
 
       - name: Configure
         run: | 
