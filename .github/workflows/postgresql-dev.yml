@@ -82,3 +82,12 @@ jobs:
           if-no-files-found: error
           name: postgresql-dev-${{ vars.POSTGRESQL_DEV_VERSION }}-win64
           path: /postgresql-dev
+
+      - name: Upload Meson Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: meson_log
+          path: D:\a\winpgbuild\winpgbuild\postgresql-17beta1\build\meson-logs\meson-log.txt
+          
