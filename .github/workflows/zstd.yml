@@ -7,28 +7,28 @@ jobs:
     steps:
       - uses: microsoft/setup-msbuild@v2
       - uses: ilammy/msvc-dev-cmd@v1
-      
+
       - name: Download
-        run: | 
+        run: |
           curl -L https://github.com/facebook/zstd/releases/download/v${{ vars.ZSTD_VERSION }}/zstd-${{ vars.ZSTD_VERSION }}.tar.gz -o ./zstd-${{ vars.ZSTD_VERSION }}.tar.gz
           tar zxvf zstd-${{ vars.ZSTD_VERSION }}.tar.gz
 
       - name: Configure
-        run: | 
+        run: |
           cd zstd-${{ vars.ZSTD_VERSION }}
           devenv.com /upgrade build\VS2010\zstd.sln
 
       - name: Build
-        run: | 
+        run: |
           cd zstd-${{ vars.ZSTD_VERSION }}
           msbuild build\VS2010\zstd.sln -target:libzstd-dll /property:Configuration=Release /property:Platform=x64
 
       - name: Install
         run: |
           cd zstd-${{ vars.ZSTD_VERSION }}
-          
+
           mkdir \zstd
-          
+
           mkdir \zstd\bin
           copy build\VS2010\bin\x64_Release\libzstd.dll \zstd\bin\
           copy build\VS2010\bin\x64_Release\libzstd.pdb \zstd\bin\
@@ -53,7 +53,7 @@ jobs:
           >> \zstd\lib\pkgconfig\libzstd.pc echo URL: https://facebook.github.io/zstd/
           >> \zstd\lib\pkgconfig\libzstd.pc echo Version: ${{ vars.ZSTD_VERSION }}
           >> \zstd\lib\pkgconfig\libzstd.pc echo Libs: -L${libdir} -lzstd
-          >> \zstd\lib\pkgconfig\libzstd.pc echo Libs.private: 
+          >> \zstd\lib\pkgconfig\libzstd.pc echo Libs.private:
           >> \zstd\lib\pkgconfig\libzstd.pc echo Cflags: -I${includedir}
         shell: cmd
 
@@ -63,7 +63,7 @@ jobs:
           if-no-files-found: error
           name: zstd-${{ vars.ZSTD_VERSION }}-src
           path: zstd-${{ vars.ZSTD_VERSION }}.tar.gz
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:

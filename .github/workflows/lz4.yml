@@ -6,23 +6,23 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: microsoft/setup-msbuild@v2
-      
+
       - name: Download
-        run: | 
+        run: |
           curl -L https://github.com/lz4/lz4/releases/download/v${{ vars.LZ4_VERSION }}/lz4-${{ vars.LZ4_VERSION }}.tar.gz -o ./lz4-${{ vars.LZ4_VERSION }}.tar.gz
           tar zxvf lz4-${{ vars.LZ4_VERSION }}.tar.gz
-          
+
       - name: Build
-        run: | 
+        run: |
           cd lz4-${{ vars.LZ4_VERSION }}
           msbuild build\VS2022\lz4.sln -target:liblz4-dll /property:Configuration=Release /property:Platform=x64
 
       - name: Install
         run: |
           cd lz4-${{ vars.LZ4_VERSION }}
-          
+
           mkdir \lz4
-          
+
           mkdir \lz4\bin
           copy build\VS2022\bin\x64_Release\liblz4.dll /lz4/bin/
           copy build\VS2022\bin\x64_Release\liblz4.pdb /lz4/bin/
@@ -55,7 +55,7 @@ jobs:
           if-no-files-found: error
           name: lz4-${{ vars.LZ4_VERSION }}-src
           path: lz4-${{ vars.LZ4_VERSION }}.tar.gz
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:

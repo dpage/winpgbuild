@@ -8,22 +8,22 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download
-        run: | 
+        run: |
           curl -L https://github.com/unicode-org/icu/releases/download/release-$(echo ${{ vars.ICU_VERSION }} | sed 's/\./-/g')/icu4c-$(echo ${{ vars.ICU_VERSION }} | sed 's/\./_/g')-src.tgz -o ./icu4c-${{ vars.ICU_VERSION }}.tar.gz
           tar zxvf ./icu4c-${{ vars.ICU_VERSION }}.tar.gz
         shell: bash
-          
+
       - name: Build
-        run: | 
+        run: |
           cd icu
           devenv.com source\allinone\allinone.sln /build "Release|x64"
 
       - name: Install
         run: |
           cd icu
-          
+
           mkdir \icu
-           
+
           mkdir \icu\bin64
           copy bin64\* \icu\bin64\
 
@@ -57,7 +57,7 @@ jobs:
           if-no-files-found: error
           name: icu-${{ vars.ICU_VERSION }}-src
           path: icu4c-${{ vars.ICU_VERSION }}.tar.gz
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:

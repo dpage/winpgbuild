@@ -6,9 +6,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
-      
+
       - name: Download
-        run: | 
+        run: |
           curl https://kerberos.org/dist/krb5/1.21/krb5-${{ vars.KRB5_VERSION }}.tar.gz -o ./krb5-${{ vars.KRB5_VERSION }}.tar.gz
           tar zxvf krb5-${{ vars.KRB5_VERSION }}.tar.gz
 
@@ -16,15 +16,15 @@ jobs:
         run: |
           cd krb5-${{ vars.KRB5_VERSION }}\src
           nmake -f Makefile.in prep-windows
-          
+
       - name: Build
-        run: | 
+        run: |
           cd krb5-${{ vars.KRB5_VERSION }}\src
           $env:PATH += ";" + $env:WindowsSdkVerBinPath + "\x86"
           nmake NODEBUG=1
 
       - name: Install
-        # We're only doing a 64 bit build, so we need to tweak things at the 
+        # We're only doing a 64 bit build, so we need to tweak things at the
         # end of the installation to make it look as it would if we had built
         # both 32 and 64 bit together.
         run: |
@@ -58,7 +58,7 @@ jobs:
           if-no-files-found: error
           name: krb5-${{ vars.KRB5_VERSION }}-src
           path: krb5-${{ vars.KRB5_VERSION }}.tar.gz
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:

@@ -10,24 +10,24 @@ jobs:
       - name: Download zlib
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: zlib.yml 
+          workflow: zlib.yml
           workflow_conclusion: success
           name: zlib-${{ vars.ZLIB_VERSION }}-win64
           path: /build/zlib
           if_no_artifact_found: fail
-          
+
       - name: Download
-        run: | 
+        run: |
           curl https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${{ vars.LIBXML2_VERSION }}/libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz -o ./libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz
           tar zxvf libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz
 
       - name: Configure
-        run: | 
+        run: |
           cd libxml2-v${{ vars.LIBXML2_VERSION }}
           cmake -B build -D CMAKE_INSTALL_PREFIX=/libxml2 -D LIBXML2_WITH_ICONV=OFF -D LIBXML2_WITH_LZMA=OFF -D LIBXML2_WITH_PYTHON=OFF -D ZLIB_LIBRARY=/build/zlib/lib/zdll.lib -D ZLIB_INCLUDE_DIR=/build/zlib/include
-          
+
       - name: Build
-        run: | 
+        run: |
           cd libxml2-v${{ vars.LIBXML2_VERSION }}
           cmake --build build --config Release
 
@@ -42,7 +42,7 @@ jobs:
           if-no-files-found: error
           name: libxml2-v${{ vars.LIBXML2_VERSION }}-src
           path: libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
