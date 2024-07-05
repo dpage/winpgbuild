@@ -21,8 +21,8 @@ jobs:
 
       - name: Download
         run: |
-          curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_DEV_VERSION }}/postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz -o ./postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
-          tar zxvf postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
+          curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_DEV_VERSION }}/postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz -o ./postgresql-dev-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
+          tar zxvf postgresql-dev-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
 
       - name: Install Meson and Flex etc
         run: |
@@ -84,4 +84,4 @@ jobs:
         with:
           if-no-files-found: error
           name: meson_log
-          path: D:\a\winpgbuild\winpgbuild\postgresql-17beta1\build\meson-logs\meson-log.txt
+          path: D:\a\winpgbuild\winpgbuild\postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build\meson-logs\meson-log.txt
