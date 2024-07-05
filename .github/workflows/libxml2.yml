@@ -24,7 +24,7 @@ jobs:
       - name: Configure
         run: |
           cd libxml2-v${{ vars.LIBXML2_VERSION }}
-          cmake -B build -D CMAKE_INSTALL_PREFIX=/libxml2 -D LIBXML2_WITH_ICONV=OFF -D LIBXML2_WITH_LZMA=OFF -D LIBXML2_WITH_PYTHON=OFF -D ZLIB_LIBRARY=/build/zlib/lib/zdll.lib -D ZLIB_INCLUDE_DIR=/build/zlib/include
+          cmake -B build -D CMAKE_INSTALL_PREFIX=/libxml2 -D CMAKE_PREFIX_PATH="/build/zlib" -D LIBXML2_WITH_ICONV=OFF -D LIBXML2_WITH_LZMA=OFF -D LIBXML2_WITH_PYTHON=OFF
 
       - name: Build
         run: |
