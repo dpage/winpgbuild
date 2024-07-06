@@ -27,11 +27,14 @@ jobs:
       - name: Install Meson and Flex etc
         run: |
           pip install meson ninja
-          choco install winflexbison3 pkgconfiglite
+          choco install pkgconfiglite
 
       - name: Configure
         run: |
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}
+          # so binaries can be found/run
+          $env:PATH="\postgresql-dev\bin\;\postgresql-dev\;$Env:PATH";
+
           meson setup --wipe --pkg-config-path=\builddeps\lib\pkgconfig -Dextra_include_dirs=\builddeps\include -Dextra_lib_dirs=\builddeps\lib -Duuid=ossp --prefix=\postgresql-dev build
 
       - name: Build

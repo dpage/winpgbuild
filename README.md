@@ -18,6 +18,7 @@ components to build. These are listed below in square brackets.
 * lz4 [LZ4_VERSION]
 * openssl [OPENSSL_VERSION]
 * ossp-uuid [OSSP_UUID_VERSION].
+* winflexbison [WINFLEXBISON_VERSION]
 * zlib [ZLIB_VERSION]
 * zstd [ZSTD_VERSION]
 
