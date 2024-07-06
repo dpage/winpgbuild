@@ -16,6 +16,8 @@ components to build. These are listed below in square brackets.
 * libxml2 [LIBXML2_VERSION]
 * libxslt [LIBXSLT_VERSION]
 * lz4 [LZ4_VERSION]
+* meson [MESON_VERSION]
+* ninja [NINJA_VERSION]
 * openssl [OPENSSL_VERSION]
 * ossp-uuid [OSSP_UUID_VERSION].
 * zlib [ZLIB_VERSION]

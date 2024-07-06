@@ -1,0 +1,28 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-meson:
+    runs-on: windows-latest
+    steps:
+      - name: Download
+        run: |
+          curl.exe -L -o meson.tar.gz https://github.com/mesonbuild/meson/releases/download/${{ vars.MESON_VERSION }}/meson-${{ vars.MESON_VERSION }}.tar.gz
+
+          mkdir -p /meson/mesonbuild
+          mkdir -p /meson/bin
+
+          tar -C /meson/mesonbuild --strip-components=1 -xvzf meson.tar.gz
+
+          echo "@python %~dp0/../mesonbuild/meson.py %*" | out-file -encoding ascii \meson\bin\meson.cmd;
+          \meson\bin\meson.cmd --help
+
+          $ENV:PATH="/meson/bin;$ENV:PATH"
+          meson --version || true
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: meson-${{ vars.MESON_VERSION }}-win64
+          path: /meson
