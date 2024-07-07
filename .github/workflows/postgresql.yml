@@ -7,7 +7,7 @@ jobs:
       fail-fast: false
       matrix:
         version: ${{ fromJSON(vars.POSTGRESQL_VERSIONS) }}
-        
+
     runs-on: windows-latest
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
@@ -15,21 +15,21 @@ jobs:
       - name: Download dependencies
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: all-deps.yml 
+          workflow: all-deps.yml
           workflow_conclusion: success
           name: all-deps-win64
           path: /builddeps
           if_no_artifact_found: fail
 
       - name: Download
-        run: | 
+        run: |
           curl https://ftp.postgresql.org/pub/source/v${{ matrix.version }}/postgresql-${{ matrix.version }}.tar.gz -o ./postgresql-${{ matrix.version }}.tar.gz
           tar zxvf postgresql-${{ matrix.version }}.tar.gz
-          
+
       - name: Configure
-        run: | 
+        run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          
+
           >> config.pl echo # Configuration arguments for vcbuild.
           >> config.pl echo use strict;
           >> config.pl echo use warnings;
@@ -56,29 +56,29 @@ jobs:
           >> config.pl echo };
           >> config.pl echo.
           >> config.pl echo 1;
-         
+
           >> buildenv.pl echo $ENV{PATH} = "\\builddeps\\bin;\\builddeps\\bin64;$ENV{PATH}";
         shell: cmd
-          
+
       - name: Build
-        run: | 
+        run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
           build
         shell: cmd
-          
+
       - name: Test
-        run: | 
+        run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
           vcregress check
         shell: cmd
-          
+
       - name: Install
         run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
-          
+
           mkdir \postgresql
           perl install.pl \postgresql
-          
+
           copy \builddeps\bin64\icuuc*.dll \postgresql\bin\
           copy \builddeps\bin64\icudt*.dll \postgresql\bin\
           copy \builddeps\bin64\icuin*.dll \postgresql\bin\
@@ -108,7 +108,7 @@ jobs:
           path: |
             postgresql-${{ matrix.version }}/src/tools/msvc/config.pl
             postgresql-${{ matrix.version }}/src/tools/msvc/buildenv.pl
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:

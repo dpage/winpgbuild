@@ -4,34 +4,34 @@ on:
 jobs:
   build-libiconv:
     runs-on: windows-latest
-    
+
     defaults:
       run:
         shell: msys2 {0}
-        
+
     steps:
       - uses: msys2/setup-msys2@v2
         with:
           msystem: UCRT64
           update: true
           install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
-          
+
       - name: Download
-        run: | 
+        run: |
           curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
           tar zxvf libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
 
       - name: Configure
-        run: | 
+        run: |
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           ./configure --prefix=$(pwd)/winpgbuild \
             --disable-static \
             --disable-dependency-tracking \
             --disable-rpath \
             --disable-nls
-          
+
       - name: Build
-        run: | 
+        run: |
           cd libiconv-${{ vars.LIBICONV_VERSION }}
           make all
 
@@ -49,7 +49,7 @@ jobs:
           if-no-files-found: error
           name: libiconv-${{ vars.LIBICONV_VERSION }}-src
           path: libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:

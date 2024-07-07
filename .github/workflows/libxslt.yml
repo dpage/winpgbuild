@@ -10,7 +10,7 @@ jobs:
       - name: Download libxml2
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: libxml2.yml 
+          workflow: libxml2.yml
           workflow_conclusion: success
           name: libxml2-${{ vars.LIBXML2_VERSION }}-win64
           path: /build/libxml2
@@ -19,24 +19,24 @@ jobs:
       - name: Download zlib
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: zlib.yml 
+          workflow: zlib.yml
           workflow_conclusion: success
           name: zlib-${{ vars.ZLIB_VERSION }}-win64
           path: /build/zlib
           if_no_artifact_found: fail
-          
+
       - name: Download
-        run: | 
+        run: |
           curl https://gitlab.gnome.org/GNOME/libxslt/-/archive/v${{ vars.LIBXSLT_VERSION }}/libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz -o ./libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz
           tar zxvf libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz
 
       - name: Configure
-        run: | 
+        run: |
           cd libxslt-v${{ vars.LIBXSLT_VERSION }}/win32
           cscript configure.js prefix=\libxslt compiler=msvc zlib=yes include="\build\zlib\include;\build\libxml2\include\libxml2" lib="\build\zlib\lib;\build\libxml2\lib"
 
       - name: Build
-        run: | 
+        run: |
           cd libxslt-v${{ vars.LIBXSLT_VERSION }}/win32
           nmake -f Makefile.msvc
 
@@ -59,7 +59,7 @@ jobs:
           >> \libxslt\lib\pkgconfig\libxslt.pc echo Description: libxslt library
           >> \libxslt\lib\pkgconfig\libxslt.pc echo Requires: libxml-2.0 zlib
           >> \libxslt\lib\pkgconfig\libxslt.pc echo Libs: -L${libdir} -lxslt
-          >> \libxslt\lib\pkgconfig\libxslt.pc echo Cflags: -I${includedir}/libxslt -I${includedir}/libexslt 
+          >> \libxslt\lib\pkgconfig\libxslt.pc echo Cflags: -I${includedir}/libxslt -I${includedir}/libexslt
         shell: cmd
 
       - name: Upload Source
@@ -68,7 +68,7 @@ jobs:
           if-no-files-found: error
           name: libxslt-v${{ vars.LIBXSLT_VERSION }}-src
           path: libxslt-v${{ vars.LIBXSLT_VERSION }}.tar.gz
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:

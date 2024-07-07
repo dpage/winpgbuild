@@ -6,23 +6,23 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
-      
+
       - name: Download
-        run: | 
+        run: |
           curl https://zlib.net/zlib-${{ vars.ZLIB_VERSION }}.tar.gz -o ./zlib-${{ vars.ZLIB_VERSION }}.tar.gz
           tar zxvf zlib-${{ vars.ZLIB_VERSION }}.tar.gz
-          
+
       - name: Build
-        run: | 
+        run: |
           cd zlib-${{ vars.ZLIB_VERSION }}
           nmake -f win32/Makefile.msc
 
       - name: Install
         run: |
           cd zlib-${{ vars.ZLIB_VERSION }}
-          
+
           mkdir \zlib
-          
+
           mkdir \zlib\bin
           copy zlib1.dll \zlib\bin\
           copy zlib1.pdb \zlib\bin\
@@ -60,11 +60,10 @@ jobs:
           if-no-files-found: error
           name: zlib-${{ vars.ZLIB_VERSION }}-src
           path: zlib-${{ vars.ZLIB_VERSION }}.tar.gz
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: zlib-${{ vars.ZLIB_VERSION }}-win64
           path: /zlib
-      

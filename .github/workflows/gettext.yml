@@ -7,7 +7,7 @@ jobs:
     defaults:
       run:
         shell: msys2 {0}
-        
+
     steps:
       - uses: msys2/setup-msys2@v2
         with:
@@ -18,14 +18,14 @@ jobs:
       - name: Download libiconv
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: libiconv.yml 
+          workflow: libiconv.yml
           workflow_conclusion: success
           name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
-          
+
       - name: Download
-        run: | 
+        run: |
           curl https://ftp.gnu.org/pub/gnu/gettext/gettext-${{ vars.GETTEXT_VERSION }}.tar.gz -o ./gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
           tar zxvf gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
 
@@ -36,7 +36,7 @@ jobs:
           patch -p1 < ../gettext-0.22-0001-build-failure-on-mingw-close-module.patch
 
       - name: Configure
-        run: | 
+        run: |
           cd gettext-${{ vars.GETTEXT_VERSION }}
           ./configure CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types -Wno-error=implicit-function-declaration" \
             --prefix=$(pwd)/winpgbuild \
@@ -50,9 +50,9 @@ jobs:
             --disable-java \
             --enable-threads=windows \
             --enable-relocatable
-          
+
       - name: Build
-        run: | 
+        run: |
           cd gettext-${{ vars.GETTEXT_VERSION }}
           make all
 
@@ -70,7 +70,7 @@ jobs:
           if-no-files-found: error
           name: gettext-${{ vars.GETTEXT_VERSION }}-src
           path: gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:

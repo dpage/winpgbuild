@@ -7,28 +7,28 @@ jobs:
     defaults:
       run:
         shell: msys2 {0}
-        
+
     steps:
       - uses: msys2/setup-msys2@v2
         with:
           msystem: UCRT64
           update: true
           install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
-          
+
       - name: Download
         # We get this from the Debian repo, as OSSP is basically unavailable these days
-        run: | 
+        run: |
           curl https://salsa.debian.org/debian/ossp-uuid/-/archive/upstream/${{ vars.OSSP_UUID_VERSION }}/ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz -o ./ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz
           tar zxvf ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz
 
       - name: Configure
-        run: | 
+        run: |
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
           ./configure --prefix=$(pwd)/winpgbuild
         shell: bash
-          
+
       - name: Build
-        run: | 
+        run: |
           cd ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}
           make all
         shell: bash
@@ -73,7 +73,7 @@ jobs:
           if-no-files-found: error
           name: ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}-src
           path: ossp-uuid-upstream-${{ vars.OSSP_UUID_VERSION }}.tar.gz
-          
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:

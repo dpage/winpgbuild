@@ -8,7 +8,7 @@ jobs:
       - name: Download gettext
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: gettext.yml 
+          workflow: gettext.yml
           workflow_conclusion: success
           name: gettext-${{ vars.GETTEXT_VERSION }}-win64
           path: /builddeps
@@ -17,7 +17,7 @@ jobs:
       - name: Download icu
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: icu.yml 
+          workflow: icu.yml
           workflow_conclusion: success
           name: icu-${{ vars.ICU_VERSION }}-win64
           path: /builddeps
@@ -26,7 +26,7 @@ jobs:
       - name: Download krb5
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: krb5.yml 
+          workflow: krb5.yml
           workflow_conclusion: success
           name: krb5-${{ vars.KRB5_VERSION }}-win64
           path: /builddeps
@@ -35,16 +35,16 @@ jobs:
       - name: Download libiconv
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: libiconv.yml 
+          workflow: libiconv.yml
           workflow_conclusion: success
           name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
-          
+
       - name: Download libxml2
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: libxml2.yml 
+          workflow: libxml2.yml
           workflow_conclusion: success
           name: libxml2-${{ vars.LIBXML2_VERSION }}-win64
           path: /builddeps
@@ -53,7 +53,7 @@ jobs:
       - name: Download libxslt
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: libxslt.yml 
+          workflow: libxslt.yml
           workflow_conclusion: success
           name: libxslt-${{ vars.LIBXSLT_VERSION }}-win64
           path: /builddeps
@@ -62,16 +62,16 @@ jobs:
       - name: Download lz4
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: lz4.yml 
+          workflow: lz4.yml
           workflow_conclusion: success
           name: lz4-${{ vars.LZ4_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
-          
+
       - name: Download openssl
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: openssl.yml 
+          workflow: openssl.yml
           workflow_conclusion: success
           name: openssl-${{ vars.OPENSSL_VERSION }}-win64
           path: /builddeps
@@ -80,16 +80,16 @@ jobs:
       - name: Download ossp-uuid
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: ossp-uuid.yml 
+          workflow: ossp-uuid.yml
           workflow_conclusion: success
           name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
-          
+
       - name: Download zlib
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: zlib.yml 
+          workflow: zlib.yml
           workflow_conclusion: success
           name: zlib-${{ vars.ZLIB_VERSION }}-win64
           path: /builddeps
@@ -98,7 +98,7 @@ jobs:
       - name: Download zstd
         uses: dawidd6/action-download-artifact@v3
         with:
-          workflow: zstd.yml 
+          workflow: zstd.yml
           workflow_conclusion: success
           name: zstd-${{ vars.ZSTD_VERSION }}-win64
           path: /builddeps
