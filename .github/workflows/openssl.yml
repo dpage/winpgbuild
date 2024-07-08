@@ -9,7 +9,7 @@ jobs:
 
       - name: Download
         run: |
-          curl https://www.openssl.org/source/openssl-${{ vars.OPENSSL_VERSION }}.tar.gz -o ./openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
+          curl -L https://www.openssl.org/source/openssl-${{ vars.OPENSSL_VERSION }}.tar.gz -o ./openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
           tar zxvf openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
 
       - name: Configure
