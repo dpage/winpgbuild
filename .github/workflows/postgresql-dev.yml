@@ -31,7 +31,7 @@ jobs:
           curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_DEV_VERSION }}/postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz -o ./postgresql-dev-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
           tar zxvf postgresql-dev-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
 
-      - name: Install Meson and Flex etc
+      - name: Install additional tools
         run: |
           choco install pkgconfiglite
 
