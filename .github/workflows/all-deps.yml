@@ -68,6 +68,24 @@ jobs:
           path: /builddeps
           if_no_artifact_found: fail
 
+      - name: Download meson
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: meson.yml
+          workflow_conclusion: success
+          name: meson-${{ vars.MESON_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
+      - name: Download ninja
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: ninja.yml
+          workflow_conclusion: success
+          name: ninja-${{ vars.NINJA_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
       - name: Download openssl
         uses: dawidd6/action-download-artifact@v3
         with:
@@ -112,6 +130,15 @@ jobs:
           name: zstd-${{ vars.ZSTD_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
+
+      # github errors out due to too many files :(
+      - name: Remove docs
+        run: |
+          rm.exe -rf `
+              \builddeps\share\docs `
+              \builddeps\mesonbuild\docs `
+              "\builddeps\mesonbuild\test cases" `
+              \builddeps\html
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4

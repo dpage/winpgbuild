@@ -1,0 +1,24 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ninja:
+    runs-on: windows-latest
+    steps:
+      - name: Download
+        run: |
+          curl -L -o ninja.zip https://github.com/ninja-build/ninja/releases/download/v${{ vars.NINJA_VERSION }}/ninja-win.zip
+          mkdir /ninja/bin
+
+          unzip ninja.zip
+          cp ninja.exe /ninja/bin
+          ls /ninja/bin
+          $ENV:PATH="/ninja/bin;$ENV:PATH"
+          ninja --version || true
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: ninja-${{ vars.NINJA_VERSION }}-win64
+          path: /ninja

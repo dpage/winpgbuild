@@ -33,7 +33,6 @@ jobs:
 
       - name: Install Meson and Flex etc
         run: |
-          pip install meson ninja
           choco install pkgconfiglite
 
       - name: Configure
