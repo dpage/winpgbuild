@@ -104,6 +104,15 @@ jobs:
           path: /builddeps
           if_no_artifact_found: fail
 
+      - name: Download winflexbison
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: winflexbison.yml
+          workflow_conclusion: success
+          name: winflexbison-${{ vars.WINFLEXBISON_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
       - name: Download zlib
         uses: dawidd6/action-download-artifact@v3
         with:
