@@ -1,11 +1,13 @@
 # winpgbuild
 A repo containing Github actions for building PostgreSQL and it's dependencies 
-on Windows.
+on Windows. A number of build tools are also included to enable reproducable
+builds, though these are generally downloaded as pre-built utilities.
 
 ## Respository variables
 
 Github Action Repository Variables are used to specify the version of 
-components to build. These are listed below in square brackets.
+components to build or download. These are listed below in square 
+brackets.
 
 ### Dependencies
 
@@ -16,13 +18,16 @@ components to build. These are listed below in square brackets.
 * libxml2 [LIBXML2_VERSION]
 * libxslt [LIBXSLT_VERSION]
 * lz4 [LZ4_VERSION]
-* meson [MESON_VERSION]
-* ninja [NINJA_VERSION]
 * openssl [OPENSSL_VERSION]
 * ossp-uuid [OSSP_UUID_VERSION].
-* winflexbison [WINFLEXBISON_VERSION]
 * zlib [ZLIB_VERSION]
 * zstd [ZSTD_VERSION]
+
+### Tools
+
+* meson [MESON_VERSION]
+* ninja [NINJA_VERSION]
+* winflexbison [WINFLEXBISON_VERSION]
 
 ### PostgreSQL
 
@@ -41,7 +46,7 @@ for more information.
 
 The following dependencies are yet to be completed:
 
-* Readline
+* Readline (or libedit, as it's not GPL)
 * Perl
 * Python
 * TCL
