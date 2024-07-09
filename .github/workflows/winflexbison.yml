@@ -12,6 +12,12 @@ jobs:
           cd winflexbison
           unzip ../winflexbison.zip
 
+      # while the meson build nows about win_{bison,flex}, src/tools/msvc doesn't
+      - name: Rename Binaries
+        run: |
+          mv winflexbison/win_bison.exe winflexbison/bison.exe
+          mv winflexbison/win_flex.exe winflexbison/flex.exe
+
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
