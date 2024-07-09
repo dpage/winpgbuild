@@ -78,7 +78,7 @@ jobs:
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
 
           mkdir \postgresql
-          meson install
+          meson install --quiet
 
           copy \builddeps\bin64\icuuc*.dll \postgresql\bin\
           copy \builddeps\bin64\icudt*.dll \postgresql\bin\
