@@ -19,6 +19,13 @@ jobs:
           path: /builddeps
           if_no_artifact_found: fail
 
+      - name: Add build deps to path
+        run: |
+          # so binaries and libraries can be found/run
+          echo "/builddeps/bin" >> $ENV:GITHUB_PATH
+          echo "/builddeps" >> $ENV:GITHUB_PATH
+          echo "/postgresql-dev/bin" >> $ENV:GITHUB_PATH
+
       - name: Download
         run: |
           curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_DEV_VERSION }}/postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz -o ./postgresql-dev-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
