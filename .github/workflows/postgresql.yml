@@ -53,6 +53,13 @@ jobs:
           copy \builddeps\bin\libzstd.dll \postgresql\bin\
           copy \builddeps\bin\zlib1.dll \postgresql\bin\
 
+      - name: Add build deps to path
+        run: |
+          # so binaries and libraries can be found/run
+          echo "/builddeps/bin" >> $ENV:GITHUB_PATH
+          echo "/builddeps" >> $ENV:GITHUB_PATH
+          echo "/postgresql/bin" >> $ENV:GITHUB_PATH
+
       - name: Download
         run: |
           curl https://ftp.postgresql.org/pub/source/v${{ matrix.version }}/postgresql-${{ matrix.version }}.tar.gz -o ./postgresql-${{ matrix.version }}.tar.gz
@@ -88,8 +95,6 @@ jobs:
           >> config.pl echo };
           >> config.pl echo.
           >> config.pl echo 1;
-
-          >> buildenv.pl echo $ENV{PATH} = "\\builddeps\\bin;\\builddeps\\bin64;$ENV{PATH}";
         shell: cmd
 
       - name: Build
