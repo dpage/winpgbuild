@@ -53,6 +53,18 @@ jobs:
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
           meson test
 
+      - name: Upload Test Results
+        if: ${{ !success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test_run
+          path: |
+            postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build\testrun\**\*.log
+            postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build\testrun\**\regress_log_*
+            postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build\testrun\**\*.diffs
+            postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build\testrun\**\*.out
+            postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build\meson-logs\testlog.txt
+
       - name: Install
         run: |
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
