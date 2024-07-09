@@ -1,0 +1,20 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-winflexbison:
+    runs-on: windows-latest
+    steps:
+      - name: Download
+        run: |
+          curl -L -o winflexbison.zip "https://github.com/lexxmark/winflexbison/releases/download/v${{ vars.WINFLEXBISON_VERSION }}/win_flex_bison-${{ vars.WINFLEXBISON_VERSION }}.zip"
+          mkdir winflexbison
+          cd winflexbison
+          unzip ../winflexbison.zip
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: winflexbison-${{ vars.WINFLEXBISON_VERSION }}-win64
+          path: winflexbison
