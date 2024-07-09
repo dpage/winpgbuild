@@ -9,6 +9,16 @@ jobs:
         version: ${{ fromJSON(vars.POSTGRESQL_VERSIONS) }}
 
     runs-on: windows-latest
+
+    # -m enables parallelism
+    # verbosity:minimal + Summary reduce verbosity, while keeping a summary of
+    #   errors/warnings
+    # ForceNoAlign prevents msbuild from introducing line-breaks for long lines
+    # disable file tracker, we're never going to rebuild, and it slows down the
+    #   build
+    env:
+      MSBFLAGS: -m -verbosity:minimal "-consoleLoggerParameters:Summary;ForceNoAlign" /p:TrackFileAccess=false -nologo
+
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
