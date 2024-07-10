@@ -48,6 +48,18 @@ jobs:
           echo "/builddeps" >> $ENV:GITHUB_PATH
           echo "/postgresql-dev/bin" >> $ENV:GITHUB_PATH
 
+      # This is run as a privileged user. For some reason windows ends up
+      # creating the directories owned by "Administrator", which causes
+      # problems because when postgres drops privileges, it doesn't have
+      # sufficient rights to access them anymore!
+      #
+      # I have pulled most of my hair out over the last hours.
+      #
+      # See also https://www.postgresql.org/message-id/20240707064046.blgjxoqiywunbebl%40awork3.anarazel.de
+      - name: Work around privilege issue
+        run: |
+          icacls.exe . /inheritance:e /grant 'runneradmin:(OI)(CI)F'
+
       - name: Download
         run: |
           curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_DEV_VERSION }}/postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz -o ./postgresql-dev-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
@@ -60,10 +72,26 @@ jobs:
       - name: Configure
         run: |
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}
-          # so binaries can be found/run
-          $env:PATH="\postgresql-dev\bin\;\postgresql-dev\;$Env:PATH";
 
-          meson setup --wipe --pkg-config-path=\builddeps\lib\pkgconfig -Dextra_include_dirs=\builddeps\include -Dextra_lib_dirs=\builddeps\lib -Duuid=ossp --prefix=\postgresql-dev build
+          # don't use \path style paths for library search, link.exe ends up
+          # interpreting paths like that as flags!
+          $deps = resolve-path /builddeps
+
+          # can't enable some extra tests
+          # - libpq_encryption -> fails for unknown reasons
+          # - kerberos -> test not yet supported on windows
+          # - load_balance -> would need to set up hostnames
+          meson setup `
+              --prefix=\postgresql-dev `
+              "--cmake-prefix-path=${deps}" `
+              "--pkg-config-path=${deps}\lib\pkgconfig" `
+              "-Dextra_include_dirs=${deps}\include" `
+              "-Dextra_lib_dirs=${deps}\lib,${deps}\lib\amd64" `
+              "-DPG_TEST_EXTRA=ldap ssl" `
+              -Duuid=ossp `
+              -Db_pch=true `
+              -Dbuildtype=debugoptimized `
+              build
 
       - name: Build
         run: |
@@ -99,7 +127,7 @@ jobs:
         run: |
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
 
-          meson install
+          meson install --quiet
 
       - name: Upload Source
         uses: actions/upload-artifact@v4
