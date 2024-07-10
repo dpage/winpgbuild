@@ -77,21 +77,21 @@ jobs:
         run: |
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
 
-          mkdir \postgresql
+          mkdir \postgresql-dev
           meson install
 
-          copy \builddeps\bin64\icuuc*.dll \postgresql\bin\
-          copy \builddeps\bin64\icudt*.dll \postgresql\bin\
-          copy \builddeps\bin64\icuin*.dll \postgresql\bin\
-          copy \builddeps\bin\libiconv-2.dll \postgresql\bin\
-          copy \builddeps\bin\libintl-8.dll \postgresql\bin\
-          copy \builddeps\bin\libxml2.dll \postgresql\bin\
-          copy \builddeps\bin\libxslt.dll \postgresql\bin\
-          copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin\
-          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql\bin\
-          copy \builddeps\bin\liblz4.dll \postgresql\bin\
-          copy \builddeps\bin\libzstd.dll \postgresql\bin\
-          copy \builddeps\bin\zlib1.dll \postgresql\bin\
+          copy \builddeps\bin64\icuuc*.dll \postgresql-dev\bin\
+          copy \builddeps\bin64\icudt*.dll \postgresql-dev\bin\
+          copy \builddeps\bin64\icuin*.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libiconv-2.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libintl-8.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libxml2.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libxslt.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libssl-*-x64.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql-dev\bin\
+          copy \builddeps\bin\liblz4.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libzstd.dll \postgresql-dev\bin\
+          copy \builddeps\bin\zlib1.dll \postgresql-dev\bin\
 
       - name: Upload Source
         uses: actions/upload-artifact@v4
