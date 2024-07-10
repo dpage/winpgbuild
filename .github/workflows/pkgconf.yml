@@ -1,0 +1,72 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  # There are no obviously trustworth places (it's typically old sourceforge
+  # pages) to download pkgconf from. Doing the choco install every time is too
+  # slow (and uses such an old sourceforge page). So it seems easiest to just
+  # build it here.
+  build-pkgconf:
+    runs-on: windows-latest
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Download meson
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: meson.yml
+          workflow_conclusion: success
+          name: meson-${{ vars.MESON_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
+      - name: Download ninja
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: ninja.yml
+          workflow_conclusion: success
+          name: ninja-${{ vars.NINJA_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
+      - name: Add build deps to path
+        run: |
+          echo "/builddeps/bin" >> $ENV:GITHUB_PATH
+
+      - name: Download
+        run: |
+          curl.exe -L https://github.com/pkgconf/pkgconf/archive/refs/tags/pkgconf-${{ vars.PKGCONF_VERSION }}.tar.gz -o pkgconf-${{ vars.PKGCONF_VERSION }}.tar.gz
+          tar zxvf ./pkgconf-${{ vars.PKGCONF_VERSION }}.tar.gz
+          mv pkgconf-pkgconf-${{ vars.PKGCONF_VERSION }} pkgconf
+        shell: bash
+
+      - name: Configure
+        run: |
+          cd pkgconf
+          meson setup build -Dbuildtype=release --default-library static --prefix \pkgconf
+
+      - name: Build
+        run: |
+          cd pkgconf
+          ninja -C build
+
+      - name: Install
+        run: |
+          cd pkgconf
+          ninja -C build install
+          # that way we don't need to tell meson about the non-standard name
+          cp \pkgconf\bin\pkgconf.exe \pkgconf\bin\pkg-config.exe
+
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: pkgconf-${{ vars.PKGCONF_VERSION }}-src
+          path: pkgconf-${{ vars.PKGCONF_VERSION }}.tar.gz
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: pkgconf-${{ vars.PKGCONF_VERSION }}-win64
+          path: /pkgconf
