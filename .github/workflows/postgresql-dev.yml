@@ -25,28 +25,28 @@ jobs:
       # duplicate knowledge about aberrant paths like "bin64".
       - name: Install Dependencies
         run: |
-          mkdir \postgresql-dev
-          mkdir \postgresql-dev\bin
+          mkdir \postgresql
+          mkdir \postgresql\bin
 
-          copy \builddeps\bin64\icuuc*.dll \postgresql-dev\bin\
-          copy \builddeps\bin64\icudt*.dll \postgresql-dev\bin\
-          copy \builddeps\bin64\icuin*.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libiconv-2.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libintl-8.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libxml2.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libxslt.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libssl-*-x64.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql-dev\bin\
-          copy \builddeps\bin\liblz4.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libzstd.dll \postgresql-dev\bin\
-          copy \builddeps\bin\zlib1.dll \postgresql-dev\bin\
+          copy \builddeps\bin64\icuuc*.dll \postgresql\bin\
+          copy \builddeps\bin64\icudt*.dll \postgresql\bin\
+          copy \builddeps\bin64\icuin*.dll \postgresql\bin\
+          copy \builddeps\bin\libiconv-2.dll \postgresql\bin\
+          copy \builddeps\bin\libintl-8.dll \postgresql\bin\
+          copy \builddeps\bin\libxml2.dll \postgresql\bin\
+          copy \builddeps\bin\libxslt.dll \postgresql\bin\
+          copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin\
+          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql\bin\
+          copy \builddeps\bin\liblz4.dll \postgresql\bin\
+          copy \builddeps\bin\libzstd.dll \postgresql\bin\
+          copy \builddeps\bin\zlib1.dll \postgresql\bin\
 
       - name: Add build deps to path
         run: |
           # so binaries and libraries can be found/run
           echo "/builddeps/bin" >> $ENV:GITHUB_PATH
           echo "/builddeps" >> $ENV:GITHUB_PATH
-          echo "/postgresql-dev/bin" >> $ENV:GITHUB_PATH
+          echo "/postgresql/bin" >> $ENV:GITHUB_PATH
 
       # This is run as a privileged user. For some reason windows ends up
       # creating the directories owned by "Administrator", which causes
@@ -82,7 +82,7 @@ jobs:
           # - kerberos -> test not yet supported on windows
           # - load_balance -> would need to set up hostnames
           meson setup `
-              --prefix=\postgresql-dev `
+              --prefix=\postgresql `
               "--cmake-prefix-path=${deps}" `
               "--pkg-config-path=${deps}\lib\pkgconfig" `
               "-Dextra_include_dirs=${deps}\include" `
@@ -141,7 +141,7 @@ jobs:
         with:
           if-no-files-found: error
           name: postgresql-dev-${{ vars.POSTGRESQL_DEV_VERSION }}-win64
-          path: /postgresql-dev
+          path: /postgresql
 
       - name: Upload Meson Log
         if: always()
