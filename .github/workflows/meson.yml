@@ -18,11 +18,3 @@ jobs:
           \meson\bin\meson.cmd --help
 
           $ENV:PATH="/meson/bin;$ENV:PATH"
-          meson --version || true
-
-      - name: Upload Binaries
-        uses: actions/upload-artifact@v4
-        with:
-          if-no-files-found: error
-          name: meson-${{ vars.MESON_VERSION }}-win64
-          path: /meson

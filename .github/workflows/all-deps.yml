@@ -68,13 +68,20 @@ jobs:
           path: /builddeps
           if_no_artifact_found: fail
 
+      - name: Cache Meson
+        uses: actions/cache@v4
+        id: cacheMeson
+        with:
+          path: /meson/bin/
+          key: meson-${{ vars.MESON_VERSION }}-win64
+          
       - name: Download meson
+        if: ${{steps.cacheMeson.outputs.cache-hit != 'true'}}
         uses: dawidd6/action-download-artifact@v3
         with:
           workflow: meson.yml
           workflow_conclusion: success
           name: meson-${{ vars.MESON_VERSION }}-win64
-          path: /builddeps
           if_no_artifact_found: fail
 
       - name: Download ninja
