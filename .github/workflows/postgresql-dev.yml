@@ -19,6 +19,28 @@ jobs:
           path: /builddeps
           if_no_artifact_found: fail
 
+      # Copy libraries requires at runtime to installation directory.
+      #
+      # Do so before configuring / building postgres, otherwise we need to
+      # duplicate knowledge about aberrant paths like "bin64".
+      - name: Install Dependencies
+        run: |
+          mkdir \postgresql-dev
+          mkdir \postgresql-dev\bin
+
+          copy \builddeps\bin64\icuuc*.dll \postgresql-dev\bin\
+          copy \builddeps\bin64\icudt*.dll \postgresql-dev\bin\
+          copy \builddeps\bin64\icuin*.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libiconv-2.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libintl-8.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libxml2.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libxslt.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libssl-*-x64.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql-dev\bin\
+          copy \builddeps\bin\liblz4.dll \postgresql-dev\bin\
+          copy \builddeps\bin\libzstd.dll \postgresql-dev\bin\
+          copy \builddeps\bin\zlib1.dll \postgresql-dev\bin\
+
       - name: Add build deps to path
         run: |
           # so binaries and libraries can be found/run
@@ -105,21 +127,7 @@ jobs:
         run: |
           cd postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}\build
 
-          mkdir \postgresql-dev
           meson install --quiet
-
-          copy \builddeps\bin64\icuuc*.dll \postgresql-dev\bin\
-          copy \builddeps\bin64\icudt*.dll \postgresql-dev\bin\
-          copy \builddeps\bin64\icuin*.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libiconv-2.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libintl-8.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libxml2.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libxslt.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libssl-*-x64.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql-dev\bin\
-          copy \builddeps\bin\liblz4.dll \postgresql-dev\bin\
-          copy \builddeps\bin\libzstd.dll \postgresql-dev\bin\
-          copy \builddeps\bin\zlib1.dll \postgresql-dev\bin\
 
       - name: Upload Source
         uses: actions/upload-artifact@v4
