@@ -46,7 +46,6 @@ for more information.
 
 The following dependencies are yet to be completed:
 
-* Readline (or libedit, as it's not GPL)
 * Perl
 * Python
 * TCL
@@ -56,4 +55,5 @@ could be in the future under Meson.
 
 * Bonjour
 * LLVM
+* Readline (or libedit, as it's not GPL)
 
