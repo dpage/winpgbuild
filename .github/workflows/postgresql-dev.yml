@@ -26,6 +26,18 @@ jobs:
           echo "/builddeps" >> $ENV:GITHUB_PATH
           echo "/postgresql-dev/bin" >> $ENV:GITHUB_PATH
 
+      # This is run as a privileged user. For some reason windows ends up
+      # creating the directories owned by "Administrator", which causes
+      # problems because when postgres drops privileges, it doesn't have
+      # sufficient rights to access them anymore!
+      #
+      # I have pulled most of my hair out over the last hours.
+      #
+      # See also https://www.postgresql.org/message-id/20240707064046.blgjxoqiywunbebl%40awork3.anarazel.de
+      - name: Work around privilege issue
+        run: |
+          icacls.exe . /inheritance:e /grant 'runneradmin:(OI)(CI)F'
+
       - name: Download
         run: |
           curl https://ftp.postgresql.org/pub/source/v${{ vars.POSTGRESQL_DEV_VERSION }}/postgresql-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz -o ./postgresql-dev-${{ vars.POSTGRESQL_DEV_VERSION }}.tar.gz
