@@ -104,6 +104,15 @@ jobs:
           path: /builddeps
           if_no_artifact_found: fail
 
+      - name: Download pkgconf
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: pkgconf.yml
+          workflow_conclusion: success
+          name: pkgconf-${{ vars.PKGCONF_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
       - name: Download winflexbison
         uses: dawidd6/action-download-artifact@v3
         with:

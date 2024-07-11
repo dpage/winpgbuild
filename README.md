@@ -27,6 +27,7 @@ brackets.
 
 * meson [MESON_VERSION]
 * ninja [NINJA_VERSION]
+* pkgconf [PKGCONF_VERSION]
 * winflexbison [WINFLEXBISON_VERSION]
 
 ### PostgreSQL
