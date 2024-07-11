@@ -10,6 +10,9 @@ jobs:
         shell: msys2 {0}
 
     steps:
+      - name: setup environmen        
+        uses: davecramer/winpgbuild@workflow_call
+
       - uses: msys2/setup-msys2@v2
         with:
           msystem: UCRT64
@@ -18,12 +21,12 @@ jobs:
 
       - name: Download
         run: |
-          curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
-          tar zxvf libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
+          curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ env.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
+          tar zxvf libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
 
       - name: Configure
         run: |
-          cd libiconv-${{ vars.LIBICONV_VERSION }}
+          cd libiconv-${{ env.LIBICONV_VERSION }}
           ./configure --prefix=$(pwd)/winpgbuild \
             --disable-static \
             --disable-dependency-tracking \
@@ -32,12 +35,12 @@ jobs:
 
       - name: Build
         run: |
-          cd libiconv-${{ vars.LIBICONV_VERSION }}
+          cd libiconv-${{ env.LIBICONV_VERSION }}
           make all
 
       - name: Install
         run: |
-          cd libiconv-${{ vars.LIBICONV_VERSION }}
+          cd libiconv-${{ env.LIBICONV_VERSION }}
           make install
 
           cp winpgbuild/lib/libiconv.dll.a winpgbuild/lib/iconv.lib
@@ -47,12 +50,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: libiconv-${{ vars.LIBICONV_VERSION }}-src
-          path: libiconv-${{ vars.LIBICONV_VERSION }}.tar.gz
+          name: libiconv-${{ env.LIBICONV_VERSION }}-src
+          path: libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
-          path: libiconv-${{ vars.LIBICONV_VERSION }}/winpgbuild
+          name: libiconv-${{ env.LIBICONV_VERSION }}-win64
+          path: libiconv-${{ env.LIBICONV_VERSION }}/winpgbuild

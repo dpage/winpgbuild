@@ -1,0 +1,23 @@
+{
+    "packages": [
+      {
+        "name": "openssl",
+        "version": "3.0.13",
+        "source": "https://openssl.org/source/openssl-3.0.14.tar.gz",
+        "licence": "https://www.openssl.org/source/apache-license-2.0.txt"
+      },
+      {
+        "name": "krb5",
+        "version": "1.21.3",
+        "source": "https://kerberos.org/dist/krb5/1.21/krb5-1.21.3.tar.gz",
+        "licence": "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
+      },
+      {
+        "name": "libiconv",
+        "version": "1.17",
+        "source": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "licence": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+      },  
+      }
+    ]
+  }
