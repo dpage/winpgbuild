@@ -1,10 +1,13 @@
-name: 'Versions'
-description: 'List all versions of a package'
+name: 'Set all versions of a package'
+description: 'Set all versions of a package'
 runs:
   using: "composite"
   steps:
+    - name: Checkout code
+      uses: actions/checkout@v2    
+
     - name: 'Set all versions of a package'
       shell: powershell
       run: |
-        $json = (Get-Content ".github/workflows/manifest.json" -Raw) | ConvertFrom-Json
-        ($json.packages) | foreach-object {  write "$($_.name.ToUpper())_VERSION=$($_.version)" >> $GITHUB_ENV}
+        $json = (Get-Content "./manifest.json" -Raw) | ConvertFrom-Json
+        ($json.packages) | foreach-object {  write "$($_.name.ToUpper())_VERSION=$($_.version)" >> $env:GITHUB_ENV}
