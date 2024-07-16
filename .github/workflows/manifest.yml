@@ -6,14 +6,24 @@ on:
       config-path:        
         required: true
         default: ./manifest.json
-        type: string  
+        type: string
+    outputs:
+      json_versions:
+        description: "json versions"
+        value: ${{ jobs.manifest.outputs.json_version }}
 
 jobs:
+  showenv:
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        run: |
+           echo ${{env.GITHUB_OUTPUT}}
   manifest:
     runs-on: windows-latest
-      
-    steps:
-      
+    outputs:
+      json_version: ${{steps.env.outputs.json}}      
+    steps:     
       - name: Checkout code
         uses: actions/checkout@v2    
 
@@ -22,9 +32,5 @@ jobs:
         shell: powershell
         run: |
           $json = (Get-Content ${{inputs.config-path}} -Raw) | ConvertFrom-Json
-          ($json.packages) | foreach-object {  write "$($_.name.ToUpper())_VERSION=$($_.version)" >> $env:GITHUB_ENV}
-      
-      - name: show environment
-        shell: powershell
-        run:  $env:GITHUB_OUTPUT  
-   
+          write "json=$json" >> $env:GITHUB_OUTPUT
+         
