@@ -3,8 +3,6 @@ description: 'Set all versions of a package'
 runs:
   using: "composite"
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v2    
 
     - name: 'Set all versions of a package'
       shell: powershell

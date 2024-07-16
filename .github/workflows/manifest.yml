@@ -22,7 +22,7 @@ jobs:
         shell: powershell
         run: |
           $json = (Get-Content ${{inputs.config-path}} -Raw) | ConvertFrom-Json
-          ($json.packages) | foreach-object {  write "$($_.name.ToUpper())_VERSION=$($_.version)" >> $env:GITHUB_OUTPUT}
+          ($json.packages) | foreach-object {  write "$($_.name.ToUpper())_VERSION=$($_.version)" >> $env:GITHUB_ENV}
       
       - name: show environment
         shell: powershell
