@@ -3,28 +3,20 @@ on:
   workflow_call:
 
 jobs:
-  getjson:
+  get-versions:
     uses: ./.github/workflows/manifest.yml
     with:
       config-path: manifest.json
 
-  setup-environment:
-    runs-on: windows-latest
-    needs: getjson
-    steps:
-      - name: read versions
-        id: versions
-        run: |
-          $json = ${{needs.getjson.outputs.json}} 
-          ($json.packages) | foreach-object {  write "$($_.name.ToUpper())_VERSION=$($_.version)" >> $env:GITHUB_ENV}
-
   build-libiconv:
     runs-on: windows-latest
-    needs: setup-environment    
+    needs: get-versions    
     defaults:
       run:
         shell: msys2 {0}
 
+    env:
+      LIBICONV_VERSION: ${{needs.get-versions.outputs.LIBICONV_VERSION}}
     steps:
       - uses: msys2/setup-msys2@v2
         with:

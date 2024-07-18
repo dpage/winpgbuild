@@ -7,30 +7,70 @@ on:
         required: true
         default: ./manifest.json
         type: string
+    # Map the workflow outputs to job outputs
     outputs:
-      json_versions:
-        description: "json versions"
-        value: ${{ jobs.manifest.outputs.json_version }}
-
+      OPENSSL_VERSION:
+        description: "Version of openssl"
+        value: ${{ jobs.set_versions.outputs.output1 }}
+      LIBICONV_VERSION:
+        description: "libiconv version"
+        value: ${{ jobs.set_versions.outputs.output2 }}
+      KRB_VERSION:
+        description: "krb version"
+        value: ${{ jobs.set_versions.outputs.output3}}  
+      GETTEXT_VERSION:
+        description: "gettext version"
+        value: ${{ jobs.set_versions.outputs.output4}}  
+      ICU_VERSION:
+        description: "icu version"
+        value: ${{ jobs.set_versions.outputs.output5}}  
+      LIBXML2_VERSION:
+        description: "libxml2 version"
+        value: ${{ jobs.set_versions.outputs.output6}}  
+      LIBXSLT_VERSION:
+        description: "libxslt version"
+        value: ${{ jobs.set_versions.outputs.output7}}  
+      LZ4_VERSION:
+        description: "lz4 version"
+        value: ${{ jobs.set_versions.outputs.output8}}  
+      MESON_VERSION:
+        description: "meson version"
+        value: ${{ jobs.set_versions.outputs.output9}}  
+      NINJA_VERSION:
+        description: "ninja version"
+        value: ${{ jobs.set_versions.outputs.output10}}  
+      OSSP_UUID_VERSION:
+        description: "ossp_uuid version"
+        value: ${{ jobs.set_versions.outputs.output11}}  
+      PKGCONF_VERSION:
+        description: "pkgconf version"
+        value: ${{ jobs.set_versions.outputs.output12}}  
+                          
 jobs:
-  showenv:
-    runs-on: ubuntu-latest
-    steps:
-      - name:
-        run: |
-           echo ${{env.GITHUB_OUTPUT}}
-  manifest:
+  set_versions:
+    name: Generate output
     runs-on: windows-latest
+    # Map the job outputs to step outputs
     outputs:
-      json_version: ${{steps.env.outputs.json}}      
-    steps:     
+      output1: ${{ steps.step1.outputs.OPENSSL_VERSION }}
+      output2: ${{ steps.step1.outputs.LIBICONV_VERSION }}
+      output3: ${{ steps.step1.outputs.KRB_VERSION }}
+      output4: ${{ steps.step1.outputs.GETTEXT_VERSION }}
+      output5: ${{ steps.step1.outputs.ICU_VERSION }}
+      output6: ${{ steps.step1.outputs.LIBXML2_VERSION }}
+      output7: ${{ steps.step1.outputs.LIBXSLT_VERSION }}
+      output8: ${{ steps.step1.outputs.LZ4_VERSION }}
+      output9: ${{ steps.step1.outputs.MESON_VERSION }}
+      output10: ${{ steps.step1.outputs.NINJA_VERSION }}
+      output11: ${{ steps.step1.outputs.OSSP_UUID_VERSION }}
+      output12: ${{ steps.step1.outputs.PKGCONF_VERSION }}
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2    
-
-      - name: environment
-        id: env
-        shell: powershell
+      - name: step1
+        shell: powershell  
+        id: step1
         run: |
           $json = (Get-Content ${{inputs.config-path}} -Raw) | ConvertFrom-Json
-          write "json=$json" >> $env:GITHUB_OUTPUT
+          ($json.packages) | foreach-object {  write "$($_.name.ToUpper())_VERSION=$($_.version)" >> $env:GITHUB_OUTPUT}
          

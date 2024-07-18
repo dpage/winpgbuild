@@ -15,8 +15,62 @@
       {
         "name": "libiconv",
         "version": "1.17",
-        "source": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "licence": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-      }  
+        "source": "https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.17.tar.gz",
+        "licence": "https://www.gnu.org/licenses/lgpl-2.1.html"
+      },
+      {
+        "name": "gettext",
+        "version": "0.22.5",
+        "source": "https://ftp.gnu.org/pub/gnu/gettext/gettext-0.22.5.tar.gz",
+        "licence": "https://www.gnu.org/software/gettext/manual/html_node/GNU-GPL.html"
+      },
+      {
+        "name": "icu",
+        "version": "75.1",
+        "source": "https://github.com/unicode-org/icu/archive/refs/tags/release-75-1.tar.gz",
+        "licence": "https://github.com/unicode-org/icu/blob/main/LICENSE"
+      },
+      {
+        "name": "libxml2",
+        "version": "75.1",
+        "source": "https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.11.8/libxml2-v2.11.8.tar.gz",
+        "licence": "https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads"
+      },
+      {
+        "name": "libxslt",
+        "version": "1.1.39",
+        "source": "https://gitlab.gnome.org/GNOME/libxslt/-/archive/v1.1.39/libxslt-v1.1.39.tar.gz",
+        "licence": "https://gitlab.gnome.org/GNOME/libxslt/-/blob/master/Copyright?ref_type=heads"
+      },
+      {
+        "name": "lz4",
+        "version": "1.9.4",
+        "source": "https://github.com/lz4/lz4/releases/download/v1.9.4/lz4-1.9.4.tar.gz",
+        "licence": "https://github.com/unicode-org/icu/blob/main/LICENSE"
+      },
+      {
+        "name": "meson",
+        "version": "1.4.1",
+        "source": "https://github.com/mesonbuild/meson/releases/download/1.4.1/meson-1.4.1.tar.gz",
+        "licence": "https://github.com/mesonbuild/meson/#"
+      },
+      {
+        "name": "ninja",
+        "version": "v1.12.1",
+        "source": "https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip",
+        "licence": "https://github.com/ninja-build/ninja/?tab=Apache-2.0-1-ov-file"
+      },
+      {
+        "name": "ossp-uuid",
+        "version": "1.6.2",
+        "source": "https://salsa.debian.org/debian/ossp-uuid/-/archive/upstream/1.6.2/ossp-uuid-upstream-1.6.2.tar.gz",
+        "licence": "https://salsa.debian.org/debian/ossp-uuid/-/blob/master/README?ref_type=heads"
+      },
+      {
+        "name": "pkgconf",
+        "version": "2.2.0",
+        "source":"https://github.com/pkgconf/pkgconf/archive/refs/tags/pkgconf-2.2.0.tar.gz",
+        "licence": "https://github.com/pkgconf/pkgconf?tab=License-1-ov-file#readme"
+      }                         
     ]
   }
