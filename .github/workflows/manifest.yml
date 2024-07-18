@@ -15,7 +15,7 @@ on:
       LIBICONV_VERSION:
         description: "libiconv version"
         value: ${{ jobs.set_versions.outputs.output2 }}
-      KRB_VERSION:
+      KRB5_VERSION:
         description: "krb version"
         value: ${{ jobs.set_versions.outputs.output3}}  
       GETTEXT_VERSION:
@@ -44,7 +44,18 @@ on:
         value: ${{ jobs.set_versions.outputs.output11}}  
       PKGCONF_VERSION:
         description: "pkgconf version"
-        value: ${{ jobs.set_versions.outputs.output12}}  
+        value: ${{ jobs.set_versions.outputs.output12}}
+      ZLIB_VERSION:
+        description: "zlib version"
+        value: ${{ jobs.set_versions.outputs.output13}}
+      ZSTD_VERSION:
+        description: "zstd version"
+        value: ${{ jobs.set_versions.outputs.output14}}
+      WINFLEXBISON_VERSION:
+        description: "winflex bison version"
+        value: ${{ jobs.set_versions.outputs.output15}}
+
+
                           
 jobs:
   set_versions:
@@ -54,7 +65,7 @@ jobs:
     outputs:
       output1: ${{ steps.step1.outputs.OPENSSL_VERSION }}
       output2: ${{ steps.step1.outputs.LIBICONV_VERSION }}
-      output3: ${{ steps.step1.outputs.KRB_VERSION }}
+      output3: ${{ steps.step1.outputs.KRB5_VERSION }}
       output4: ${{ steps.step1.outputs.GETTEXT_VERSION }}
       output5: ${{ steps.step1.outputs.ICU_VERSION }}
       output6: ${{ steps.step1.outputs.LIBXML2_VERSION }}
@@ -64,6 +75,10 @@ jobs:
       output10: ${{ steps.step1.outputs.NINJA_VERSION }}
       output11: ${{ steps.step1.outputs.OSSP_UUID_VERSION }}
       output12: ${{ steps.step1.outputs.PKGCONF_VERSION }}
+      output13: ${{ steps.step1.outputs.ZLIB_VERSION }}
+      output14: ${{ steps.step1.outputs.ZSTD_VERSION }}
+      output15: ${{ steps.step1.outputs.WINFLEXBISON_VERSION }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2    

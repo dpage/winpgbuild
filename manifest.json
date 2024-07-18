@@ -71,6 +71,24 @@
         "version": "2.2.0",
         "source":"https://github.com/pkgconf/pkgconf/archive/refs/tags/pkgconf-2.2.0.tar.gz",
         "licence": "https://github.com/pkgconf/pkgconf?tab=License-1-ov-file#readme"
+      },
+      {
+        "name": "zlib",
+        "version": "1.3.1",
+        "source":"https://zlib.net/zlib-1.3.1.tar.gz",
+        "licence": "https://zlib.net/zlib_license.html"
+      },
+      {
+        "name": "zstd",
+        "version": "1.5.6",
+        "source":"https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz",
+        "licence": "https://github.com/facebook/zstd/blob/dev/LICENSE"
+      },
+      {
+        "name": "winflexbison",
+        "version": "2.5.24",
+        "source":"https://github.com/lexxmark/winflexbison/releases/download/v2.5.24/win_flex_bison-2.5.24.zip",
+        "licence": "https://github.com/lexxmark/winflexbison/blob/master/flex/src/COPYING, https://github.com/lexxmark/winflexbison/blob/master/bison/src/COPYING"
       }                         
     ]
   }

@@ -1,9 +1,19 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   build-libxml2:
     runs-on: windows-latest
+    needs: get-versions
+    env:
+      ZLIB_VERSION: ${{needs.get-versions.outputs.ZLIB_VERSION}}
+      LIBXML2_VERSION: ${{needs.get-versions.outputs.LIBXML2_VERSION}}
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
@@ -12,40 +22,40 @@ jobs:
         with:
           workflow: zlib.yml
           workflow_conclusion: success
-          name: zlib-${{ vars.ZLIB_VERSION }}-win64
+          name: zlib-${{ env.ZLIB_VERSION }}-win64
           path: /build/zlib
           if_no_artifact_found: fail
 
       - name: Download
         run: |
-          curl https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${{ vars.LIBXML2_VERSION }}/libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz -o ./libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz
-          tar zxvf libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz
+          curl https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${{ env.LIBXML2_VERSION }}/libxml2-v${{ env.LIBXML2_VERSION }}.tar.gz -o ./libxml2-v${{ env.LIBXML2_VERSION }}.tar.gz
+          tar zxvf libxml2-v${{ env.LIBXML2_VERSION }}.tar.gz
 
       - name: Configure
         run: |
-          cd libxml2-v${{ vars.LIBXML2_VERSION }}
+          cd libxml2-v${{ env.LIBXML2_VERSION }}
           cmake -B build -D CMAKE_INSTALL_PREFIX=/libxml2 -D CMAKE_PREFIX_PATH="/build/zlib" -D LIBXML2_WITH_ICONV=OFF -D LIBXML2_WITH_LZMA=OFF -D LIBXML2_WITH_PYTHON=OFF
 
       - name: Build
         run: |
-          cd libxml2-v${{ vars.LIBXML2_VERSION }}
+          cd libxml2-v${{ env.LIBXML2_VERSION }}
           cmake --build build --config Release
 
       - name: Install
         run: |
-          cd libxml2-v${{ vars.LIBXML2_VERSION }}
+          cd libxml2-v${{ env.LIBXML2_VERSION }}
           cmake --install build
 
       - name: Upload Source
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: libxml2-v${{ vars.LIBXML2_VERSION }}-src
-          path: libxml2-v${{ vars.LIBXML2_VERSION }}.tar.gz
+          name: libxml2-v${{ env.LIBXML2_VERSION }}-src
+          path: libxml2-v${{ env.LIBXML2_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: libxml2-${{ vars.LIBXML2_VERSION }}-win64
+          name: libxml2-${{ env.LIBXML2_VERSION }}-win64
           path: /libxml2

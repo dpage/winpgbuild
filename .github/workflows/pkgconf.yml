@@ -1,13 +1,25 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   # There are no obviously trustworth places (it's typically old sourceforge
   # pages) to download pkgconf from. Doing the choco install every time is too
   # slow (and uses such an old sourceforge page). So it seems easiest to just
   # build it here.
   build-pkgconf:
     runs-on: windows-latest
+    needs: get-versions
+    env:
+      MESON_VERSION: ${{needs.get-versions.outputs.MESON_VERSION}}
+      NINJA_VERSION: ${{needs.get-versions.outputs.NINJA_VERSION}}
+      PKGCONF_VERSION: ${{needs.get-versions.outputs.PKGCONF_VERSION}}
+
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
@@ -16,7 +28,7 @@ jobs:
         with:
           workflow: meson.yml
           workflow_conclusion: success
-          name: meson-${{ vars.MESON_VERSION }}-win64
+          name: meson-${{ env.MESON_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -25,7 +37,7 @@ jobs:
         with:
           workflow: ninja.yml
           workflow_conclusion: success
-          name: ninja-${{ vars.NINJA_VERSION }}-win64
+          name: ninja-${{ env.NINJA_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -35,9 +47,9 @@ jobs:
 
       - name: Download
         run: |
-          curl.exe -L https://github.com/pkgconf/pkgconf/archive/refs/tags/pkgconf-${{ vars.PKGCONF_VERSION }}.tar.gz -o pkgconf-${{ vars.PKGCONF_VERSION }}.tar.gz
-          tar zxvf ./pkgconf-${{ vars.PKGCONF_VERSION }}.tar.gz
-          mv pkgconf-pkgconf-${{ vars.PKGCONF_VERSION }} pkgconf
+          curl.exe -L https://github.com/pkgconf/pkgconf/archive/refs/tags/pkgconf-${{ env.PKGCONF_VERSION }}.tar.gz -o pkgconf-${{ env.PKGCONF_VERSION }}.tar.gz
+          tar zxvf ./pkgconf-${{ env.PKGCONF_VERSION }}.tar.gz
+          mv pkgconf-pkgconf-${{ env.PKGCONF_VERSION }} pkgconf
         shell: bash
 
       - name: Configure
@@ -61,12 +73,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: pkgconf-${{ vars.PKGCONF_VERSION }}-src
-          path: pkgconf-${{ vars.PKGCONF_VERSION }}.tar.gz
+          name: pkgconf-${{ env.PKGCONF_VERSION }}-src
+          path: pkgconf-${{ env.PKGCONF_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: pkgconf-${{ vars.PKGCONF_VERSION }}-win64
+          name: pkgconf-${{ env.PKGCONF_VERSION }}-win64
           path: /pkgconf

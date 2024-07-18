@@ -1,25 +1,34 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   build-lz4:
     runs-on: windows-latest
+    needs: get-versions
+    env:
+      LZ4_VERSION: ${{needs.get-versions.outputs.LZ4_VERSION}}
     steps:
       - uses: microsoft/setup-msbuild@v2
 
       - name: Download
         run: |
-          curl -L https://github.com/lz4/lz4/releases/download/v${{ vars.LZ4_VERSION }}/lz4-${{ vars.LZ4_VERSION }}.tar.gz -o ./lz4-${{ vars.LZ4_VERSION }}.tar.gz
-          tar zxvf lz4-${{ vars.LZ4_VERSION }}.tar.gz
+          curl -L https://github.com/lz4/lz4/releases/download/v${{ env.LZ4_VERSION }}/lz4-${{ env.LZ4_VERSION }}.tar.gz -o ./lz4-${{ env.LZ4_VERSION }}.tar.gz
+          tar zxvf lz4-${{ env.LZ4_VERSION }}.tar.gz
 
       - name: Build
         run: |
-          cd lz4-${{ vars.LZ4_VERSION }}
+          cd lz4-${{ env.LZ4_VERSION }}
           msbuild build\VS2022\lz4.sln -target:liblz4-dll /property:Configuration=Release /property:Platform=x64
 
       - name: Install
         run: |
-          cd lz4-${{ vars.LZ4_VERSION }}
+          cd lz4-${{ env.LZ4_VERSION }}
 
           mkdir \lz4
 
@@ -43,7 +52,7 @@ jobs:
           >> \lz4\lib\pkgconfig\liblz4.pc echo includedir=${prefix}/include
           >> \lz4\lib\pkgconfig\liblz4.pc echo.
           >> \lz4\lib\pkgconfig\liblz4.pc echo Name: liblz4
-          >> \lz4\lib\pkgconfig\liblz4.pc echo Version: ${{ vars.LZ4_VERSION }}
+          >> \lz4\lib\pkgconfig\liblz4.pc echo Version: ${{ env.LZ4_VERSION }}
           >> \lz4\lib\pkgconfig\liblz4.pc echo Description: lz4 compression library
           >> \lz4\lib\pkgconfig\liblz4.pc echo Libs: -L${libdir} -llz4
           >> \lz4\lib\pkgconfig\liblz4.pc echo Cflags: -I${includedir}
@@ -53,12 +62,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: lz4-${{ vars.LZ4_VERSION }}-src
-          path: lz4-${{ vars.LZ4_VERSION }}.tar.gz
+          name: lz4-${{ env.LZ4_VERSION }}-src
+          path: lz4-${{ env.LZ4_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: lz4-${{ vars.LZ4_VERSION }}-win64
+          name: lz4-${{ env.LZ4_VERSION }}-win64
           path: /lz4

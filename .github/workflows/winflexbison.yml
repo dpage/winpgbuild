@@ -1,13 +1,23 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   build-winflexbison:
     runs-on: windows-latest
+    needs: get-versions
+    env:
+      WINFLEXBISON_VERSION: ${{needs.get-versions.outputs.WINFLEXBISON_VERSION}}
+
     steps:
       - name: Download
         run: |
-          curl -L -o winflexbison.zip "https://github.com/lexxmark/winflexbison/releases/download/v${{ vars.WINFLEXBISON_VERSION }}/win_flex_bison-${{ vars.WINFLEXBISON_VERSION }}.zip"
+          curl -L -o winflexbison.zip "https://github.com/lexxmark/winflexbison/releases/download/v${{ env.WINFLEXBISON_VERSION }}/win_flex_bison-${{ env.WINFLEXBISON_VERSION }}.zip"
           mkdir winflexbison
           cd winflexbison
           unzip ../winflexbison.zip
@@ -22,5 +32,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: winflexbison-${{ vars.WINFLEXBISON_VERSION }}-win64
+          name: winflexbison-${{ env.WINFLEXBISON_VERSION }}-win64
           path: winflexbison
