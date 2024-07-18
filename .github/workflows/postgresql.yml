@@ -3,11 +3,18 @@ on:
   workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   build-postgresql:
+    needs: get-versions
+
     strategy:
       fail-fast: false
       matrix:
-        version: ${{ fromJSON(vars.POSTGRESQL_VERSIONS) }}
+        version: ${{ fromJSON(env.POSTGRESQL_VERSIONS) }}
 
     runs-on: windows-latest
 
@@ -19,7 +26,7 @@ jobs:
     #   build
     env:
       MSBFLAGS: -m -verbosity:minimal "-consoleLoggerParameters:Summary;ForceNoAlign" /p:TrackFileAccess=false -nologo
-
+      POSTGRESQL_VERSIONS: ${{needs.get-versions.outputs.POSTGRESQL_VERSIONS}}
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 

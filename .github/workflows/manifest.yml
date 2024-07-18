@@ -45,17 +45,21 @@ on:
       PKGCONF_VERSION:
         description: "pkgconf version"
         value: ${{ jobs.set_versions.outputs.output12}}
+      POSTGRESQL_VERSIONS:
+        description: "postgresql version"
+        value: ${{ jobs.set_versions.outputs.output12}}
+      POSGRESQL_DEV_VERSION:
+        description: "pkgconf version"
+        value: ${{ jobs.set_versions.outputs.output12}}
       ZLIB_VERSION:
         description: "zlib version"
-        value: ${{ jobs.set_versions.outputs.output13}}
+        value: ${{ jobs.set_versions.outputs.output15}}
       ZSTD_VERSION:
         description: "zstd version"
-        value: ${{ jobs.set_versions.outputs.output14}}
+        value: ${{ jobs.set_versions.outputs.output16}}
       WINFLEXBISON_VERSION:
         description: "winflex bison version"
-        value: ${{ jobs.set_versions.outputs.output15}}
-
-
+        value: ${{ jobs.set_versions.outputs.output17}}
                           
 jobs:
   set_versions:
@@ -75,9 +79,11 @@ jobs:
       output10: ${{ steps.step1.outputs.NINJA_VERSION }}
       output11: ${{ steps.step1.outputs.OSSP_UUID_VERSION }}
       output12: ${{ steps.step1.outputs.PKGCONF_VERSION }}
-      output13: ${{ steps.step1.outputs.ZLIB_VERSION }}
-      output14: ${{ steps.step1.outputs.ZSTD_VERSION }}
-      output15: ${{ steps.step1.outputs.WINFLEXBISON_VERSION }}
+      output13: ${{ steps.step1.outputs.POSTGRESQL_VERSIONS }}
+      output14: ${{ steps.step1.outputs.POSTGRESQL_DEV_VERSION }}
+      output15: ${{ steps.step1.outputs.ZLIB_VERSION }}
+      output16: ${{ steps.step1.outputs.ZSTD_VERSION }}
+      output17: ${{ steps.step1.outputs.WINFLEXBISON_VERSION }}
 
     steps:
       - name: Checkout code
