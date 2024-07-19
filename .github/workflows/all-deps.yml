@@ -21,7 +21,7 @@ jobs:
       MESON_VERSION: ${{needs.get-versions.outputs.MESON_VERSION}}
       NINJA_VERSION: ${{needs.get-versions.outputs.NINJA_VERSION}}
       OPENSSL_VERSION: ${{needs.get-versions.outputs.OPENSSL_VERSION}}
-      OSSP_UUID_VERSION: ${{needs.get-versions.outputs.OSSP_UUID_VERSION}}
+      OSSP-UUID_VERSION: ${{needs.get-versions.outputs.OSSP-UUID_VERSION}}
       PKGCONF_VERSION: ${{needs.get-versions.outputs.PKGCONF_VERSION}}
       WINFLEXBISON_VERSION: ${{needs.get-versions.outputs.WINFLEXBISON_VERSION}}
       ZLIB_VERSION: ${{needs.get-versions.outputs.ZLIB_VERSION}}
@@ -124,7 +124,7 @@ jobs:
         with:
           workflow: ossp-uuid.yml
           workflow_conclusion: success
-          name: ossp-uuid-${{ env.OSSP_UUID_VERSION }}-win64
+          name: ossp-uuid-${{ env.OSSP-UUID_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
