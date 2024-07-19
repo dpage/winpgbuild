@@ -47,10 +47,10 @@ on:
         value: ${{ jobs.set_versions.outputs.output12}}
       POSTGRESQL_VERSIONS:
         description: "postgresql version"
-        value: ${{ jobs.set_versions.outputs.output12}}
+        value: ${{ jobs.set_versions.outputs.output13}}
       POSGRESQL_DEV_VERSION:
         description: "pkgconf version"
-        value: ${{ jobs.set_versions.outputs.output12}}
+        value: ${{ jobs.set_versions.outputs.output14}}
       ZLIB_VERSION:
         description: "zlib version"
         value: ${{ jobs.set_versions.outputs.output15}}
