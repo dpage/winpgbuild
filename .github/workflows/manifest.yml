@@ -39,7 +39,7 @@ on:
       NINJA_VERSION:
         description: "ninja version"
         value: ${{ jobs.set_versions.outputs.output10}}  
-      OSSP_UUID_VERSION:
+      OSSP-UUID_VERSION:
         description: "ossp_uuid version"
         value: ${{ jobs.set_versions.outputs.output11}}  
       PKGCONF_VERSION:
@@ -77,7 +77,7 @@ jobs:
       output8: ${{ steps.step1.outputs.LZ4_VERSION }}
       output9: ${{ steps.step1.outputs.MESON_VERSION }}
       output10: ${{ steps.step1.outputs.NINJA_VERSION }}
-      output11: ${{ steps.step1.outputs.OSSP_UUID_VERSION }}
+      output11: ${{ steps.step1.outputs.OSSP-UUID_VERSION }}
       output12: ${{ steps.step1.outputs.PKGCONF_VERSION }}
       output13: ${{ steps.step1.outputs.POSTGRESQL_VERSIONS }}
       output14: ${{ steps.step1.outputs.POSTGRESQL_DEV_VERSION }}
