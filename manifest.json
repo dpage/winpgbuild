@@ -32,7 +32,7 @@
       },
       {
         "name": "libxml2",
-        "version": "75.1",
+        "version": "2.11.8",
         "source": "https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.11.8/libxml2-v2.11.8.tar.gz",
         "licence": "https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads"
       },
@@ -56,7 +56,7 @@
       },
       {
         "name": "ninja",
-        "version": "v1.12.1",
+        "version": "1.12.1",
         "source": "https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip",
         "licence": "https://github.com/ninja-build/ninja/?tab=Apache-2.0-1-ov-file"
       },
