@@ -1,8 +1,32 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   build-all-deps:
+    needs: get-versions
+    env:
+      GETTEXT_VERSION: ${{needs.get-versions.outputs.GETTEXT_VERSION}}
+      ICU_VERSION: ${{needs.get-versions.outputs.ICU_VERSION}}
+      KRB5_VERSION: ${{needs.get-versions.outputs.KRB5_VERSION}}
+      LIBICONV_VERSION: ${{needs.get-versions.outputs.LIBICONV_VERSION}}
+      LIBXML2_VERSION: ${{needs.get-versions.outputs.LIBXML2_VERSION}}
+      LIBXSLT_VERSION: ${{needs.get-versions.outputs.LIBXSLT_VERSION}}
+      LZ4_VERSION: ${{needs.get-versions.outputs.LZ4_VERSION}}
+      MESON_VERSION: ${{needs.get-versions.outputs.MESON_VERSION}}
+      NINJA_VERSION: ${{needs.get-versions.outputs.NINJA_VERSION}}
+      OPENSSL_VERSION: ${{needs.get-versions.outputs.OPENSSL_VERSION}}
+      OSSP-UUID_VERSION: ${{needs.get-versions.outputs.OSSP-UUID_VERSION}}
+      PKGCONF_VERSION: ${{needs.get-versions.outputs.PKGCONF_VERSION}}
+      WINFLEXBISON_VERSION: ${{needs.get-versions.outputs.WINFLEXBISON_VERSION}}
+      ZLIB_VERSION: ${{needs.get-versions.outputs.ZLIB_VERSION}}
+      ZSTD_VERSION: ${{needs.get-versions.outputs.ZSTD_VERSION}}
+        
     runs-on: windows-latest
     steps:
       - name: Download gettext
@@ -10,7 +34,7 @@ jobs:
         with:
           workflow: gettext.yml
           workflow_conclusion: success
-          name: gettext-${{ vars.GETTEXT_VERSION }}-win64
+          name: gettext-${{ env.GETTEXT_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -19,7 +43,7 @@ jobs:
         with:
           workflow: icu.yml
           workflow_conclusion: success
-          name: icu-${{ vars.ICU_VERSION }}-win64
+          name: icu-${{ env.ICU_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -28,7 +52,7 @@ jobs:
         with:
           workflow: krb5.yml
           workflow_conclusion: success
-          name: krb5-${{ vars.KRB5_VERSION }}-win64
+          name: krb5-${{ env.KRB5_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -37,7 +61,7 @@ jobs:
         with:
           workflow: libiconv.yml
           workflow_conclusion: success
-          name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
+          name: libiconv-${{ env.LIBICONV_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -46,7 +70,7 @@ jobs:
         with:
           workflow: libxml2.yml
           workflow_conclusion: success
-          name: libxml2-${{ vars.LIBXML2_VERSION }}-win64
+          name: libxml2-${{ env.LIBXML2_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -55,7 +79,7 @@ jobs:
         with:
           workflow: libxslt.yml
           workflow_conclusion: success
-          name: libxslt-${{ vars.LIBXSLT_VERSION }}-win64
+          name: libxslt-${{ env.LIBXSLT_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -64,7 +88,7 @@ jobs:
         with:
           workflow: lz4.yml
           workflow_conclusion: success
-          name: lz4-${{ vars.LZ4_VERSION }}-win64
+          name: lz4-${{ env.LZ4_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -73,7 +97,7 @@ jobs:
         with:
           workflow: meson.yml
           workflow_conclusion: success
-          name: meson-${{ vars.MESON_VERSION }}-win64
+          name: meson-${{ env.MESON_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -82,7 +106,7 @@ jobs:
         with:
           workflow: ninja.yml
           workflow_conclusion: success
-          name: ninja-${{ vars.NINJA_VERSION }}-win64
+          name: ninja-${{ env.NINJA_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -91,7 +115,7 @@ jobs:
         with:
           workflow: openssl.yml
           workflow_conclusion: success
-          name: openssl-${{ vars.OPENSSL_VERSION }}-win64
+          name: openssl-${{ env.OPENSSL_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -100,7 +124,7 @@ jobs:
         with:
           workflow: ossp-uuid.yml
           workflow_conclusion: success
-          name: ossp-uuid-${{ vars.OSSP_UUID_VERSION }}-win64
+          name: ossp-uuid-${{ env.OSSP-UUID_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -109,7 +133,7 @@ jobs:
         with:
           workflow: pkgconf.yml
           workflow_conclusion: success
-          name: pkgconf-${{ vars.PKGCONF_VERSION }}-win64
+          name: pkgconf-${{ env.PKGCONF_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -118,7 +142,7 @@ jobs:
         with:
           workflow: winflexbison.yml
           workflow_conclusion: success
-          name: winflexbison-${{ vars.WINFLEXBISON_VERSION }}-win64
+          name: winflexbison-${{ env.WINFLEXBISON_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -127,7 +151,7 @@ jobs:
         with:
           workflow: zlib.yml
           workflow_conclusion: success
-          name: zlib-${{ vars.ZLIB_VERSION }}-win64
+          name: zlib-${{ env.ZLIB_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
@@ -136,7 +160,7 @@ jobs:
         with:
           workflow: zstd.yml
           workflow_conclusion: success
-          name: zstd-${{ vars.ZSTD_VERSION }}-win64
+          name: zstd-${{ env.ZSTD_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 

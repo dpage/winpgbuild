@@ -1,25 +1,34 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   build-zlib:
     runs-on: windows-latest
+    needs: get-versions
+    env:
+      ZLIB_VERSION: ${{needs.get-versions.outputs.ZLIB_VERSION}}
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download
         run: |
-          curl https://zlib.net/zlib-${{ vars.ZLIB_VERSION }}.tar.gz -o ./zlib-${{ vars.ZLIB_VERSION }}.tar.gz
-          tar zxvf zlib-${{ vars.ZLIB_VERSION }}.tar.gz
+          curl https://zlib.net/zlib-${{ env.ZLIB_VERSION }}.tar.gz -o ./zlib-${{ env.ZLIB_VERSION }}.tar.gz
+          tar zxvf zlib-${{ env.ZLIB_VERSION }}.tar.gz
 
       - name: Build
         run: |
-          cd zlib-${{ vars.ZLIB_VERSION }}
+          cd zlib-${{ env.ZLIB_VERSION }}
           nmake -f win32/Makefile.msc
 
       - name: Install
         run: |
-          cd zlib-${{ vars.ZLIB_VERSION }}
+          cd zlib-${{ env.ZLIB_VERSION }}
 
           mkdir \zlib
 
@@ -48,7 +57,7 @@ jobs:
           >> \zlib\lib\pkgconfig\zlib.pc echo.
           >> \zlib\lib\pkgconfig\zlib.pc echo Name: zlib
           >> \zlib\lib\pkgconfig\zlib.pc echo Description: zlib compression library
-          >> \zlib\lib\pkgconfig\zlib.pc echo Version: ${{ vars.ZLIB_VERSION }}
+          >> \zlib\lib\pkgconfig\zlib.pc echo Version: ${{ env.ZLIB_VERSION }}
           >> \zlib\lib\pkgconfig\zlib.pc echo Requires:
           >> \zlib\lib\pkgconfig\zlib.pc echo Libs: -L${libdir} -lzdll
           >> \zlib\lib\pkgconfig\zlib.pc echo Cflags: -I${includedir}
@@ -58,12 +67,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: zlib-${{ vars.ZLIB_VERSION }}-src
-          path: zlib-${{ vars.ZLIB_VERSION }}.tar.gz
+          name: zlib-${{ env.ZLIB_VERSION }}-src
+          path: zlib-${{ env.ZLIB_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: zlib-${{ vars.ZLIB_VERSION }}-win64
+          name: zlib-${{ env.ZLIB_VERSION }}-win64
           path: /zlib

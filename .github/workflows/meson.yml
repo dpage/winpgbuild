@@ -1,13 +1,22 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   build-meson:
     runs-on: windows-latest
+    needs: get-versions
+    env:
+      MESON_VERSION: ${{needs.get-versions.outputs.MESON_VERSION}}
     steps:
       - name: Download
         run: |
-          curl.exe -L -o meson.tar.gz https://github.com/mesonbuild/meson/releases/download/${{ vars.MESON_VERSION }}/meson-${{ vars.MESON_VERSION }}.tar.gz
+          curl.exe -L -o meson.tar.gz https://github.com/mesonbuild/meson/releases/download/${{ env.MESON_VERSION }}/meson-${{ env.MESON_VERSION }}.tar.gz
 
           mkdir -p /meson/mesonbuild
           mkdir -p /meson/bin
@@ -24,5 +33,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: meson-${{ vars.MESON_VERSION }}-win64
+          name: meson-${{ env.MESON_VERSION }}-win64
           path: /meson

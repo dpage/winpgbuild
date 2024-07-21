@@ -1,0 +1,97 @@
+name: set versions of packages
+
+on:
+  workflow_call:
+    inputs:
+      config-path:        
+        required: true
+        default: ./manifest.json
+        type: string
+    # Map the workflow outputs to job outputs
+    outputs:
+      OPENSSL_VERSION:
+        description: "Version of openssl"
+        value: ${{ jobs.set_versions.outputs.output1 }}
+      LIBICONV_VERSION:
+        description: "libiconv version"
+        value: ${{ jobs.set_versions.outputs.output2 }}
+      KRB5_VERSION:
+        description: "krb version"
+        value: ${{ jobs.set_versions.outputs.output3}}  
+      GETTEXT_VERSION:
+        description: "gettext version"
+        value: ${{ jobs.set_versions.outputs.output4}}  
+      ICU_VERSION:
+        description: "icu version"
+        value: ${{ jobs.set_versions.outputs.output5}}  
+      LIBXML2_VERSION:
+        description: "libxml2 version"
+        value: ${{ jobs.set_versions.outputs.output6}}  
+      LIBXSLT_VERSION:
+        description: "libxslt version"
+        value: ${{ jobs.set_versions.outputs.output7}}  
+      LZ4_VERSION:
+        description: "lz4 version"
+        value: ${{ jobs.set_versions.outputs.output8}}  
+      MESON_VERSION:
+        description: "meson version"
+        value: ${{ jobs.set_versions.outputs.output9}}  
+      NINJA_VERSION:
+        description: "ninja version"
+        value: ${{ jobs.set_versions.outputs.output10}}  
+      OSSP-UUID_VERSION:
+        description: "ossp_uuid version"
+        value: ${{ jobs.set_versions.outputs.output11}}  
+      PKGCONF_VERSION:
+        description: "pkgconf version"
+        value: ${{ jobs.set_versions.outputs.output12}}
+      POSTGRESQL_VERSION:
+        description: "postgresql version"
+        value: ${{ jobs.set_versions.outputs.output13}}
+      POSGRESQL_DEV_VERSION:
+        description: "pkgconf version"
+        value: ${{ jobs.set_versions.outputs.output14}}
+      ZLIB_VERSION:
+        description: "zlib version"
+        value: ${{ jobs.set_versions.outputs.output15}}
+      ZSTD_VERSION:
+        description: "zstd version"
+        value: ${{ jobs.set_versions.outputs.output16}}
+      WINFLEXBISON_VERSION:
+        description: "winflex bison version"
+        value: ${{ jobs.set_versions.outputs.output17}}
+                          
+jobs:
+  set_versions:
+    name: Generate output
+    runs-on: windows-latest
+    # Map the job outputs to step outputs
+    outputs:
+      output1: ${{ steps.step1.outputs.OPENSSL_VERSION }}
+      output2: ${{ steps.step1.outputs.LIBICONV_VERSION }}
+      output3: ${{ steps.step1.outputs.KRB5_VERSION }}
+      output4: ${{ steps.step1.outputs.GETTEXT_VERSION }}
+      output5: ${{ steps.step1.outputs.ICU_VERSION }}
+      output6: ${{ steps.step1.outputs.LIBXML2_VERSION }}
+      output7: ${{ steps.step1.outputs.LIBXSLT_VERSION }}
+      output8: ${{ steps.step1.outputs.LZ4_VERSION }}
+      output9: ${{ steps.step1.outputs.MESON_VERSION }}
+      output10: ${{ steps.step1.outputs.NINJA_VERSION }}
+      output11: ${{ steps.step1.outputs.OSSP-UUID_VERSION }}
+      output12: ${{ steps.step1.outputs.PKGCONF_VERSION }}
+      output13: ${{ steps.step1.outputs.POSTGRESQL_VERSION }}
+      output14: ${{ steps.step1.outputs.POSTGRESQL_DEV_VERSION }}
+      output15: ${{ steps.step1.outputs.ZLIB_VERSION }}
+      output16: ${{ steps.step1.outputs.ZSTD_VERSION }}
+      output17: ${{ steps.step1.outputs.WINFLEXBISON_VERSION }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2    
+      - name: step1
+        shell: powershell  
+        id: step1
+        run: |
+          $json = (Get-Content ${{inputs.config-path}} -Raw) | ConvertFrom-Json
+          ($json.packages) | foreach-object {  write "$($_.name.ToUpper())_VERSION=$($_.version)" >> $env:GITHUB_OUTPUT}
+         

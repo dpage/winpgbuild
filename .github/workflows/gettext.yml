@@ -1,13 +1,21 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
   build-gettext:
     runs-on: windows-latest
+    needs: get-versions
     defaults:
       run:
         shell: msys2 {0}
-
+    env:
+      LIBICONV_VERSION: ${{needs.get-versions.outputs.LIBICONV_VERSION}}
+      GETTEXT_VERSION: ${{needs.get-versions.outputs.GETTEXT_VERSION}}
     steps:
       - uses: msys2/setup-msys2@v2
         with:
@@ -20,24 +28,24 @@ jobs:
         with:
           workflow: libiconv.yml
           workflow_conclusion: success
-          name: libiconv-${{ vars.LIBICONV_VERSION }}-win64
+          name: libiconv-${{ env.LIBICONV_VERSION }}-win64
           path: /builddeps
           if_no_artifact_found: fail
 
       - name: Download
         run: |
-          curl https://ftp.gnu.org/pub/gnu/gettext/gettext-${{ vars.GETTEXT_VERSION }}.tar.gz -o ./gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
-          tar zxvf gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
+          curl https://ftp.gnu.org/pub/gnu/gettext/gettext-${{ env.GETTEXT_VERSION }}.tar.gz -o ./gettext-${{ env.GETTEXT_VERSION }}.tar.gz
+          tar zxvf gettext-${{ env.GETTEXT_VERSION }}.tar.gz
 
       - name: Patch
         run: |
           curl https://raw.githubusercontent.com/dpage/gettext-tools-windows/master/patches/gettext-0.22-0001-build-failure-on-mingw-close-module.patch -o gettext-0.22-0001-build-failure-on-mingw-close-module.patch
-          cd gettext-${{ vars.GETTEXT_VERSION }}
+          cd gettext-${{ env.GETTEXT_VERSION }}
           patch -p1 < ../gettext-0.22-0001-build-failure-on-mingw-close-module.patch
 
       - name: Configure
         run: |
-          cd gettext-${{ vars.GETTEXT_VERSION }}
+          cd gettext-${{ env.GETTEXT_VERSION }}
           ./configure CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types -Wno-error=implicit-function-declaration" \
             --prefix=$(pwd)/winpgbuild \
             --disable-static \
@@ -53,12 +61,12 @@ jobs:
 
       - name: Build
         run: |
-          cd gettext-${{ vars.GETTEXT_VERSION }}
+          cd gettext-${{ env.GETTEXT_VERSION }}
           make all
 
       - name: Install
         run: |
-          cd gettext-${{ vars.GETTEXT_VERSION }}
+          cd gettext-${{ env.GETTEXT_VERSION }}
           make install
 
           cp winpgbuild/lib/libintl.dll.a winpgbuild/lib/libintl.lib
@@ -68,12 +76,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: gettext-${{ vars.GETTEXT_VERSION }}-src
-          path: gettext-${{ vars.GETTEXT_VERSION }}.tar.gz
+          name: gettext-${{ env.GETTEXT_VERSION }}-src
+          path: gettext-${{ env.GETTEXT_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: gettext-${{ vars.GETTEXT_VERSION }}-win64
-          path: gettext-${{ vars.GETTEXT_VERSION }}/winpgbuild
+          name: gettext-${{ env.GETTEXT_VERSION }}-win64
+          path: gettext-${{ env.GETTEXT_VERSION }}/winpgbuild

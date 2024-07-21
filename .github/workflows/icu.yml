@@ -1,16 +1,25 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   build-icu:
     runs-on: windows-latest
+    needs: get-versions
+    env:
+      ICU_VERSION: ${{needs.get-versions.outputs.ICU_VERSION}}
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download
         run: |
-          curl -L https://github.com/unicode-org/icu/releases/download/release-$(echo ${{ vars.ICU_VERSION }} | sed 's/\./-/g')/icu4c-$(echo ${{ vars.ICU_VERSION }} | sed 's/\./_/g')-src.tgz -o ./icu4c-${{ vars.ICU_VERSION }}.tar.gz
-          tar zxvf ./icu4c-${{ vars.ICU_VERSION }}.tar.gz
+          curl -L https://github.com/unicode-org/icu/releases/download/release-$(echo ${{ env.ICU_VERSION }} | sed 's/\./-/g')/icu4c-$(echo ${{ env.ICU_VERSION }} | sed 's/\./_/g')-src.tgz -o ./icu4c-${{ env.ICU_VERSION }}.tar.gz
+          tar zxvf ./icu4c-${{ env.ICU_VERSION }}.tar.gz
         shell: bash
 
       - name: Build
@@ -46,7 +55,7 @@ jobs:
           >> \icu\lib\pkgconfig\icu-uc.pc echo.
           >> \icu\lib\pkgconfig\icu-uc.pc echo Name: icu-uc
           >> \icu\lib\pkgconfig\icu-uc.pc echo Description: ICU library
-          >> \icu\lib\pkgconfig\icu-uc.pc echo Version: ${{ vars.ICU_VERSION }}
+          >> \icu\lib\pkgconfig\icu-uc.pc echo Version: ${{ env.ICU_VERSION }}
           >> \icu\lib\pkgconfig\icu-uc.pc echo Libs: -L${libdir} -licuin -licuuc -licudt
           >> \icu\lib\pkgconfig\icu-uc.pc echo Cflags: -I${includedir}
         shell: cmd
@@ -55,12 +64,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: icu-${{ vars.ICU_VERSION }}-src
-          path: icu4c-${{ vars.ICU_VERSION }}.tar.gz
+          name: icu-${{ env.ICU_VERSION }}-src
+          path: icu4c-${{ env.ICU_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: icu-${{ vars.ICU_VERSION }}-win64
+          name: icu-${{ env.ICU_VERSION }}-win64
           path: /icu

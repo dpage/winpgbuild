@@ -1,31 +1,40 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   build-zstd:
     runs-on: windows-latest
+    needs: get-versions
+    env:
+      ZSTD_VERSION: ${{needs.get-versions.outputs.ZSTD_VERSION}}
     steps:
       - uses: microsoft/setup-msbuild@v2
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download
         run: |
-          curl -L https://github.com/facebook/zstd/releases/download/v${{ vars.ZSTD_VERSION }}/zstd-${{ vars.ZSTD_VERSION }}.tar.gz -o ./zstd-${{ vars.ZSTD_VERSION }}.tar.gz
-          tar zxvf zstd-${{ vars.ZSTD_VERSION }}.tar.gz
+          curl -L https://github.com/facebook/zstd/releases/download/v${{ env.ZSTD_VERSION }}/zstd-${{ env.ZSTD_VERSION }}.tar.gz -o ./zstd-${{ env.ZSTD_VERSION }}.tar.gz
+          tar zxvf zstd-${{ env.ZSTD_VERSION }}.tar.gz
 
       - name: Configure
         run: |
-          cd zstd-${{ vars.ZSTD_VERSION }}
+          cd zstd-${{ env.ZSTD_VERSION }}
           devenv.com /upgrade build\VS2010\zstd.sln
 
       - name: Build
         run: |
-          cd zstd-${{ vars.ZSTD_VERSION }}
+          cd zstd-${{ env.ZSTD_VERSION }}
           msbuild build\VS2010\zstd.sln -target:libzstd-dll /property:Configuration=Release /property:Platform=x64
 
       - name: Install
         run: |
-          cd zstd-${{ vars.ZSTD_VERSION }}
+          cd zstd-${{ env.ZSTD_VERSION }}
 
           mkdir \zstd
 
@@ -51,7 +60,7 @@ jobs:
           >> \zstd\lib\pkgconfig\libzstd.pc echo Name: zstd
           >> \zstd\lib\pkgconfig\libzstd.pc echo Description: fast lossless compression algorithm library
           >> \zstd\lib\pkgconfig\libzstd.pc echo URL: https://facebook.github.io/zstd/
-          >> \zstd\lib\pkgconfig\libzstd.pc echo Version: ${{ vars.ZSTD_VERSION }}
+          >> \zstd\lib\pkgconfig\libzstd.pc echo Version: ${{ env.ZSTD_VERSION }}
           >> \zstd\lib\pkgconfig\libzstd.pc echo Libs: -L${libdir} -lzstd
           >> \zstd\lib\pkgconfig\libzstd.pc echo Libs.private:
           >> \zstd\lib\pkgconfig\libzstd.pc echo Cflags: -I${includedir}
@@ -61,12 +70,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: zstd-${{ vars.ZSTD_VERSION }}-src
-          path: zstd-${{ vars.ZSTD_VERSION }}.tar.gz
+          name: zstd-${{ env.ZSTD_VERSION }}-src
+          path: zstd-${{ env.ZSTD_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: zstd-${{ vars.ZSTD_VERSION }}-win64
+          name: zstd-${{ env.ZSTD_VERSION }}-win64
           path: /zstd

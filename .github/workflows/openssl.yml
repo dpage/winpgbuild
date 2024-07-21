@@ -1,36 +1,45 @@
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
   build-openssl:
+    needs: get-versions
     runs-on: windows-latest
+    env:
+      OPENSSL_VERSION:  ${{needs.get-versions.outputs.OPENSSL_VERSION}}
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download
         run: |
-          curl -L https://www.openssl.org/source/openssl-${{ vars.OPENSSL_VERSION }}.tar.gz -o ./openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
-          tar zxvf openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
+          curl -L https://www.openssl.org/source/openssl-${{ env.OPENSSL_VERSION }}.tar.gz -o ./openssl-${{ env.OPENSSL_VERSION }}.tar.gz
+          tar zxvf openssl-${{ env.OPENSSL_VERSION }}.tar.gz
 
       - name: Configure
         run: |
-          cd openssl-${{ vars.OPENSSL_VERSION }}
+          cd openssl-${{ env.OPENSSL_VERSION }}
           perl Configure VC-WIN64A no-asm --prefix=\openssl no-ssl3 no-comp
 
       - name: Build
         run: |
-          cd openssl-${{ vars.OPENSSL_VERSION }}
+          cd openssl-${{ env.OPENSSL_VERSION }}
           nmake
 
       - name: Test
         run: |
-          cd openssl-${{ vars.OPENSSL_VERSION }}
+          cd openssl-${{ env.OPENSSL_VERSION }}
           nmake test
 
       - name: Install
         run: |
           mkdir \openssl
-          cd openssl-${{ vars.OPENSSL_VERSION }}
+          cd openssl-${{ env.OPENSSL_VERSION }}
           nmake install
 
       - name: Create pkgconfig File
@@ -44,7 +53,7 @@ jobs:
           >> \openssl\lib\pkgconfig\openssl.pc echo.
           >> \openssl\lib\pkgconfig\openssl.pc echo Name: openssl
           >> \openssl\lib\pkgconfig\openssl.pc echo Description: openssl encryption library
-          >> \openssl\lib\pkgconfig\openssl.pc echo Version: ${{ vars.OPENSSL_VERSION }}
+          >> \openssl\lib\pkgconfig\openssl.pc echo Version: ${{ env.OPENSSL_VERSION }}
           >> \openssl\lib\pkgconfig\openssl.pc echo Libs: -L${libdir} -lcrypto -lssl
           >> \openssl\lib\pkgconfig\openssl.pc echo Cflags: -I${includedir}
         shell: cmd
@@ -53,12 +62,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: openssl-${{ vars.OPENSSL_VERSION }}-src
-          path: openssl-${{ vars.OPENSSL_VERSION }}.tar.gz
+          name: openssl-${{ env.OPENSSL_VERSION }}-src
+          path: openssl-${{ env.OPENSSL_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: openssl-${{ vars.OPENSSL_VERSION }}-win64
+          name: openssl-${{ env.OPENSSL_VERSION }}-win64
           path: /openssl
