@@ -27,7 +27,7 @@ jobs:
           \meson\bin\meson.cmd --help
 
           $ENV:PATH="/meson/bin;$ENV:PATH"
-          meson --version || true
+          meson --version
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
