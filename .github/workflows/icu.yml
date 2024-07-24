@@ -66,7 +66,7 @@ jobs:
           >> \icu\lib\pkgconfig\icu-i18n.pc echo libdir=${prefix}/lib64
           >> \icu\lib\pkgconfig\icu-i18n.pc echo includedir=${prefix}/include
           >> \icu\lib\pkgconfig\icu-i18n.pc echo.
-          >> \icu\lib\pkgconfig\icu-i18n.pc echo Name: icu-uc
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo Name: icu-i18n
           >> \icu\lib\pkgconfig\icu-i18n.pc echo Description: International Components for Unicode: Internationalization library
           >> \icu\lib\pkgconfig\icu-i18n.pc echo Version: ${{ env.ICU_VERSION }}
           >> \icu\lib\pkgconfig\icu-i18n.pc echo Libs: -L${libdir} -licuin
