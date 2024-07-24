@@ -1,3 +1,5 @@
+name: Build OpenSSL
+
 on:
   workflow_dispatch:
   workflow_call:

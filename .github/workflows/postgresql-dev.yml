@@ -1,3 +1,5 @@
+name: Build PostgreSQL (Dev)
+
 on:
   workflow_dispatch:
   workflow_call:

@@ -1,3 +1,5 @@
+name: Build lz4
+
 on:
   workflow_dispatch:
   workflow_call:

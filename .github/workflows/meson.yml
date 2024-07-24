@@ -1,3 +1,5 @@
+name: Package Meson
+
 on:
   workflow_dispatch:
   workflow_call:

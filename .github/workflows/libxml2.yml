@@ -1,3 +1,5 @@
+name: Build libxml2
+
 on:
   workflow_dispatch:
   workflow_call:

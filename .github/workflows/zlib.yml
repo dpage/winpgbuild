@@ -1,3 +1,5 @@
+name: Build zlib
+
 on:
   workflow_dispatch:
   workflow_call:

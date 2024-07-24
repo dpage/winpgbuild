@@ -1,3 +1,5 @@
+name: Bundle all dependencies
+
 on:
   workflow_dispatch:
   workflow_call:
