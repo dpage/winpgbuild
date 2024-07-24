@@ -93,7 +93,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: step1
+      - name: Set versions
         shell: powershell  
         id: step1
         run: |
