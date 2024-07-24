@@ -13,6 +13,7 @@ jobs:
   build-all-deps:
     needs: get-versions
     env:
+      DIFFUTILS_VERSION: ${{needs.get-versions.outputs.DIFFUTILS_VERSION}}
       GETTEXT_VERSION: ${{needs.get-versions.outputs.GETTEXT_VERSION}}
       ICU_VERSION: ${{needs.get-versions.outputs.ICU_VERSION}}
       KRB5_VERSION: ${{needs.get-versions.outputs.KRB5_VERSION}}
@@ -28,9 +29,19 @@ jobs:
       WINFLEXBISON_VERSION: ${{needs.get-versions.outputs.WINFLEXBISON_VERSION}}
       ZLIB_VERSION: ${{needs.get-versions.outputs.ZLIB_VERSION}}
       ZSTD_VERSION: ${{needs.get-versions.outputs.ZSTD_VERSION}}
+      
         
     runs-on: windows-latest
     steps:
+      - name: Download diffutils
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: diffutils.yml
+          workflow_conclusion: success
+          name: diffutils-${{ env.DIFFUTILS_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
       - name: Download gettext
         uses: dawidd6/action-download-artifact@v3
         with:
