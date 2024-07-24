@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Download
         run: |
-          curl -L -o diffutils.zip "https://downloads.sourceforge.net/project/gnuwin32/diffutils/${{ env.DIFFUTILS_VERSION }}/diffutils-${{ env.DIFFUTILS_VERSION }}-bin.zip  https://github.com/lexxmark/winflexbison/releases/download/v${{ env.WINFLEXBISON_VERSION }}/win_flex_bison-${{ env.WINFLEXBISON_VERSION }}.zip"
+          curl -L -o diffutils.zip "https://downloads.sourceforge.net/project/gnuwin32/diffutils/${{ env.DIFFUTILS_VERSION }}/diffutils-${{ env.DIFFUTILS_VERSION }}-bin.zip"
           mkdir diffutils
           cd diffutils
           unzip ../diffutils.zip
