@@ -43,7 +43,7 @@ jobs:
           mkdir \icu\lib64
           copy lib64\* \icu\lib64\
 
-      - name: Create pkgconfig File
+      - name: Create pkgconfig Files
         run: |
           mkdir \icu\lib
           mkdir \icu\lib\pkgconfig
@@ -54,10 +54,21 @@ jobs:
           >> \icu\lib\pkgconfig\icu-uc.pc echo includedir=${prefix}/include
           >> \icu\lib\pkgconfig\icu-uc.pc echo.
           >> \icu\lib\pkgconfig\icu-uc.pc echo Name: icu-uc
-          >> \icu\lib\pkgconfig\icu-uc.pc echo Description: ICU library
+          >> \icu\lib\pkgconfig\icu-uc.pc echo Description: International Components for Unicode: Common and Data libraries
           >> \icu\lib\pkgconfig\icu-uc.pc echo Version: ${{ env.ICU_VERSION }}
-          >> \icu\lib\pkgconfig\icu-uc.pc echo Libs: -L${libdir} -licuin -licuuc -licudt
+          >> \icu\lib\pkgconfig\icu-uc.pc echo Libs: -L${libdir} -licuuc -licudt
           >> \icu\lib\pkgconfig\icu-uc.pc echo Cflags: -I${includedir}
+
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo prefix=${pcfiledir}/../..
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo exec_prefix=${prefix}
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo libdir=${prefix}/lib64
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo includedir=${prefix}/include
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo.
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo Name: icu-uc
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo Description: International Components for Unicode: Internationalization library
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo Version: ${{ env.ICU_VERSION }}
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo Libs: -L${libdir} -licuin
+          >> \icu\lib\pkgconfig\icu-i18n.pc echo Cflags: -I${includedir}
         shell: cmd
 
       - name: Upload Source
