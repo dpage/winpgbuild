@@ -10,7 +10,7 @@ jobs:
     with:
       config-path: manifest.json
 
-  build-winflexbison:
+  package-diffutils:
     runs-on: windows-latest
     needs: get-versions
     env:
