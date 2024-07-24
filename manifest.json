@@ -1,24 +1,6 @@
 {
     "packages": [
       {
-        "name": "openssl",
-        "version": "3.0.13",
-        "source": "https://openssl.org/source/openssl-3.0.14.tar.gz",
-        "licence": "https://www.openssl.org/source/apache-license-2.0.txt"
-      },
-      {
-        "name": "krb5",
-        "version": "1.21.3",
-        "source": "https://kerberos.org/dist/krb5/1.21/krb5-1.21.3.tar.gz",
-        "licence": "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
-      },
-      {
-        "name": "libiconv",
-        "version": "1.17",
-        "source": "https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.17.tar.gz",
-        "licence": "https://www.gnu.org/licenses/lgpl-2.1.html"
-      },
-      {
         "name": "gettext",
         "version": "0.22.5",
         "source": "https://ftp.gnu.org/pub/gnu/gettext/gettext-0.22.5.tar.gz",
@@ -29,6 +11,18 @@
         "version": "75.1",
         "source": "https://github.com/unicode-org/icu/archive/refs/tags/release-75-1.tar.gz",
         "licence": "https://github.com/unicode-org/icu/blob/main/LICENSE"
+      },
+      {
+        "name": "libiconv",
+        "version": "1.17",
+        "source": "https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.17.tar.gz",
+        "licence": "https://www.gnu.org/licenses/lgpl-2.1.html"
+      },
+      {
+        "name": "krb5",
+        "version": "1.21.3",
+        "source": "https://kerberos.org/dist/krb5/1.21/krb5-1.21.3.tar.gz",
+        "licence": "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
       },
       {
         "name": "libxml2",
@@ -49,40 +43,16 @@
         "licence": "https://github.com/unicode-org/icu/blob/main/LICENSE"
       },
       {
-        "name": "meson",
-        "version": "1.4.1",
-        "source": "https://github.com/mesonbuild/meson/releases/download/1.4.1/meson-1.4.1.tar.gz",
-        "licence": "https://github.com/mesonbuild/meson/#"
-      },
-      {
-        "name": "ninja",
-        "version": "1.12.1",
-        "source": "https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip",
-        "licence": "https://github.com/ninja-build/ninja/?tab=Apache-2.0-1-ov-file"
+        "name": "openssl",
+        "version": "3.0.13",
+        "source": "https://openssl.org/source/openssl-3.0.14.tar.gz",
+        "licence": "https://www.openssl.org/source/apache-license-2.0.txt"
       },
       {
         "name": "ossp-uuid",
         "version": "1.6.2",
         "source": "https://salsa.debian.org/debian/ossp-uuid/-/archive/upstream/1.6.2/ossp-uuid-upstream-1.6.2.tar.gz",
         "licence": "https://salsa.debian.org/debian/ossp-uuid/-/blob/master/README?ref_type=heads"
-      },
-      {
-        "name": "pkgconf",
-        "version": "2.2.0",
-        "source": "https://github.com/pkgconf/pkgconf/archive/refs/tags/pkgconf-2.2.0.tar.gz",
-        "licence": "https://github.com/pkgconf/pkgconf?tab=License-1-ov-file#readme"
-      },
-      {
-        "name": "postgresql-dev",
-        "version": "17beta1",
-        "source": "https://ftp.postgresql.org/pub/source/v17beta1/postgresql-17beta1.tar.gz",
-        "licence": "https://www.postgresql.org/about/licence/"
-      },
-      {
-        "name": "postgresql",
-        "version": "[16.3, 15.7, 14.12, 13.15, 12.19]",
-        "source": "https://ftp.postgresql.org/pub/source/",
-        "licence": "https://www.postgresql.org/about/licence/"
       },
       {
         "name": "zlib",
@@ -97,16 +67,46 @@
         "licence": "https://github.com/facebook/zstd/blob/dev/LICENSE"
       },
       {
+        "name": "diffutils",
+        "version": "2.8.7-1",
+        "source": "https://downloads.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip",
+        "licence": "https://git.savannah.gnu.org/cgit/diffutils.git/tree/COPYING"
+      },
+      {
+        "name": "meson",
+        "version": "1.4.1",
+        "source": "https://github.com/mesonbuild/meson/releases/download/1.4.1/meson-1.4.1.tar.gz",
+        "licence": "https://github.com/mesonbuild/meson/#"
+      },
+      {
+        "name": "ninja",
+        "version": "1.12.1",
+        "source": "https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip",
+        "licence": "https://github.com/ninja-build/ninja/?tab=Apache-2.0-1-ov-file"
+      },
+      {
+        "name": "pkgconf",
+        "version": "2.2.0",
+        "source": "https://github.com/pkgconf/pkgconf/archive/refs/tags/pkgconf-2.2.0.tar.gz",
+        "licence": "https://github.com/pkgconf/pkgconf?tab=License-1-ov-file#readme"
+      },
+      {
         "name": "winflexbison",
         "version": "2.5.24",
         "source": "https://github.com/lexxmark/winflexbison/releases/download/v2.5.24/win_flex_bison-2.5.24.zip",
         "licence": "https://github.com/lexxmark/winflexbison/blob/master/flex/src/COPYING"
       },
       {
-        "name": "diffutils",
-        "version": "2.8.7-1",
-        "source": "https://downloads.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip",
-        "licence": "https://git.savannah.gnu.org/cgit/diffutils.git/tree/COPYING"
+        "name": "postgresql-dev",
+        "version": "17beta2",
+        "source": "https://ftp.postgresql.org/pub/source/v17beta2/postgresql-17beta2.tar.gz",
+        "licence": "https://www.postgresql.org/about/licence/"
+      },
+      {
+        "name": "postgresql",
+        "version": "[16.3, 15.7, 14.12, 13.15, 12.19]",
+        "source": "https://ftp.postgresql.org/pub/source/",
+        "licence": "https://www.postgresql.org/about/licence/"
       }
     ]
   }
