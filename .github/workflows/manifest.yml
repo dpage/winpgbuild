@@ -60,6 +60,9 @@ on:
       WINFLEXBISON_VERSION:
         description: "winflex bison version"
         value: ${{ jobs.set_versions.outputs.output17}}
+      DIFFUTILS_VERSION:
+        description: "diffutils version"
+        value: ${{ jobs.set_versions.outputs.output18}}
                           
 jobs:
   set_versions:
@@ -84,6 +87,7 @@ jobs:
       output15: ${{ steps.step1.outputs.ZLIB_VERSION }}
       output16: ${{ steps.step1.outputs.ZSTD_VERSION }}
       output17: ${{ steps.step1.outputs.WINFLEXBISON_VERSION }}
+      output18: ${{ steps.step1.outputs.DIFFUTILS_VERSION }}
 
     steps:
       - name: Checkout code

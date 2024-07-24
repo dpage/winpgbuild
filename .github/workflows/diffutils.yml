@@ -1,0 +1,38 @@
+name: Package diffutils
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
+  build-winflexbison:
+    runs-on: windows-latest
+    needs: get-versions
+    env:
+      DIFFUTILS_VERSION: ${{needs.get-versions.outputs.DIFFUTILS_VERSION}}
+
+    steps:
+      - name: Download
+        run: |
+          curl -L -o diffutils.zip "https://downloads.sourceforge.net/project/gnuwin32/diffutils/${{ env.DIFFUTILS_VERSION }}/diffutils-${{ env.DIFFUTILS_VERSION }}-bin.zip  https://github.com/lexxmark/winflexbison/releases/download/v${{ env.WINFLEXBISON_VERSION }}/win_flex_bison-${{ env.WINFLEXBISON_VERSION }}.zip"
+          mkdir diffutils
+          cd diffutils
+          unzip ../diffutils.zip
+
+      - name: Download dependencies
+        run: |
+          curl -L -o diffutils-deps.zip "https://downloads.sourceforge.net/project/gnuwin32/diffutils/${{ env.DIFFUTILS_VERSION }}/diffutils-${{ env.DIFFUTILS_VERSION }}-dep.zip"
+          cd diffutils
+          unzip ../diffutils-deps.zip
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: diffutils-${{ env.DIFFUTILS_VERSION }}-win64
+          path: diffutils
