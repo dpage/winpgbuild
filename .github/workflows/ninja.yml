@@ -10,7 +10,7 @@ jobs:
     with:
       config-path: manifest.json
 
-  build-ninja:
+  package-ninja:
     needs: get-versions
     runs-on: windows-latest
     env:

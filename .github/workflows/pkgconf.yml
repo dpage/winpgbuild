@@ -14,7 +14,7 @@ jobs:
   # pages) to download pkgconf from. Doing the choco install every time is too
   # slow (and uses such an old sourceforge page). So it seems easiest to just
   # build it here.
-  build-pkgconf:
+  package-pkgconf:
     runs-on: windows-latest
     needs: get-versions
     env:

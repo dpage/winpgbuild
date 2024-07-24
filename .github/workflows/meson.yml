@@ -10,7 +10,7 @@ jobs:
     with:
       config-path: manifest.json
 
-  build-meson:
+  package-meson:
     runs-on: windows-latest
     needs: get-versions
     env:
