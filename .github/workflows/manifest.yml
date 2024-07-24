@@ -1,4 +1,4 @@
-name: set versions of packages
+name: Set package versions
 
 on:
   workflow_call:
@@ -10,7 +10,7 @@ on:
     # Map the workflow outputs to job outputs
     outputs:
       OPENSSL_VERSION:
-        description: "Version of openssl"
+        description: "openssl version"
         value: ${{ jobs.set_versions.outputs.output1 }}
       LIBICONV_VERSION:
         description: "libiconv version"
@@ -87,7 +87,8 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2    
+        uses: actions/checkout@v4
+
       - name: step1
         shell: powershell  
         id: step1
