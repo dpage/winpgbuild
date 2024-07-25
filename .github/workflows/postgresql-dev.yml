@@ -125,7 +125,7 @@ jobs:
         if: ${{ !success() }}
         uses: actions/upload-artifact@v4
         with:
-          name: test_run
+          name: test_logs
           path: |
             postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\testrun\**\*.log
             postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\testrun\**\regress_log_*
@@ -144,7 +144,7 @@ jobs:
         with:
           if-no-files-found: error
           name: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}-src
-          path: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}
+          path: postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
@@ -159,4 +159,4 @@ jobs:
         with:
           if-no-files-found: error
           name: meson_log
-          path: D:\a\winpgbuild\winpgbuild\postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\meson-logs\meson-log.txt
+          path: postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\meson-logs\meson-log.txt
