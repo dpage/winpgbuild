@@ -71,11 +71,12 @@ jobs:
         run: |
           icacls.exe . /inheritance:e /grant 'runneradmin:(OI)(CI)F'
 
-      - name: Download
-        run: |
-          git clone https://github.com/postgres/postgres.git postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}
-          cd postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}
-          git reset --hard ${{ env.POSTGRESQL-DEV_VERSION }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+            repository: https://github.com/postgres/postgres.git
+            path: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}
+            ref: ${{ env.POSTGRESQL-DEV_VERSION }}
 
       - name: Configure
         run: |
