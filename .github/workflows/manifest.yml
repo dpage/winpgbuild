@@ -48,8 +48,8 @@ on:
       POSTGRESQL_VERSION:
         description: "postgresql version"
         value: ${{ jobs.set_versions.outputs.output13 }}
-      POSTGRESQL_DEV_VERSION:
-        description: "postgresql_dev version"
+      POSTGRESQL-DEV_VERSION:
+        description: "postgresql-dev version"
         value: ${{ jobs.set_versions.outputs.output14 }}
       ZLIB_VERSION:
         description: "zlib version"
@@ -83,7 +83,7 @@ jobs:
       output11: ${{ steps.step1.outputs.OSSP-UUID_VERSION }}
       output12: ${{ steps.step1.outputs.PKGCONF_VERSION }}
       output13: ${{ steps.step1.outputs.POSTGRESQL_VERSION }}
-      output14: ${{ steps.step1.outputs.POSTGRESQL_DEV_VERSION }}
+      output14: ${{ steps.step1.outputs.POSTGRESQL-DEV_VERSION }}
       output15: ${{ steps.step1.outputs.ZLIB_VERSION }}
       output16: ${{ steps.step1.outputs.ZSTD_VERSION }}
       output17: ${{ steps.step1.outputs.WINFLEXBISON_VERSION }}
