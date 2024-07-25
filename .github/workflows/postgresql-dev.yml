@@ -80,7 +80,8 @@ jobs:
 
       - name: Source archive
         run: |
-          tar zcvf postgresql-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
+          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
+          git archive --format=tar.gz -o postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz --prefix=postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}/ ${{ env.POSTGRESQL-DEV_VERSION }}
 
       - name: Configure
         run: |
@@ -148,7 +149,7 @@ jobs:
         with:
           if-no-files-found: error
           name: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}-src
-          path: postgresql-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz
+          path: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
