@@ -98,7 +98,7 @@
       },
       {
         "name": "postgresql-dev",
-        "version": "main",
+        "version": "master",
         "source": "https://github.com/postgres/postgres",
         "licence": "https://www.postgresql.org/about/licence/"
       },

@@ -75,7 +75,8 @@ jobs:
         uses: actions/checkout@v4
         with:
             repository: postgres/postgres
-            path: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}
+            path: postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
+            ref: ${{ env.POSTGRESQL-DEV_VERSION }}
 
       - name: Configure
         run: |
