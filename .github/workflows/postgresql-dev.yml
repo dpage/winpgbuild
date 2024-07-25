@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
     env:
-      POSTGRESQL_DEV_VERSION: ${{needs.get-versions.outputs.LIBICONV_VERSION}}
+      POSTGRESQL_DEV_VERSION: ${{ needs.get-versions.outputs.POSTGRESQL_DEV_VERSION }}
 
     runs-on: windows-latest
     steps:
