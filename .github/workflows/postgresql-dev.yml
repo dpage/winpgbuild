@@ -97,6 +97,7 @@ jobs:
               "-DPG_TEST_EXTRA=ldap ssl" `
               -Duuid=ossp `
               -Db_pch=true `
+              -Dgssapi=disabled `
               -Dbuildtype=debugoptimized `
               build
 
