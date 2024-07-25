@@ -76,7 +76,6 @@ jobs:
         with:
             repository: postgres/postgres
             path: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}
-            ref: ${{ env.POSTGRESQL-DEV_VERSION }}
 
       - name: Configure
         run: |
