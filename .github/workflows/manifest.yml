@@ -17,52 +17,52 @@ on:
         value: ${{ jobs.set_versions.outputs.output2 }}
       KRB5_VERSION:
         description: "krb version"
-        value: ${{ jobs.set_versions.outputs.output3}}  
+        value: ${{ jobs.set_versions.outputs.output3 }}  
       GETTEXT_VERSION:
         description: "gettext version"
-        value: ${{ jobs.set_versions.outputs.output4}}  
+        value: ${{ jobs.set_versions.outputs.output4 }}  
       ICU_VERSION:
         description: "icu version"
-        value: ${{ jobs.set_versions.outputs.output5}}  
+        value: ${{ jobs.set_versions.outputs.output5 }}  
       LIBXML2_VERSION:
         description: "libxml2 version"
-        value: ${{ jobs.set_versions.outputs.output6}}  
+        value: ${{ jobs.set_versions.outputs.output6 }}  
       LIBXSLT_VERSION:
         description: "libxslt version"
-        value: ${{ jobs.set_versions.outputs.output7}}  
+        value: ${{ jobs.set_versions.outputs.output7 }}  
       LZ4_VERSION:
         description: "lz4 version"
-        value: ${{ jobs.set_versions.outputs.output8}}  
+        value: ${{ jobs.set_versions.outputs.output8 }}  
       MESON_VERSION:
         description: "meson version"
-        value: ${{ jobs.set_versions.outputs.output9}}  
+        value: ${{ jobs.set_versions.outputs.output9 }}  
       NINJA_VERSION:
         description: "ninja version"
-        value: ${{ jobs.set_versions.outputs.output10}}  
+        value: ${{ jobs.set_versions.outputs.output10 }}  
       OSSP-UUID_VERSION:
         description: "ossp_uuid version"
-        value: ${{ jobs.set_versions.outputs.output11}}  
+        value: ${{ jobs.set_versions.outputs.output11 }}  
       PKGCONF_VERSION:
         description: "pkgconf version"
-        value: ${{ jobs.set_versions.outputs.output12}}
+        value: ${{ jobs.set_versions.outputs.output12 }}
       POSTGRESQL_VERSION:
         description: "postgresql version"
-        value: ${{ jobs.set_versions.outputs.output13}}
+        value: ${{ jobs.set_versions.outputs.output13 }}
       POSTGRESQL_DEV_VERSION:
-        description: "pkgconf version"
-        value: ${{ jobs.set_versions.outputs.output14}}
+        description: "postgresql_dev version"
+        value: ${{ jobs.set_versions.outputs.output14 }}
       ZLIB_VERSION:
         description: "zlib version"
-        value: ${{ jobs.set_versions.outputs.output15}}
+        value: ${{ jobs.set_versions.outputs.output15 }}
       ZSTD_VERSION:
         description: "zstd version"
-        value: ${{ jobs.set_versions.outputs.output16}}
+        value: ${{ jobs.set_versions.outputs.output16 }}
       WINFLEXBISON_VERSION:
         description: "winflex bison version"
-        value: ${{ jobs.set_versions.outputs.output17}}
+        value: ${{ jobs.set_versions.outputs.output17 }}
       DIFFUTILS_VERSION:
         description: "diffutils version"
-        value: ${{ jobs.set_versions.outputs.output18}}
+        value: ${{ jobs.set_versions.outputs.output18 }}
                           
 jobs:
   set_versions:
