@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ${{ fromJSON(needs.get-versions.outputs.POSTGRESQL_VERSION) }}
+        version: ${{ fromJSON(needs.get-versions.outputs.POSTGRESQL_VERSIONS) }}
 
     runs-on: windows-latest
 
