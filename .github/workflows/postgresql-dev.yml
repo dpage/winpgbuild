@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
     env:
-      POSTGRESQL_DEV_VERSION: ${{needs.get-versions.outputs.POSTGRESQL_DEV_VERSION}}
+      POSTGRESQL-DEV_VERSION: ${{needs.get-versions.outputs.POSTGRESQL-DEV_VERSION}}
 
     runs-on: windows-latest
     steps:
@@ -73,12 +73,12 @@ jobs:
 
       - name: Download
         run: |
-          curl https://ftp.postgresql.org/pub/source/v${{ env.POSTGRESQL_DEV_VERSION }}/postgresql-${{ env.POSTGRESQL_DEV_VERSION }}.tar.gz -o ./postgresql-dev-${{ env.POSTGRESQL_DEV_VERSION }}.tar.gz
-          tar zxvf postgresql-dev-${{ env.POSTGRESQL_DEV_VERSION }}.tar.gz
+          curl https://ftp.postgresql.org/pub/source/v${{ env.POSTGRESQL-DEV_VERSION }}/postgresql-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz -o ./postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz
+          tar zxvf postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz
 
       - name: Configure
         run: |
-          cd postgresql-${{ env.POSTGRESQL_DEV_VERSION }}
+          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
 
           # don't use \path style paths for library search, link.exe ends up
           # interpreting paths like that as flags!
@@ -102,12 +102,12 @@ jobs:
 
       - name: Build
         run: |
-          cd postgresql-${{ env.POSTGRESQL_DEV_VERSION }}\build
+          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
           ninja
 
       - name: Test
         run: |
-          cd postgresql-${{ env.POSTGRESQL_DEV_VERSION }}\build
+          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
 
           # use unix socket to prevent port conflicts
           $env:PG_TEST_USE_UNIX_SOCKETS = 1;
@@ -124,15 +124,15 @@ jobs:
         with:
           name: test_run
           path: |
-            postgresql-${{ env.POSTGRESQL_DEV_VERSION }}\build\testrun\**\*.log
-            postgresql-${{ env.POSTGRESQL_DEV_VERSION }}\build\testrun\**\regress_log_*
-            postgresql-${{ env.POSTGRESQL_DEV_VERSION }}\build\testrun\**\*.diffs
-            postgresql-${{ env.POSTGRESQL_DEV_VERSION }}\build\testrun\**\*.out
-            postgresql-${{ env.POSTGRESQL_DEV_VERSION }}\build\meson-logs\testlog.txt
+            postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\testrun\**\*.log
+            postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\testrun\**\regress_log_*
+            postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\testrun\**\*.diffs
+            postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\testrun\**\*.out
+            postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\meson-logs\testlog.txt
 
       - name: Install
         run: |
-          cd postgresql-${{ env.POSTGRESQL_DEV_VERSION }}\build
+          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
 
           meson install --quiet
 
@@ -140,14 +140,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: postgresql-dev-${{ env.POSTGRESQL_DEV_VERSION }}-src
-          path: postgresql-dev-${{ env.POSTGRESQL_DEV_VERSION }}.tar.gz
+          name: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}-src
+          path: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: postgresql-dev-${{ env.POSTGRESQL_DEV_VERSION }}-win64
+          name: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}-win64
           path: /postgresql
 
       - name: Upload Meson Log
@@ -156,4 +156,4 @@ jobs:
         with:
           if-no-files-found: error
           name: meson_log
-          path: D:\a\winpgbuild\winpgbuild\postgresql-${{ env.POSTGRESQL_DEV_VERSION }}\build\meson-logs\meson-log.txt
+          path: D:\a\winpgbuild\winpgbuild\postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\meson-logs\meson-log.txt
