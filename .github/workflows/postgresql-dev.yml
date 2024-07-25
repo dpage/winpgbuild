@@ -81,7 +81,7 @@ jobs:
       - name: Source archive
         run: |
           cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
-          git archive --format=tar.gz -o postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz --prefix=postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}/ ${{ env.POSTGRESQL-DEV_VERSION }}
+          git archive --format=tar.gz -o ../postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz --prefix=postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}/ ${{ env.POSTGRESQL-DEV_VERSION }}
 
       - name: Configure
         run: |
