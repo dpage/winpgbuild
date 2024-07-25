@@ -12,7 +12,7 @@ Versions for each artifact are specified in [manifest.json](https://github.com/d
 * gettext: 0.22.5
 * icu: 75.1
 * iconv: 1.17
-* krb5: 1.21.3 . Note that this isn't used in the PostgreSQL build as it will cause compile errors.
+* krb5: 1.21.3. Note that this isn't used in the PostgreSQL build as it will cause compile errors.
 * libxml2: 2.11.8
 * libxslt: 1.1.39
 * lz4: 1.9.4
@@ -31,8 +31,9 @@ Versions for each artifact are specified in [manifest.json](https://github.com/d
 
 ### PostgreSQL
 
-The PostgreSQL versions are being built
-* 16.3, 
+The PostgreSQL versions are being built are:
+
+* 16.3 
 * 15.7
 * 14.12
 * 13.15
@@ -63,7 +64,7 @@ Currently we only use `name` and `version` in workflows. `source` and `license` 
 ```
 DIFFUTILS_VERSION:
     description: "diffutils version"
-    value: ${{ jobs.set_versions.outputs.output18}}
+    value: ${{ jobs.set_versions.outputs.output18 }}
 ```
 
 A new output will need to be defined for the jobs.
