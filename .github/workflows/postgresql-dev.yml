@@ -73,8 +73,9 @@ jobs:
 
       - name: Download
         run: |
-          curl https://ftp.postgresql.org/pub/source/v${{ env.POSTGRESQL-DEV_VERSION }}/postgresql-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz -o ./postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz
-          tar zxvf postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz
+          git clone https://github.com/postgres/postgres.git postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}
+          cd postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}
+          git reset --hard ${{ env.POSTGRESQL-DEV_VERSION }}
 
       - name: Configure
         run: |

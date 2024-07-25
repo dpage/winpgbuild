@@ -98,8 +98,8 @@
       },
       {
         "name": "postgresql-dev",
-        "version": "17beta2",
-        "source": "https://ftp.postgresql.org/pub/source/v17beta2/postgresql-17beta2.tar.gz",
+        "version": "main",
+        "source": "https://github.com/postgres/postgres",
         "licence": "https://www.postgresql.org/about/licence/"
       },
       {
