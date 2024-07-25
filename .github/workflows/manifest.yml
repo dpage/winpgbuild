@@ -48,7 +48,7 @@ on:
       POSTGRESQL_VERSION:
         description: "postgresql version"
         value: ${{ jobs.set_versions.outputs.output13}}
-      POSGRESQL_DEV_VERSION:
+      POSTGRESQL_DEV_VERSION:
         description: "pkgconf version"
         value: ${{ jobs.set_versions.outputs.output14}}
       ZLIB_VERSION:
