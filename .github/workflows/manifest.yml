@@ -82,7 +82,7 @@ jobs:
       output10: ${{ steps.step1.outputs.NINJA_VERSION }}
       output11: ${{ steps.step1.outputs.OSSP-UUID_VERSION }}
       output12: ${{ steps.step1.outputs.PKGCONF_VERSION }}
-      output13: ${{ steps.step1.outputs.POSTGRESQL_VERSIONS }}
+      output13: ${{ steps.step1.outputs.POSTGRESQL_VERSION }}
       output14: ${{ steps.step1.outputs.POSTGRESQL-DEV_VERSION }}
       output15: ${{ steps.step1.outputs.ZLIB_VERSION }}
       output16: ${{ steps.step1.outputs.ZSTD_VERSION }}
