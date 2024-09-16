@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ${{ fromJSON(needs.get-versions.outputs.POSTGRESQL_VERSIONS) }}
+        version: ${{ fromJSON(needs.get-versions.outputs.POSTGRESQL_VERSION) }}
 
     runs-on: windows-latest
 
@@ -28,7 +28,7 @@ jobs:
     #   build
     env:
       MSBFLAGS: -m -verbosity:minimal "-consoleLoggerParameters:Summary;ForceNoAlign" /p:TrackFileAccess=false -nologo
-      POSTGRESQL_VERSIONS: ${{needs.get-versions.outputs.POSTGRESQL_VERSIONS}}
+      POSTGRESQL_VERSIONS: ${{needs.get-versions.outputs.POSTGRESQL_VERSION}}
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
