@@ -70,12 +70,24 @@ jobs:
           echo "/builddeps" >> $ENV:GITHUB_PATH
           echo "/postgresql/bin" >> $ENV:GITHUB_PATH
 
+      # This is run as a privileged user. For some reason windows ends up
+      # creating the directories owned by "Administrator", which causes
+      # problems because when postgres drops privileges, it doesn't have
+      # sufficient rights to access them anymore!
+      #
+      # I have pulled most of my hair out over the last hours.
+      #
+      # See also https://www.postgresql.org/message-id/20240707064046.blgjxoqiywunbebl%40awork3.anarazel.de
+      - name: Work around privilege issue
+        run: |
+          icacls.exe . /inheritance:e /grant 'runneradmin:(OI)(CI)F'
+
       - name: Download
         run: |
           curl https://ftp.postgresql.org/pub/source/v${{ matrix.version }}/postgresql-${{ matrix.version }}.tar.gz -o ./postgresql-${{ matrix.version }}.tar.gz
           tar zxvf postgresql-${{ matrix.version }}.tar.gz
 
-      - name: Configure
+      - name: Configure (msvc)
         run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
 
@@ -106,25 +118,94 @@ jobs:
           >> config.pl echo.
           >> config.pl echo 1;
         shell: cmd
+        if: ${{ fromJson(matrix.version) < 17.0 }}
 
-      - name: Build
+      - name: Configure (meson)
+        run: |
+          cd postgresql-${{ matrix.version }}
+
+          # don't use \path style paths for library search, link.exe ends up
+          # interpreting paths like that as flags!
+          $deps = resolve-path /builddeps
+
+          # can't enable some extra tests
+          # - libpq_encryption -> fails for unknown reasons
+          # - kerberos -> test not yet supported on windows
+          # - load_balance -> would need to set up hostnames
+          meson setup `
+              --prefix=\postgresql `
+              "--cmake-prefix-path=${deps}" `
+              "--pkg-config-path=${deps}\lib\pkgconfig" `
+              "-Dextra_include_dirs=${deps}\include" `
+              "-Dextra_lib_dirs=${deps}\lib,${deps}\lib\amd64" `
+              "-DPG_TEST_EXTRA=ldap ssl" `
+              -Duuid=ossp `
+              -Db_pch=true `
+              -Dgssapi=disabled `
+              -Dbuildtype=debugoptimized `
+              build
+        if: ${{ fromJson(matrix.version) >= 17.0 }}
+
+      - name: Build (msvc)
         run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
           build
         shell: cmd
+        if: ${{ fromJson(matrix.version) < 17.0 }}
 
-      - name: Test
+      - name: Build (meson)
+        run: |
+          cd postgresql-${{ matrix.version }}\build
+          ninja
+        if: ${{ fromJson(matrix.version) >= 17.0 }}
+
+      - name: Test (msvc)
         run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
           vcregress check
         shell: cmd
+        if: ${{ fromJson(matrix.version) < 17.0 }}
 
-      - name: Install
+      - name: Test (meson)
+        run: |
+          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
+
+          # use unix socket to prevent port conflicts
+          $env:PG_TEST_USE_UNIX_SOCKETS = 1;
+          # otherwise pg_regress insists on creating the directory and does it
+          # in a non-existing place, this needs to be fixed :(
+          mkdir d:/sockets
+          $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
+
+          meson test
+        if: ${{ fromJson(matrix.version) >= 17.0 }}
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test_logs
+          path: |
+            postgresql-${{ matrix.version }}\build\testrun\**\*.log
+            postgresql-${{ matrix.version }}\build\testrun\**\regress_log_*
+            postgresql-${{ matrix.version }}\build\testrun\**\*.diffs
+            postgresql-${{ matrix.version }}\build\testrun\**\*.out
+            postgresql-${{ matrix.version }}\build\meson-logs\testlog.txt
+        if: ${{ !success() }} && ${{ fromJson(matrix.version) >= 17.0 }}    
+
+      - name: Install (msvc)
         run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
 
           perl install.pl \postgresql
         shell: cmd
+        if: ${{ fromJson(matrix.version) < 17.0 }}
+
+      - name: Install (meson)
+        run: |
+          cd postgresql-${{ matrix.version }}\build
+
+          meson install --quiet
+        if: ${{ fromJson(matrix.version) >= 17.0 }}
 
       - name: Upload Source
         uses: actions/upload-artifact@v4
@@ -141,6 +222,7 @@ jobs:
           path: |
             postgresql-${{ matrix.version }}/src/tools/msvc/config.pl
             postgresql-${{ matrix.version }}/src/tools/msvc/buildenv.pl
+        if: ${{ fromJson(matrix.version) < 17.0 }}
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
@@ -148,3 +230,11 @@ jobs:
           if-no-files-found: error
           name: postgresql-${{ matrix.version }}-win64
           path: /postgresql
+
+      - name: Upload Meson Log
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: meson_log
+          path: postgresql-${{ matrix.version }}\build\meson-logs\meson-log.txt
+        if: ${{ fromJson(matrix.version) >= 17.0 }} && always()
