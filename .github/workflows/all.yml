@@ -1,0 +1,21 @@
+name: Build all
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  package-diffutils:
+    uses: ./.github/workflows/diffutils.yml
+
+  package-pkgconf:
+    uses: ./.github/workflows/pkgconf.yml
+
+  package-meson:
+    uses: ./.github/workflows/meson.yml
+
+  package-ninja:
+    uses: ./.github/workflows/ninja.yml
+
+  package-winflexbison:
+    uses: ./.github/workflows/winflexbison.yml
