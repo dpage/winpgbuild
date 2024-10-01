@@ -83,35 +83,3 @@ jobs:
       group: phase-one
       cancel-in-progress: true
 
-  # Second phase
-  build-gettext:
-    uses: ./.github/workflows/gettext.yml  
-    concurrency:
-      group: phase-two
-      cancel-in-progress: true
-
-  build-libxml2:
-    uses: ./.github/workflows/libxml2.yml 
-    concurrency:
-      group: phase-two
-      cancel-in-progress: true
-
-  # Third phase
-  build-libxslt:
-    uses: ./.github/workflows/libxslt.yml 
-    concurrency:
-      group: phase-three
-      cancel-in-progress: true
-
-  # Output
-  bundle-all-deps:
-    uses: ./.github/workflows/all-deps.yml
-    concurrency:
-      group: output
-      cancel-in-progress: true
-
-  build-postgresql:
-    uses: ./.github/workflows/postgresql.yml
-    concurrency:
-      group: output
-      cancel-in-progress: true
