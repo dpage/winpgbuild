@@ -26,25 +26,25 @@
       },
       {
         "name": "libxml2",
-        "version": "2.11.8",
+        "version": "2.13.4",
         "source": "https://gitlab.gnome.org/GNOME/libxml2/",
         "licence": "https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads"
       },
       {
         "name": "libxslt",
-        "version": "1.1.39",
-        "source": "https://gitlab.gnome.org/GNOME/libxml2/",
+        "version": "1.1.42",
+        "source": "https://gitlab.gnome.org/GNOME/libxslt/",
         "licence": "https://gitlab.gnome.org/GNOME/libxslt/-/blob/master/Copyright?ref_type=heads"
       },
       {
         "name": "lz4",
-        "version": "1.9.4",
+        "version": "1.10.0",
         "source": "https://lz4.org/",
         "licence": "https://github.com/lz4/lz4/blob/dev/LICENSE"
       },
       {
         "name": "openssl",
-        "version": "3.0.14",
+        "version": "3.0.15",
         "source": "https://openssl.org/",
         "licence": "https://www.openssl.org/source/apache-license-2.0.txt"
       },
@@ -74,7 +74,7 @@
       },
       {
         "name": "meson",
-        "version": "1.4.1",
+        "version": "1.5.2",
         "source": "https://mesonbuild.com",
         "licence": "https://github.com/mesonbuild/meson/blob/master/COPYING"
       },
@@ -86,13 +86,13 @@
       },
       {
         "name": "pkgconf",
-        "version": "2.2.0",
+        "version": "2.3.0",
         "source": "http://pkgconf.org",
         "licence": "https://github.com/pkgconf/pkgconf/blob/master/COPYING"
       },
       {
         "name": "winflexbison",
-        "version": "2.5.24",
+        "version": "2.5.25",
         "source": "https://github.com/lexxmark/winflexbison",
         "licence": "https://github.com/lexxmark/winflexbison/blob/master/flex/src/COPYING"
       },
