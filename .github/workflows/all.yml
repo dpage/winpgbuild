@@ -115,9 +115,3 @@ jobs:
     concurrency:
       group: output
       cancel-in-progress: true
-
-  bundle-postgresql-dev:
-    uses: ./.github/workflows/postgresql-dev.yml
-    concurrency:
-      group: output
-      cancel-in-progress: true
