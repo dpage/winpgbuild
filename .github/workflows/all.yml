@@ -11,28 +11,101 @@ jobs:
     uses: ./.github/workflows/diffutils.yml
     concurrency:
       group: phase-one
-      cancel-in-progress: true
 
   package-pkgconf:
     uses: ./.github/workflows/pkgconf.yml
     concurrency:
       group: tools
-      cancel-in-progress: true
 
   package-meson:
     uses: ./.github/workflows/meson.yml
     concurrency:
       group: tools
-      cancel-in-progress: true
 
   package-ninja:
     uses: ./.github/workflows/ninja.yml
     concurrency:
       group: tools
-      cancel-in-progress: true
 
   package-winflexbison:
     uses: ./.github/workflows/winflexbison.yml
     concurrency:
       group: tools
-      cancel-in-progress: true
+
+
+  # First phase dependencies
+  build-icu:
+    uses: ./.github/workflows/icu.yml
+    concurrency:
+      group: phase-one
+
+  build-krb5:
+    uses: ./.github/workflows/krb5.yml
+    concurrency:
+      group: phase-one
+
+  build-libiconv:
+    uses: ./.github/workflows/libiconv.yml
+    concurrency:
+      group: phase-one
+
+  build-lz4:
+    uses: ./.github/workflows/lz4.yml
+    concurrency:
+      group: phase-one
+
+  build-openssl:
+    uses: ./.github/workflows/openssl.yml
+    concurrency:
+      group: phase-one
+
+  build-ossp-uuid:
+    uses: ./.github/workflows/ossp-uuid.yml
+    concurrency:
+      group: phase-one
+
+  build-zlib:
+    uses: ./.github/workflows/zlib.yml
+    concurrency:
+      group: phase-one
+
+  build-zstd:
+    uses: ./.github/workflows/zstd.yml
+    concurrency:
+      group: phase-one
+
+
+  # Second phase
+  build-gettext:
+    uses: ./.github/workflows/gettext.yml  
+    concurrency:
+      group: phase-two
+
+  build-libxml2:
+    uses: ./.github/workflows/libxml2.yml 
+    concurrency:
+      group: phase-two
+
+
+  # Third phase
+  build-libxslt:
+    uses: ./.github/workflows/libxslt.yml 
+    concurrency:
+      group: phase-three
+
+
+  # Output
+  bundle-all-deps:
+    uses: ./.github/workflows/all-deps.yml
+    concurrency:
+      group: output
+
+  build-postgresql:
+    uses: ./.github/workflows/postgresql.yml
+    concurrency:
+      group: output
+
+  build-postgresql-dev:
+    uses: ./.github/workflows/postgresql-dev.yml
+    concurrency:
+      group: output
