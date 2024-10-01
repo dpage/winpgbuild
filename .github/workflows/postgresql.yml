@@ -168,7 +168,7 @@ jobs:
 
       - name: Test (meson)
         run: |
-          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
+          cd postgresql-${{ matrix.version }}\build
 
           # use unix socket to prevent port conflicts
           $env:PG_TEST_USE_UNIX_SOCKETS = 1;
