@@ -1,0 +1,192 @@
+name: Build All Tools
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
+  package-diffutils:
+    runs-on: windows-latest
+    needs: get-versions
+    env:
+      DIFFUTILS_VERSION: ${{needs.get-versions.outputs.DIFFUTILS_VERSION}}
+
+    steps:
+      - name: Download
+        run: |
+          curl -L -o diffutils.zip "https://downloads.sourceforge.net/project/gnuwin32/diffutils/${{ env.DIFFUTILS_VERSION }}/diffutils-${{ env.DIFFUTILS_VERSION }}-bin.zip"
+          mkdir diffutils
+          cd diffutils
+          unzip ../diffutils.zip
+
+      - name: Download dependencies
+        run: |
+          curl -L -o diffutils-deps.zip "https://downloads.sourceforge.net/project/gnuwin32/diffutils/${{ env.DIFFUTILS_VERSION }}/diffutils-${{ env.DIFFUTILS_VERSION }}-dep.zip"
+          cd diffutils
+          unzip ../diffutils-deps.zip
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: diffutils-${{ env.DIFFUTILS_VERSION }}-win64
+          path: diffutils
+
+  package-meson:
+    runs-on: windows-latest
+    needs: get-versions
+    env:
+      MESON_VERSION: ${{needs.get-versions.outputs.MESON_VERSION}}
+    steps:
+      - name: Download
+        run: |
+          curl.exe -L -o meson.tar.gz https://github.com/mesonbuild/meson/releases/download/${{ env.MESON_VERSION }}/meson-${{ env.MESON_VERSION }}.tar.gz
+
+          mkdir -p /meson/mesonbuild
+          mkdir -p /meson/bin
+
+          tar -C /meson/mesonbuild --strip-components=1 -xvzf meson.tar.gz
+
+          echo "@python %~dp0/../mesonbuild/meson.py %*" | out-file -encoding ascii \meson\bin\meson.cmd;
+          \meson\bin\meson.cmd --help
+
+          $ENV:PATH="/meson/bin;$ENV:PATH"
+          meson --version
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: meson-${{ env.MESON_VERSION }}-win64
+          path: /meson
+
+  package-ninja:
+    needs: get-versions
+    runs-on: windows-latest
+    env:
+      NINJA_VERSION:  ${{needs.get-versions.outputs.NINJA_VERSION}}
+    steps:
+      - name: Download
+        run: |
+          curl -L -o ninja.zip https://github.com/ninja-build/ninja/releases/download/v${{ env.NINJA_VERSION }}/ninja-win.zip
+          mkdir /ninja/bin
+
+          unzip ninja.zip
+          cp ninja.exe /ninja/bin
+          ls /ninja/bin
+          $ENV:PATH="/ninja/bin;$ENV:PATH"
+          ninja --version || true
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: ninja-${{ env.NINJA_VERSION }}-win64
+          path: /ninja
+
+  # There are no obviously trustworth places (it's typically old sourceforge
+  # pages) to download pkgconf from. Doing the choco install every time is too
+  # slow (and uses such an old sourceforge page). So it seems easiest to just
+  # build it here.
+  package-pkgconf:
+    runs-on: windows-latest
+    needs: get-versions
+    env:
+      MESON_VERSION: ${{needs.get-versions.outputs.MESON_VERSION}}
+      NINJA_VERSION: ${{needs.get-versions.outputs.NINJA_VERSION}}
+      PKGCONF_VERSION: ${{needs.get-versions.outputs.PKGCONF_VERSION}}
+
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Download meson
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: meson.yml
+          workflow_conclusion: success
+          name: meson-${{ env.MESON_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
+      - name: Download ninja
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: ninja.yml
+          workflow_conclusion: success
+          name: ninja-${{ env.NINJA_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
+      - name: Add build deps to path
+        run: |
+          echo "/builddeps/bin" >> $ENV:GITHUB_PATH
+
+      - name: Download
+        run: |
+          curl.exe -L https://github.com/pkgconf/pkgconf/archive/refs/tags/pkgconf-${{ env.PKGCONF_VERSION }}.tar.gz -o pkgconf-${{ env.PKGCONF_VERSION }}.tar.gz
+          tar zxvf ./pkgconf-${{ env.PKGCONF_VERSION }}.tar.gz
+          mv pkgconf-pkgconf-${{ env.PKGCONF_VERSION }} pkgconf
+        shell: bash
+
+      - name: Configure
+        run: |
+          cd pkgconf
+          meson setup build -Dbuildtype=release --default-library static --prefix \pkgconf
+
+      - name: Build
+        run: |
+          cd pkgconf
+          ninja -C build
+
+      - name: Install
+        run: |
+          cd pkgconf
+          ninja -C build install
+          # that way we don't need to tell meson about the non-standard name
+          cp \pkgconf\bin\pkgconf.exe \pkgconf\bin\pkg-config.exe
+
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: pkgconf-${{ env.PKGCONF_VERSION }}-src
+          path: pkgconf-${{ env.PKGCONF_VERSION }}.tar.gz
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: pkgconf-${{ env.PKGCONF_VERSION }}-win64
+          path: /pkgconf
+
+  package-winflexbison:
+    runs-on: windows-latest
+    needs: get-versions
+    env:
+      WINFLEXBISON_VERSION: ${{needs.get-versions.outputs.WINFLEXBISON_VERSION}}
+
+    steps:
+      - name: Download
+        run: |
+          curl -L -o winflexbison.zip "https://github.com/lexxmark/winflexbison/releases/download/v${{ env.WINFLEXBISON_VERSION }}/win_flex_bison-${{ env.WINFLEXBISON_VERSION }}.zip"
+          mkdir winflexbison
+          cd winflexbison
+          unzip ../winflexbison.zip
+
+      # while the meson build nows about win_{bison,flex}, src/tools/msvc doesn't
+      - name: Rename Binaries
+        run: |
+          mv winflexbison/win_bison.exe winflexbison/bison.exe
+          mv winflexbison/win_flex.exe winflexbison/flex.exe
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: winflexbison-${{ env.WINFLEXBISON_VERSION }}-win64
+          path: winflexbison
