@@ -3,7 +3,9 @@ name: Build PostgreSQL (Dev)
 on:
   workflow_dispatch:
   workflow_call:
-
+  schedule:
+    - cron: "00 04 * * *"
+    
 jobs:
   get-versions:
     uses: ./.github/workflows/manifest.yml

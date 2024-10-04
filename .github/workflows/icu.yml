@@ -3,6 +3,8 @@ name: Build ICU
 on:
   workflow_dispatch:
   workflow_call:
+  schedule:
+    - cron: "00 01 * * *"
 
 jobs:
   get-versions:

@@ -3,7 +3,9 @@ name: Package Ninja
 on:
   workflow_dispatch:
   workflow_call:
-
+  schedule:
+    - cron: "00 00 * * *"
+    
 jobs:
   get-versions:
     uses: ./.github/workflows/manifest.yml

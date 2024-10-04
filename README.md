@@ -3,6 +3,26 @@ A repo containing Github actions for building PostgreSQL and it's dependencies
 on Windows. A number of build tools are also included to enable reproducable
 builds, though these are generally downloaded as pre-built utilities.
 
+## Automation
+We really need to automate the builds, as Github will only retain the artefacts
+for 90 days so we need to ensure they're kept fresh. Yes, we could upload them
+to S3 or something, but whatever...
+
+Automating the build of all components is, tricky. Github has a limit of 20
+workflows that can be called in a single workflow dispatch; and we use 2 per 
+component, one to get the version, and one to run the build.
+
+We could put everything into a single workflow (or maybe two or three), but
+that would become extremely difficult to navigate and maintain.
+
+We could also dispatch workflow runs using the Github API, however, that doesn't
+give us an ID when we run a workflow so we can't poll for it's completion (and
+even if we did, we'd likely hit the API call quota quickly).
+
+So for now, we're just running all workflows daily, at times determined by
+their "dependency group". We allow an hour for each group, and hope everything
+builds in time. If not, we may end up using the previous build of a dependency.
+
 ## Version Information
 
 Versions for each artifact are specified in [manifest.json](https://github.com/dpage/winpgbuild/blob/main/manifest.json)

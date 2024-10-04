@@ -3,6 +3,8 @@ name: Build gettext
 on:
   workflow_dispatch:
   workflow_call:
+  schedule:
+    - cron: "00 02 * * *"
 
 jobs:
   get-versions:

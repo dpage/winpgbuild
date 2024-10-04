@@ -3,6 +3,8 @@ name: Build libxslt
 on:
   workflow_dispatch:
   workflow_call:
+  schedule:
+    - cron: "00 03 * * *"
 
 jobs:
   get-versions:
