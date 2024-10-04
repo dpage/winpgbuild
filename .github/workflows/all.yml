@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   workflow_call:
 
+env:
+  GITHUB_TOKEN: ${{ secrets.ACTION_API_PAT }}
+
 jobs:
 
   # Github can only have nesting of up to 20 actions in a single action
@@ -13,12 +16,9 @@ jobs:
   package-tools:
     runs-on: ubuntu-latest
     steps:
-      - uses: octokit/request-action@v2.x
-        id: package-diffutils
-        with:
-          route: POST /repos/$GITHUB_REPOSITORY/actions/workflows/diffutils.yml/dispatches
-          output: |
-            ref: main
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACTION_API_PAT }}
+      - name: package-diffutils
+        run: |
+            curl -X POST -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" -d '{"ref":"main"}' \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/diffutils.yml/dispatches  
 
