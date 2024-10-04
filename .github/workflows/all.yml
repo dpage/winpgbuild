@@ -6,106 +6,19 @@ on:
 
 jobs:
 
-  # Tools
-  package-diffutils:
-    uses: ./.github/workflows/diffutils.yml
-    concurrency:
-      group: phase-one
+  # Github can only have nesting of up to 20 actions in a single action
+  # run. We'll need way more than that, as we have actions to get the 
+  # version, setup the compiler, upload builds and far more. So, we need
+  # to manually call other actions using the API to build everything.
+  package-tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: octokit/request-action@v2.x
+        id: package-diffutils
+        with:
+          route: POST /repos/$GITHUB_REPOSITORY/actions/workflows/diffutils.yml/dispatches
+          output: |
+            ref: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTION_API_PAT }}
 
-  package-pkgconf:
-    uses: ./.github/workflows/pkgconf.yml
-    concurrency:
-      group: tools
-
-  package-meson:
-    uses: ./.github/workflows/meson.yml
-    concurrency:
-      group: tools
-
-  package-ninja:
-    uses: ./.github/workflows/ninja.yml
-    concurrency:
-      group: tools
-
-  package-winflexbison:
-    uses: ./.github/workflows/winflexbison.yml
-    concurrency:
-      group: tools
-
-
-  # First phase dependencies
-  build-icu:
-    uses: ./.github/workflows/icu.yml
-    concurrency:
-      group: phase-one
-
-  build-krb5:
-    uses: ./.github/workflows/krb5.yml
-    concurrency:
-      group: phase-one
-
-  build-libiconv:
-    uses: ./.github/workflows/libiconv.yml
-    concurrency:
-      group: phase-one
-
-  build-lz4:
-    uses: ./.github/workflows/lz4.yml
-    concurrency:
-      group: phase-one
-
-  build-openssl:
-    uses: ./.github/workflows/openssl.yml
-    concurrency:
-      group: phase-one
-
-  build-ossp-uuid:
-    uses: ./.github/workflows/ossp-uuid.yml
-    concurrency:
-      group: phase-one
-
-  build-zlib:
-    uses: ./.github/workflows/zlib.yml
-    concurrency:
-      group: phase-one
-
-  build-zstd:
-    uses: ./.github/workflows/zstd.yml
-    concurrency:
-      group: phase-one
-
-
-  # Second phase
-  build-gettext:
-    uses: ./.github/workflows/gettext.yml  
-    concurrency:
-      group: phase-two
-
-  build-libxml2:
-    uses: ./.github/workflows/libxml2.yml 
-    concurrency:
-      group: phase-two
-
-
-  # Third phase
-  build-libxslt:
-    uses: ./.github/workflows/libxslt.yml 
-    concurrency:
-      group: phase-three
-
-
-  # Output
-  bundle-all-deps:
-    uses: ./.github/workflows/all-deps.yml
-    concurrency:
-      group: output
-
-  build-postgresql:
-    uses: ./.github/workflows/postgresql.yml
-    concurrency:
-      group: output
-
-  build-postgresql-dev:
-    uses: ./.github/workflows/postgresql-dev.yml
-    concurrency:
-      group: output
