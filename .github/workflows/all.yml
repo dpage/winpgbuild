@@ -1,8 +1,7 @@
-name: Build all
+name: Build all (WIP)
 
 on:
   workflow_dispatch:
-  workflow_call:
 
 env:
   GITHUB_TOKEN: ${{ secrets.ACTION_API_PAT }}
@@ -18,7 +17,30 @@ jobs:
     steps:
       - name: package-diffutils
         run: |
-            curl -X POST -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+            curl -s -X POST -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" -d '{"ref":"main"}' \
             https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/diffutils.yml/dispatches  
 
+      - name: package-meson
+        run: |
+            curl -s -X POST -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" -d '{"ref":"main"}' \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/meson.yml/dispatches  
+
+      - name: package-ninja
+        run: |
+            curl -s -X POST -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" -d '{"ref":"main"}' \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/ninja.yml/dispatches  
+
+      - name: package-pkgconf
+        run: |
+            curl -s -X POST -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" -d '{"ref":"main"}' \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/pkgconf.yml/dispatches  
+
+      - name: package-winflexbison
+        run: |
+            curl -s -X POST -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" -d '{"ref":"main"}' \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/winflexbison.yml/dispatches  
