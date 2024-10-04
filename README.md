@@ -33,13 +33,14 @@ Versions for each artifact are specified in [manifest.json](https://github.com/d
 
 The PostgreSQL versions are being built are:
 
+* 17.0
 * 16.4
 * 15.8
 * 14.13
 * 13.16
 * 12.20
 
-Currently supported versions of PostgreSQL <= 16 should work. All dependencies 
+Currently supported versions of PostgreSQL should work. All dependencies 
 should automatically be included in the build, *except* for MIT Kerberos (the 
 gssapi configuration option). See 
 https://www.postgresql.org/message-id/CA%2BOCxoxwsgi8QdzN8A0OPGuGfu_1vEW3ufVBnbwd3gfawVpsXw%40mail.gmail.com
