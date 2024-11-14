@@ -8,7 +8,7 @@
       },
       {
         "name": "icu",
-        "version": "75.1",
+        "version": "76.1",
         "source": "https://icu.unicode.org/home",
         "licence": "https://github.com/unicode-org/icu/blob/main/LICENSE"
       },
@@ -26,7 +26,7 @@
       },
       {
         "name": "libxml2",
-        "version": "2.13.4",
+        "version": "2.13.5",
         "source": "https://gitlab.gnome.org/GNOME/libxml2/",
         "licence": "https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads"
       },
@@ -74,7 +74,7 @@
       },
       {
         "name": "meson",
-        "version": "1.5.2",
+        "version": "1.6.0",
         "source": "https://mesonbuild.com",
         "licence": "https://github.com/mesonbuild/meson/blob/master/COPYING"
       },
@@ -104,7 +104,7 @@
       },
       {
         "name": "postgresql",
-        "version": "['17.0', '16.4', '15.8', '14.13', '13.16', '12.20']",
+        "version": "['17.1', '16.5', '15.9', '14.14', '13.17', '12.21']",
         "source": "https://ftp.postgresql.org/pub/source/",
         "licence": "https://www.postgresql.org/about/licence/"
       }

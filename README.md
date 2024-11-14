@@ -30,13 +30,13 @@ Versions for each artifact are specified in [manifest.json](https://github.com/d
 ### Dependencies
 
 * gettext: 0.22.5
-* icu: 75.1
+* icu: 76.1
 * iconv: 1.17
 * krb5: 1.21.3. Note that this isn't used in the PostgreSQL build as it will cause compile errors.
-* libxml2: 2.11.8
-* libxslt: 1.1.39
-* lz4: 1.9.4
-* openssl: 3.0.13
+* libxml2: 2.13.5
+* libxslt: 1.1.42
+* lz4: 1.10.0
+* openssl: 3.0.15
 * ossp-uuid: 1.6.2
 * zlib: 1.3.1
 * zstd: 1.5.6
@@ -44,21 +44,21 @@ Versions for each artifact are specified in [manifest.json](https://github.com/d
 ### Tools
 
 * diffutils: 2.8.7-1
-* meson: 1.4.1
+* meson: 1.6.0
 * ninja: 1.12.1
-* pkgconf: 2.2.0
-* winflexbison: 2.5.24
+* pkgconf: 2.3.0
+* winflexbison: 2.5.25
 
 ### PostgreSQL
 
 The PostgreSQL versions are being built are:
 
-* 17.0
-* 16.4
-* 15.8
-* 14.13
-* 13.16
-* 12.20
+* 17.1
+* 16.5
+* 15.9
+* 14.14
+* 13.17
+* 12.21
 
 Currently supported versions of PostgreSQL should work. All dependencies 
 should automatically be included in the build, *except* for MIT Kerberos (the 
