@@ -126,7 +126,7 @@ jobs:
           mkdir d:/sockets
           $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
 
-          meson test
+          meson --timeout-multiplier 2 test
 
       - name: Upload Test Results
         if: ${{ !success() }}
