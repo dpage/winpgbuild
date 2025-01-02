@@ -35,7 +35,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download dependencies
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v7
         with:
           workflow: all-deps.yml
           workflow_conclusion: success
