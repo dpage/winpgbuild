@@ -37,7 +37,7 @@ jobs:
       - name: Download dependencies
         uses: dawidd6/action-download-artifact@v7
         with:
-          workflow: all-deps.yml
+          workflow: bundle-deps.yml
           workflow_conclusion: success
           name: all-deps-win64
           path: /builddeps
