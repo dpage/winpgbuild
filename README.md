@@ -27,39 +27,6 @@ builds in time. If not, we may end up using the previous build of a dependency.
 
 Versions for each artifact are specified in [manifest.json](https://github.com/dpage/winpgbuild/blob/main/manifest.json)
 
-### Dependencies
-
-* gettext: 0.22.5
-* icu: 76.1
-* iconv: 1.17
-* krb5: 1.21.3. Note that this isn't used in the PostgreSQL build as it will cause compile errors.
-* libxml2: 2.13.5
-* libxslt: 1.1.42
-* lz4: 1.10.0
-* openssl: 3.0.15
-* ossp-uuid: 1.6.2
-* zlib: 1.3.1
-* zstd: 1.5.6
-
-### Tools
-
-* diffutils: 2.8.7-1
-* meson: 1.6.0
-* ninja: 1.12.1
-* pkgconf: 2.3.0
-* winflexbison: 2.5.25
-
-### PostgreSQL
-
-The PostgreSQL versions are being built are:
-
-* 17.1
-* 16.5
-* 15.9
-* 14.14
-* 13.17
-* 12.21
-
 Currently supported versions of PostgreSQL should work. All dependencies 
 should automatically be included in the build, *except* for MIT Kerberos (the 
 gssapi configuration option). See 
