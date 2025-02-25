@@ -158,7 +158,7 @@ jobs:
       - name: Build (meson)
         run: |
           cd postgresql-${{ matrix.version }}\build
-          ninja
+          ninja -j 1
         if: ${{ fromJson(matrix.version) >= 17.0 }}
 
       - name: Test (msvc)
