@@ -43,9 +43,9 @@ jobs:
 
       - name: Patch
         run: |
-          curl https://raw.githubusercontent.com/dpage/gettext-tools-windows/master/patches/gettext-0.22-0001-build-failure-on-mingw-close-module.patch -o gettext-0.22-0001-build-failure-on-mingw-close-module.patch
+          curl https://raw.githubusercontent.com/vslavik/gettext-tools-windows/refs/heads/master/patches/gettext-0.23-pthread_sigmask.patch -o gettext-0.23-pthread_sigmask.patch
           cd gettext-${{ env.GETTEXT_VERSION }}
-          patch -p1 < ../gettext-0.22-0001-build-failure-on-mingw-close-module.patch
+          patch -p1 < ../gettext-0.23-pthread_sigmask.patch
 
       - name: Configure
         run: |
