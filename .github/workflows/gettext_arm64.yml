@@ -1,0 +1,91 @@
+name: Build gettext arm64
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  schedule:
+    - cron: "00 02 * * *"
+
+jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+  build-gettext:
+    runs-on: self-hosted
+    needs: get-versions
+    defaults:
+      run:
+        shell: msys2 {0}
+    env:
+      LIBICONV_VERSION: ${{needs.get-versions.outputs.LIBICONV_VERSION}}
+      GETTEXT_VERSION: ${{needs.get-versions.outputs.GETTEXT_VERSION}}
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
+
+      - name: Download libiconv
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: libiconv_arm64.yml
+          workflow_conclusion: success
+          name: libiconv-${{ env.LIBICONV_VERSION }}-win64
+          path: /builddeps
+          if_no_artifact_found: fail
+
+      - name: Download
+        run: |
+          curl https://ftp.gnu.org/pub/gnu/gettext/gettext-${{ env.GETTEXT_VERSION }}.tar.gz -o ./gettext-${{ env.GETTEXT_VERSION }}.tar.gz
+          tar zxvf gettext-${{ env.GETTEXT_VERSION }}.tar.gz
+
+      - name: Patch
+        run: |
+          curl https://raw.githubusercontent.com/dpage/gettext-tools-windows/master/patches/gettext-0.22-0001-build-failure-on-mingw-close-module.patch -o gettext-0.22-0001-build-failure-on-mingw-close-module.patch
+          cd gettext-${{ env.GETTEXT_VERSION }}
+          patch -p1 < ../gettext-0.22-0001-build-failure-on-mingw-close-module.patch
+
+      - name: Configure
+        run: |
+          cd gettext-${{ env.GETTEXT_VERSION }}
+          ./configure CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types -Wno-error=implicit-function-declaration" \
+            --prefix=$(pwd)/winpgbuild \
+            --disable-static \
+            --disable-dependency-tracking \
+            --enable-silent-rules \
+            --with-libiconv-prefix=/builddeps \
+            --disable-rpath \
+            --enable-nls \
+            --disable-csharp \
+            --disable-java \
+            --enable-threads=windows \
+            --enable-relocatable
+
+      - name: Build
+        run: |
+          cd gettext-${{ env.GETTEXT_VERSION }}
+          make all
+
+      - name: Install
+        run: |
+          cd gettext-${{ env.GETTEXT_VERSION }}
+          make install
+
+          cp winpgbuild/lib/libintl.dll.a winpgbuild/lib/libintl.lib
+          cp winpgbuild/lib/libasprintf.dll.a winpgbuild/lib/libasprintf.lib
+
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: gettext-${{ env.GETTEXT_VERSION }}-src
+          path: gettext-${{ env.GETTEXT_VERSION }}.tar.gz
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: gettext-${{ env.GETTEXT_VERSION }}-win64
+          path: gettext-${{ env.GETTEXT_VERSION }}/winpgbuild

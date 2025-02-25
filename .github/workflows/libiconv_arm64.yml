@@ -1,0 +1,69 @@
+name: Build libiconv_arm64
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  schedule:
+    - cron: "00 01 * * *"
+    
+jobs:
+  get-versions:
+    uses: ./.github/workflows/manifest.yml
+    with:
+      config-path: manifest.json
+
+  build-libiconv:
+    runs-on: windows-latest
+    needs: get-versions    
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    env:
+      LIBICONV_VERSION: ${{needs.get-versions.outputs.LIBICONV_VERSION}}
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
+      
+      - name: Download
+        run: |
+          curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ env.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
+          tar zxvf libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
+      - name: Configure
+        run: |
+          cd libiconv-${{ env.LIBICONV_VERSION }}
+          ./configure --prefix=$(pwd)/winpgbuild \
+            --disable-static \
+            --disable-dependency-tracking \
+            --disable-rpath \
+            --disable-nls
+
+      - name: Build
+        run: |
+          cd libiconv-${{ env.LIBICONV_VERSION }}
+          make all
+
+      - name: Install
+        run: |
+          cd libiconv-${{ env.LIBICONV_VERSION }}
+          make install
+
+          cp winpgbuild/lib/libiconv.dll.a winpgbuild/lib/iconv.lib
+          cp winpgbuild/lib/libcharset.dll.a winpgbuild/lib/charset.lib
+
+      - name: Upload Source
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: libiconv-${{ env.LIBICONV_VERSION }}-src
+          path: libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: libiconv-${{ env.LIBICONV_VERSION }}-win64
+          path: libiconv-${{ env.LIBICONV_VERSION }}/winpgbuild
