@@ -113,7 +113,7 @@ jobs:
       - name: Build
         run: |
           cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
-          ninja
+          ninja -j 1
 
       - name: Test
         run: |
