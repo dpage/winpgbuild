@@ -27,7 +27,6 @@ jobs:
           msystem: UCRT64
           update: true
           install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
-      - name
       - name: Download
         run: |
           curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ env.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
