@@ -27,13 +27,14 @@ jobs:
           msystem: UCRT64
           update: true
           install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
-      
+      - name
       - name: Download
         run: |
           curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ env.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
           tar zxvf libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
       - name: Configure
         run: |
+          set MSYSTEM=CLANGARM64
           cd libiconv-${{ env.LIBICONV_VERSION }}
           ./configure --prefix=$(pwd)/winpgbuild \
             --disable-static \
@@ -43,6 +44,7 @@ jobs:
 
       - name: Build
         run: |
+          set MSYSTEM=CLANGARM64
           cd libiconv-${{ env.LIBICONV_VERSION }}
           make all
 
