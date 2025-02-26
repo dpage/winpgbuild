@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: UCRT64
+          msystem: CLANGARM64
           update: true
           install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
       - name: Download
@@ -33,7 +33,6 @@ jobs:
           tar zxvf libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
       - name: Configure
         run: |
-          set MSYSTEM=CLANGARM64
           cd libiconv-${{ env.LIBICONV_VERSION }}
           ./configure --prefix=$(pwd)/winpgbuild \
             --disable-static \
@@ -43,7 +42,6 @@ jobs:
 
       - name: Build
         run: |
-          set MSYSTEM=CLANGARM64
           cd libiconv-${{ env.LIBICONV_VERSION }}
           make all
 
