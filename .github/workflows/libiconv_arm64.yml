@@ -22,11 +22,11 @@ jobs:
     env:
       LIBICONV_VERSION: ${{needs.get-versions.outputs.LIBICONV_VERSION}}
     steps:
-      - uses: msys2/setup-msys2@v2
+      - uses: msys2/setup-msys2@v2.27.0
         with:
-          msystem: CLANGARM64
+          msystem: clangarm64
           update: true
-          install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
+          install: automake autoconf pkg-config make zip patch tar
       - name: Download
         run: |
           curl https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ env.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
