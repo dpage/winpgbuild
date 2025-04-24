@@ -13,7 +13,7 @@ jobs:
       config-path: manifest.json
 
   package-diffutils:
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     needs: get-versions
     env:
       DIFFUTILS_VERSION: ${{needs.get-versions.outputs.DIFFUTILS_VERSION}}

@@ -13,7 +13,7 @@ jobs:
       config-path: manifest.json
 
   build-icu:
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     needs: get-versions
     env:
       ICU_VERSION: ${{needs.get-versions.outputs.ICU_VERSION}}

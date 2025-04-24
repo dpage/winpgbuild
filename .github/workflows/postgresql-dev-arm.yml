@@ -1,4 +1,4 @@
-name: Build PostgreSQL (Dev)
+name: Build PostgreSQL (Dev ARM64)
 
 on:
   workflow_dispatch:
@@ -7,6 +7,7 @@ on:
     - cron: "00 04 * * *"
     
 jobs:
+
   get-versions:
     uses: ./.github/workflows/manifest.yml
     with:
@@ -21,70 +22,17 @@ jobs:
 
     runs-on: windows-11-arm
     steps:
-      - uses: ilammy/msvc-dev-cmd@v1
-
-      - name: Download dependencies
-        uses: dawidd6/action-download-artifact@v7
+      - uses: msys2/setup-msys2@v2
         with:
-          workflow: bundle-deps.yml
-          workflow_conclusion: success
-          name: all-deps-win64
-          path: /builddeps
-          if_no_artifact_found: fail
-
-      # Copy libraries requires at runtime to installation directory.
-      #
-      # Do so before configuring / building postgres, otherwise we need to
-      # duplicate knowledge about aberrant paths like "bin64".
-      - name: Install Dependencies
-        run: |
-          mkdir \postgresql
-          mkdir \postgresql\bin
-
-          copy \builddeps\bin64\icuuc*.dll \postgresql\bin\
-          copy \builddeps\bin64\icudt*.dll \postgresql\bin\
-          copy \builddeps\bin64\icuin*.dll \postgresql\bin\
-          copy \builddeps\bin\libiconv-2.dll \postgresql\bin\
-          copy \builddeps\bin\libintl-8.dll \postgresql\bin\
-          copy \builddeps\bin\libxml2.dll \postgresql\bin\
-          copy \builddeps\bin\libxslt.dll \postgresql\bin\
-          copy \builddeps\bin\libssl-*-x64.dll \postgresql\bin\
-          copy \builddeps\bin\libcrypto-*-x64.dll \postgresql\bin\
-          copy \builddeps\bin\liblz4.dll \postgresql\bin\
-          copy \builddeps\bin\libzstd.dll \postgresql\bin\
-          copy \builddeps\bin\zlib1.dll \postgresql\bin\
-
-      - name: Add build deps to path
-        run: |
-          # so binaries and libraries can be found/run
-          echo "/builddeps/bin" >> $ENV:GITHUB_PATH
-          echo "/builddeps" >> $ENV:GITHUB_PATH
-          echo "/postgresql/bin" >> $ENV:GITHUB_PATH
-
-      # This is run as a privileged user. For some reason windows ends up
-      # creating the directories owned by "Administrator", which causes
-      # problems because when postgres drops privileges, it doesn't have
-      # sufficient rights to access them anymore!
-      #
-      # I have pulled most of my hair out over the last hours.
-      #
-      # See also https://www.postgresql.org/message-id/20240707064046.blgjxoqiywunbebl%40awork3.anarazel.de
-      - name: Work around privilege issue
-        run: |
-          icacls.exe . /inheritance:e /grant 'runneradmin:(OI)(CI)F'
-
+          msystem: clangarm64
+          update: true
+          install:  mingw-w64-clang-aarch64-gcc-compat mingw-w64-clang-aarch64-icu mingw-w64-clang-aarch64-gettext-tools mingw-w64-clang-aarch64-gettext-runtime mingw-w64-clang-aarch64-libiconv mingw-w64-clang-aarch64-libxml2 mingw-w64-clang-aarch64-libxslt mingw-w64-clang-aarch64-meson mingw-w64-clang-aarch64-ninja mingw-w64-clang-aarch64-openssl mingw-w64-clang-aarch64-lz4 mingw-w64-clang-aarch64-pkgconf mingw-w64-clang-aarch64-zlib mingw-w64-clang-aarch64-zstd mingw-w64-clang-aarch64-gcc-compat mingw-w64-x86_64-jq
       - name: Checkout
         uses: actions/checkout@v4
         with:
             repository: postgres/postgres
             path: postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
             ref: ${{ env.POSTGRESQL-DEV_VERSION }}
-
-      - name: Source archive
-        run: |
-          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
-          git archive --format=tar.gz -o ../postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz --prefix=postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}/ ${{ env.POSTGRESQL-DEV_VERSION }}
-
       - name: Configure
         run: |
           cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
@@ -143,7 +91,6 @@ jobs:
       - name: Install
         run: |
           cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
-
           meson install --quiet
 
       - name: Upload Source

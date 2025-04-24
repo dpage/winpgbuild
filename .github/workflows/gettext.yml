@@ -12,7 +12,7 @@ jobs:
     with:
       config-path: manifest.json
   build-gettext:
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     needs: get-versions
     defaults:
       run:
@@ -23,9 +23,9 @@ jobs:
     steps:
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: UCRT64
+          msystem: clangarm64
           update: true
-          install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
+          install:  mingw-w64-clang-aarch64-gcc-compat automake autoconf pkg-config make zip patch tar
 
       - name: Download libiconv
         uses: dawidd6/action-download-artifact@v3

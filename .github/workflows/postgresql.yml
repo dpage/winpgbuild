@@ -20,7 +20,7 @@ jobs:
       matrix:
         version: ${{ fromJSON(needs.get-versions.outputs.POSTGRESQL_VERSION) }}
 
-    runs-on: windows-latest
+    runs-on: windows-11-arm
 
     # -m enables parallelism
     # verbosity:minimal + Summary reduce verbosity, while keeping a summary of

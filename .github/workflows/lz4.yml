@@ -13,7 +13,7 @@ jobs:
       config-path: manifest.json
 
   build-lz4:
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     needs: get-versions
     env:
       LZ4_VERSION: ${{needs.get-versions.outputs.LZ4_VERSION}}
