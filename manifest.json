@@ -2,13 +2,13 @@
     "packages": [
       {
         "name": "gettext",
-        "version": "0.23.1",
+        "version": "0.24",
         "source": "https://www.gnu.org/software/gettext/",
         "licence": "https://www.gnu.org/software/gettext/manual/html_node/GNU-GPL.html"
       },
       {
         "name": "icu",
-        "version": "76.1",
+        "version": "77.1",
         "source": "https://icu.unicode.org/home",
         "licence": "https://github.com/unicode-org/icu/blob/main/LICENSE"
       },
@@ -26,13 +26,13 @@
       },
       {
         "name": "libxml2",
-        "version": "2.13.5",
+        "version": "2.13.8",
         "source": "https://gitlab.gnome.org/GNOME/libxml2/",
         "licence": "https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads"
       },
       {
         "name": "libxslt",
-        "version": "1.1.42",
+        "version": "1.1.43",
         "source": "https://gitlab.gnome.org/GNOME/libxslt/",
         "licence": "https://gitlab.gnome.org/GNOME/libxslt/-/blob/master/Copyright?ref_type=heads"
       },
@@ -50,7 +50,7 @@
       },
       {
         "name": "ossp-uuid",
-        "version": "1.6.2",
+        "version": "1.6.4",
         "source": "https://salsa.debian.org/debian/ossp-uuid/",
         "licence": "https://salsa.debian.org/debian/ossp-uuid/-/blob/master/README?ref_type=heads"
       },
@@ -62,7 +62,7 @@
       },
       {
         "name": "zstd",
-        "version": "1.5.6",
+        "version": "1.5.7",
         "source": "https://facebook.github.io/zstd/",
         "licence": "https://github.com/facebook/zstd/blob/dev/LICENSE"
       },
@@ -74,7 +74,7 @@
       },
       {
         "name": "meson",
-        "version": "1.7.0",
+        "version": "1.7.2",
         "source": "https://mesonbuild.com",
         "licence": "https://github.com/mesonbuild/meson/blob/master/COPYING"
       },
@@ -86,7 +86,7 @@
       },
       {
         "name": "pkgconf",
-        "version": "2.3.0",
+        "version": "2.4.3",
         "source": "http://pkgconf.org",
         "licence": "https://github.com/pkgconf/pkgconf/blob/master/COPYING"
       },
