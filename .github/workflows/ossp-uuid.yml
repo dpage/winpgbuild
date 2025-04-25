@@ -26,7 +26,7 @@ jobs:
         with:
           msystem: UCRT64
           update: true
-          install: mingw-w64-ucrt-x86_64-gcc base-devel automake autoconf pkg-config make zip patch tar
+          install: mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-autotools automake autoconf pkg-config make zip patch tar
 
       - name: Download
         # We get this from the Debian repo, as OSSP is basically unavailable these days
