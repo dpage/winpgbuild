@@ -50,7 +50,7 @@
       },
       {
         "name": "ossp-uuid",
-        "version": "1.6.4",
+        "version": "1.6.2",
         "source": "https://salsa.debian.org/debian/ossp-uuid/",
         "licence": "https://salsa.debian.org/debian/ossp-uuid/-/blob/master/README?ref_type=heads"
       },
