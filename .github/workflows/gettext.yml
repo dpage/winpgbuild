@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: UCRT64
+          msystem: clangarm64
           update: true
           install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
 
