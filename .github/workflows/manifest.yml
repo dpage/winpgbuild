@@ -67,7 +67,7 @@ on:
 jobs:
   set_versions:
     name: Generate output
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     # Map the job outputs to step outputs
     outputs:
       output1: ${{ steps.step1.outputs.OPENSSL_VERSION }}

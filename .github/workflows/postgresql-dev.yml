@@ -19,7 +19,7 @@ jobs:
     env:
       POSTGRESQL-DEV_VERSION: ${{needs.get-versions.outputs.POSTGRESQL-DEV_VERSION}}
 
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 

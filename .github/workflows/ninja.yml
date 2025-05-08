@@ -14,7 +14,7 @@ jobs:
 
   package-ninja:
     needs: get-versions
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     env:
       NINJA_VERSION:  ${{needs.get-versions.outputs.NINJA_VERSION}}
     steps:

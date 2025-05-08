@@ -13,7 +13,7 @@ jobs:
       config-path: manifest.json
 
   build-zlib:
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     needs: get-versions
     env:
       ZLIB_VERSION: ${{needs.get-versions.outputs.ZLIB_VERSION}}

@@ -13,7 +13,7 @@ jobs:
       config-path: manifest.json
 
   build-krb5:
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     needs: get-versions
     env:
       KRB5_VERSION: ${{needs.get-versions.outputs.KRB5_VERSION}}

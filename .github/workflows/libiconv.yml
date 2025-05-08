@@ -13,7 +13,7 @@ jobs:
       config-path: manifest.json
 
   build-libiconv:
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     needs: get-versions    
     defaults:
       run:
