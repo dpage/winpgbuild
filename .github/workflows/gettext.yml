@@ -25,7 +25,7 @@ jobs:
         with:
           msystem: clangarm64
           update: true
-          install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
+          install:  mingw-w64-clang-aarch64-gcc-compat automake autoconf pkg-config make zip patch tar
 
       - name: Download libiconv
         uses: dawidd6/action-download-artifact@v3
