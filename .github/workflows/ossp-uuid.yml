@@ -14,7 +14,7 @@ jobs:
 
   build-ossp-uuid:
     needs: get-versions
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     defaults:
       run:
         shell: msys2 {0}

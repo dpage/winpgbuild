@@ -13,7 +13,7 @@ jobs:
       config-path: manifest.json
 
   build-zstd:
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     needs: get-versions
     env:
       ZSTD_VERSION: ${{needs.get-versions.outputs.ZSTD_VERSION}}
