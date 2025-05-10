@@ -27,19 +27,13 @@ jobs:
           msystem: clangarm64
           update: true
           install:  mingw-w64-clang-aarch64-gcc-compat mingw-w64-clang-aarch64-icu mingw-w64-clang-aarch64-gettext-tools mingw-w64-clang-aarch64-gettext-runtime mingw-w64-clang-aarch64-libiconv mingw-w64-clang-aarch64-libxml2 mingw-w64-clang-aarch64-libxslt mingw-w64-clang-aarch64-meson mingw-w64-clang-aarch64-ninja mingw-w64-clang-aarch64-openssl mingw-w64-clang-aarch64-lz4 mingw-w64-clang-aarch64-pkgconf mingw-w64-clang-aarch64-zlib mingw-w64-clang-aarch64-zstd mingw-w64-clang-aarch64-gcc-compat mingw-w64-x86_64-jq
-      - uses: ilammy/msvc-dev-cmd@v1
-      
       - name: Checkout
         uses: actions/checkout@v4
         with:
             repository: postgres/postgres
             path: postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
             ref: ${{ env.POSTGRESQL-DEV_VERSION }}
-
-      
       - name: Configure
-        uses: msys2/setup-msys2@v2
-        msystem: clangarm64
         run: |
           cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
 
@@ -65,15 +59,11 @@ jobs:
               build
 
       - name: Build
-        uses: msys2/setup-msys2@v2
-        msystem: clangarm64
         run: |
           cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
           ninja -j 1
 
       - name: Test
-        uses: msys2/setup-msys2@v2
-        msystem: clangarm64
         run: |
           cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
 
@@ -101,7 +91,6 @@ jobs:
       - name: Install
         run: |
           cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
-
           meson install --quiet
 
       - name: Upload Source
