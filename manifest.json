@@ -80,13 +80,13 @@
       },
       {
         "name": "ninja",
-        "version": "1.12.1",
+        "version": "1.13.0",
         "source": "https://ninja-build.org",
         "licence": "https://github.com/ninja-build/ninja/blob/master/COPYING"
       },
       {
         "name": "pkgconf",
-        "version": "2.4.3",
+        "version": "2.5.0",
         "source": "http://pkgconf.org",
         "licence": "https://github.com/pkgconf/pkgconf/blob/master/COPYING"
       },
