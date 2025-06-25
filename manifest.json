@@ -86,7 +86,7 @@
       },
       {
         "name": "pkgconf",
-        "version": "2.5.0",
+        "version": "2.5.1",
         "source": "http://pkgconf.org",
         "licence": "https://github.com/pkgconf/pkgconf/blob/master/COPYING"
       },
