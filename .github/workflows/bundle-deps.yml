@@ -195,11 +195,16 @@ jobs:
           name: all-deps-win64
           path: /builddeps
 
+      - name: Package Release Assets
+        shell: pwsh
+        run: |
+          Compress-Archive /builddeps /postgresql-dependencies-latest.zip
+          
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "dependencies-latest"
-          title: "PostgreSQL Build Dependencies"
+          title: "PostgreSQL Dependencies"
           files: |
-            /builddeps
+            /postgresql-dependencies-win64-latest.zip
