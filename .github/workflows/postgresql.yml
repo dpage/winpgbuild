@@ -242,6 +242,11 @@ jobs:
           path: postgresql-${{ matrix.version }}\build\meson-logs\meson-log.txt
         if: always()
 
+      - name: Package Release Assets
+        shell: pwsh
+        run: |
+          Compress-Archive /postgresql /postgresql-${{ matrix.version }}-latest.zip
+          
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -249,4 +254,4 @@ jobs:
           automatic_release_tag: "postgresql-${{ matrix.version }}-latest"
           title: "PostgreSQL ${{ matrix.version }}"
           files: |
-            postgresql-${{ matrix.version }}-win64
+            /postgresql-${{ matrix.version }}-latest.zip
