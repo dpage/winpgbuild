@@ -241,3 +241,12 @@ jobs:
           name: postgresql-${{ matrix.version }}-meson-log
           path: postgresql-${{ matrix.version }}\build\meson-logs\meson-log.txt
         if: always()
+
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "postgresql-${{ matrix.version }}-latest"
+          title: "PostgreSQL ${{ matrix.version }}"
+          files: |
+            postgresql-${{ matrix.version }}-win64
