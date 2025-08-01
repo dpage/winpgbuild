@@ -244,14 +244,17 @@ jobs:
 
       - name: Package Release Assets
         shell: pwsh
+        id: majorVersion
         run: |
-          Compress-Archive /postgresql /postgresql-${{ matrix.version }}-latest.zip
+          $major_ver = '${{ matrix.version }}' -split '\.' | select-object -index 0
+          Compress-Archive /postgresql /postgresql-$($major_ver)-latest.zip
+          Write-Output "majorVersion=$($major_ver)" >> $Env:GITHUB_OUTPUT
           
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "postgresql-${{ matrix.version }}-latest"
-          title: "PostgreSQL ${{ matrix.version }}"
+          automatic_release_tag: "postgresql-${{ steps.majorVersion.outputs.majorVersion}}-latest"
+          title: "PostgreSQL ${{ steps.majorVersion.outputs.majorVersion}}"
           files: |
-            /postgresql-${{ matrix.version }}-latest.zip
+            /postgresql-${{ steps.majorVersion.outputs.majorVersion}}-latest.zip
