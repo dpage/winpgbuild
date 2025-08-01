@@ -167,3 +167,17 @@ jobs:
           if-no-files-found: error
           name: meson_log
           path: postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\meson-logs\meson-log.txt
+
+      - name: Package Release Assets
+        shell: pwsh
+        run: |
+          Compress-Archive /postgresql /postgresql-${{ env.POSTGRESQL-DEV_VERSION }}-latest.zip
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "postgresql-${{ env.POSTGRESQL-DEV_VERSION }}-latest"
+          title: "PostgreSQL ${{ env.POSTGRESQL-DEV_VERSION }}"
+          files: |
+            /postgresql-${{ env.POSTGRESQL-DEV_VERSION }}-latest.zip
