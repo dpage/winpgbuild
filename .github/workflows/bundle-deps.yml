@@ -194,3 +194,12 @@ jobs:
           if-no-files-found: error
           name: all-deps-win64
           path: /builddeps
+
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "dependencies-latest"
+          title: "PostgreSQL Build Dependencies"
+          files: |
+            /builddeps
