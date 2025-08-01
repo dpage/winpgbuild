@@ -207,4 +207,4 @@ jobs:
           automatic_release_tag: "dependencies-latest"
           title: "PostgreSQL Dependencies"
           files: |
-            /postgresql-dependencies-win64-latest.zip
+            /postgresql-dependencies-latest.zip
