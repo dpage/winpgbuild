@@ -67,3 +67,18 @@ jobs:
           if-no-files-found: error
           name: libiconv-${{ env.LIBICONV_VERSION }}-win64
           path: libiconv-${{ env.LIBICONV_VERSION }}/winpgbuild
+
+      - name: Package Release Assets
+        run: |
+          cd libiconv-${{ env.LIBICONV_VERSION }}
+          mv winpgbuild libiconv
+          zip -r libiconv-latest.zip libiconv
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "libiconv-latest"
+          title: "libiconv"
+          files: |
+            libiconv-${{ env.LIBICONV_VERSION }}/libiconv-latest.zip

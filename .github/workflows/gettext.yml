@@ -89,3 +89,18 @@ jobs:
           if-no-files-found: error
           name: gettext-${{ env.GETTEXT_VERSION }}-win64
           path: gettext-${{ env.GETTEXT_VERSION }}/winpgbuild
+
+      - name: Package Release Assets
+        run: |
+          cd gettext-${{ env.GETTEXT_VERSION }}
+          mv winpgbuild gettext
+          zip -r gettext-latest.zip gettext
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "gettext-latest"
+          title: "gettext"
+          files: |
+            gettext-${{ env.GETTEXT_VERSION }}/gettext-latest.zip
