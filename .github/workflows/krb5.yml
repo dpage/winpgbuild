@@ -83,13 +83,13 @@ jobs:
       - name: Package Release Assets
         shell: pwsh
         run: |
-          Compress-Archive /krb5 /krb5-${{ env.KRB5_VERSION }}-latest.zip
+          Compress-Archive /krb5 /krb5-latest.zip
           
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "krb5-${{ env.KRB5_VERSION }}-latest"
-          title: "MIT Kerberos ${{ env.KRB5_VERSION }}"
+          automatic_release_tag: "krb5-latest"
+          title: "MIT Kerberos"
           files: |
-            /krb5-${{ env.KRB5_VERSION }}-latest.zip
+            /krb5-latest.zip
