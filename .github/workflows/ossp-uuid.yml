@@ -98,7 +98,7 @@ jobs:
         run: |
           cd ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}
           mv winpgbuild ossp-uuid
-          zip ossp-uuid /ossp-uuid-latest.zip
+          zip -r /ossp-uuid-latest.zip ossp-uuid
           
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
