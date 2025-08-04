@@ -93,3 +93,18 @@ jobs:
           if-no-files-found: error
           name: ossp-uuid-${{ env.OSSP-UUID_VERSION }}-win64
           path: ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}/winpgbuild
+
+      - name: Package Release Assets
+        run: |
+          cd ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}
+          mv winpgbuild ossp-uuid
+          zip ossp-uuid /ossp-uuid-latest.zip
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "ossp-uuid-latest"
+          title: "ossp-uuid"
+          files: |
+            /ossp-uuid-latest.zip
