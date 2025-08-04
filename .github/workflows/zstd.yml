@@ -83,3 +83,17 @@ jobs:
           if-no-files-found: error
           name: zstd-${{ env.ZSTD_VERSION }}-win64
           path: /zstd
+
+      - name: Package Release Assets
+        shell: pwsh
+        run: |
+          Compress-Archive /zstd /zstd-latest.zip
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "zstd-latest"
+          title: "zstd"
+          files: |
+            /zstd-latest.zip

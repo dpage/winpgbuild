@@ -75,3 +75,17 @@ jobs:
           if-no-files-found: error
           name: openssl-${{ env.OPENSSL_VERSION }}-win64
           path: /openssl
+
+      - name: Package Release Assets
+        shell: pwsh
+        run: |
+          Compress-Archive /openssl /openssl-latest.zip
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "openssl-latest"
+          title: "OpenSSL"
+          files: |
+            /openssl-latest.zip

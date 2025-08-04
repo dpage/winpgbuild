@@ -63,3 +63,17 @@ jobs:
           if-no-files-found: error
           name: libxml2-${{ env.LIBXML2_VERSION }}-win64
           path: /libxml2
+
+      - name: Package Release Assets
+        shell: pwsh
+        run: |
+          Compress-Archive /libxml2 /libxml2-latest.zip
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "libxml2-latest"
+          title: "libxml2"
+          files: |
+            /libxml2-latest.zip

@@ -88,3 +88,17 @@ jobs:
           if-no-files-found: error
           name: icu-${{ env.ICU_VERSION }}-win64
           path: /icu
+
+      - name: Package Release Assets
+        shell: pwsh
+        run: |
+          Compress-Archive /icu /icu-latest.zip
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "icu-latest"
+          title: "icu"
+          files: |
+            /icu-latest.zip

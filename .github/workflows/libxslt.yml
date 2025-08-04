@@ -74,3 +74,17 @@ jobs:
           if-no-files-found: error
           name: libxslt-${{ env.LIBXSLT_VERSION }}-win64
           path: /libxslt
+
+      - name: Package Release Assets
+        shell: pwsh
+        run: |
+          Compress-Archive /libxslt /libxslt-latest.zip
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "libxslt-latest"
+          title: "libxslt"
+          files: |
+            /libxslt-latest.zip

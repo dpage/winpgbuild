@@ -75,3 +75,17 @@ jobs:
           if-no-files-found: error
           name: lz4-${{ env.LZ4_VERSION }}-win64
           path: /lz4
+
+      - name: Package Release Assets
+        shell: pwsh
+        run: |
+          Compress-Archive /lz4 /lz4-latest.zip
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "lz4-latest"
+          title: "lz4"
+          files: |
+            /lz4-latest.zip

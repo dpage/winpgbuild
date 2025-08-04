@@ -80,3 +80,17 @@ jobs:
           if-no-files-found: error
           name: zlib-${{ env.ZLIB_VERSION }}-win64
           path: /zlib
+
+      - name: Package Release Assets
+        shell: pwsh
+        run: |
+          Compress-Archive /zlib /zlib-latest.zip
+          
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "zlib-latest"
+          title: "zlib"
+          files: |
+            /zlib-latest.zip
