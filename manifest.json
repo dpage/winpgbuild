@@ -26,7 +26,7 @@
       },
       {
         "name": "libxml2",
-        "version": "2.13.8",
+        "version": "2.13.9",
         "source": "https://gitlab.gnome.org/GNOME/libxml2/",
         "licence": "https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads"
       },
