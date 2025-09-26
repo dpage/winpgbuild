@@ -23,7 +23,7 @@ jobs:
 
       - name: Download
         run: |
-          curl https://kerberos.org/dist/krb5/1.21/krb5-${{ env.KRB5_VERSION }}.tar.gz -o ./krb5-${{ env.KRB5_VERSION }}.tar.gz
+          curl https://kerberos.org/dist/krb5/1.22/krb5-${{ env.KRB5_VERSION }}.tar.gz -o ./krb5-${{ env.KRB5_VERSION }}.tar.gz
           tar zxvf krb5-${{ env.KRB5_VERSION }}.tar.gz
 
       - name: Configure
