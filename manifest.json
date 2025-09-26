@@ -20,7 +20,7 @@
       },
       {
         "name": "krb5",
-        "version": "1.21.3",
+        "version": "1.22.1",
         "source": "https://web.mit.edu/kerberos/",
         "licence": "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
       },
