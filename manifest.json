@@ -104,7 +104,7 @@
       },
       {
         "name": "postgresql",
-        "version": "['17.6', '16.10', '15.14', '14.19', '13.22']",
+        "version": "['18.0', '17.6', '16.10', '15.14', '14.19', '13.22']",
         "source": "https://ftp.postgresql.org/pub/source/",
         "licence": "https://www.postgresql.org/about/licence/"
       }
