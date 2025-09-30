@@ -44,7 +44,7 @@
       },
       {
         "name": "openssl",
-        "version": "3.0.17",
+        "version": "3.0.18",
         "source": "https://openssl.org/",
         "licence": "https://www.openssl.org/source/apache-license-2.0.txt"
       },
