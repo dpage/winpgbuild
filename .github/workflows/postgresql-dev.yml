@@ -126,6 +126,18 @@ jobs:
           mkdir d:/sockets
           $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
 
+          # Workaround for Meson 1.9.1+ PATH pollution on Windows
+          # Keep only essential paths to avoid exceeding Windows env var limits
+          $essentialPaths = @(
+            "C:\builddeps\bin",
+            "C:\builddeps",
+            "C:\postgresql\bin",
+            "C:\Windows\System32",
+            "C:\Windows",
+            "C:\Program Files\PowerShell\7"
+          )
+          $env:PATH = $essentialPaths -join ";"
+
           meson test --timeout-multiplier 2
 
       - name: Upload Test Results
