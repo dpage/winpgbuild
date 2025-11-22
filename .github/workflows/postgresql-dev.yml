@@ -128,7 +128,7 @@ jobs:
 
           # Workaround for Meson 1.9.1+ PATH pollution on Windows
           # Keep only essential paths to avoid exceeding Windows env var limits
-          # Note: Python and MSVC tools are required for meson test
+          # Note: Python, MSVC tools, and Perl are required for meson test
           $essentialPaths = @(
             "\builddeps\bin",
             "\builddeps",
@@ -137,6 +137,7 @@ jobs:
             "C:\hostedtoolcache\windows\Python\3.9.13\x64\Scripts",
             "$env:VCToolsInstallDir\bin\HostX64\x64",
             "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64",
+            "C:\Strawberry\perl\bin",
             "C:\Windows\System32",
             "C:\Windows",
             "C:\Program Files\PowerShell\7"
