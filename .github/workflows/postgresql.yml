@@ -181,10 +181,13 @@ jobs:
 
           # Workaround for Meson 1.9.1+ PATH pollution on Windows
           # Keep only essential paths to avoid exceeding Windows env var limits
+          # Note: Python is required as meson.cmd calls python
           $essentialPaths = @(
             "\builddeps\bin",
             "\builddeps",
             "\postgresql\bin",
+            "C:\hostedtoolcache\windows\Python\3.9.13\x64",
+            "C:\hostedtoolcache\windows\Python\3.9.13\x64\Scripts",
             "C:\Windows\System32",
             "C:\Windows",
             "C:\Program Files\PowerShell\7"
