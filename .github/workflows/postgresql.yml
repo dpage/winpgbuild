@@ -146,12 +146,13 @@ jobs:
 
       - name: Configure (meson)
         run: |
-          # Use short SUBST path (P:) instead of long GitHub Actions path
-          cd P:\
-
           # don't use \path style paths for library search, link.exe ends up
           # interpreting paths like that as flags!
+          # Resolve this BEFORE changing to P:\ drive
           $deps = resolve-path /builddeps
+
+          # Use short SUBST path (P:) instead of long GitHub Actions path
+          cd P:\
 
           # can't enable some extra tests
           # - libpq_encryption -> fails for unknown reasons
