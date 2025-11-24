@@ -25,7 +25,6 @@ builds, though these are generally downloaded as pre-built utilities.
 | | Package pkgconf | ![Package pkgconf](https://github.com/dpage/winpgbuild/actions/workflows/pkgconf.yml/badge.svg) |
 | | Package winflexbison | ![Package winflexbison](https://github.com/dpage/winpgbuild/actions/workflows/winflexbison.yml/badge.svg) |
 | **Bundling** | Bundle dependencies | ![Bundle dependencies](https://github.com/dpage/winpgbuild/actions/workflows/bundle-deps.yml/badge.svg) |
-| | Set package versions | ![Set package versions](https://github.com/dpage/winpgbuild/actions/workflows/manifest.yml/badge.svg) |
 | **PostgreSQL** | Build PostgreSQL | ![Build PostgreSQL](https://github.com/dpage/winpgbuild/actions/workflows/postgresql.yml/badge.svg) |
 | | Build PostgreSQL (Dev) | ![Build PostgreSQL (Dev)](https://github.com/dpage/winpgbuild/actions/workflows/postgresql-dev.yml/badge.svg) |
 
