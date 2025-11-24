@@ -124,12 +124,28 @@ jobs:
           Get-ChildItem P:\ | Select-Object -First 5
 
           # Change to the virtual drive
-          Set-Location P:\
+          Write-Host "Attempting to change to P:\ drive..."
+          try {
+            Set-Location P:\
+            Write-Host "Successfully changed to P:\ drive"
+            Write-Host "Current location: $(Get-Location)"
+          } catch {
+            Write-Error "Failed to change to P:\ drive: $_"
+            exit 1
+          }
+
+          # Verify we can create the build directory
+          Write-Host "Creating build directory..."
+          if (-not (Test-Path b)) {
+            New-Item -ItemType Directory -Path b | Out-Null
+          }
+          Write-Host "Build directory ready"
 
           # can't enable some extra tests
           # - libpq_encryption -> fails for unknown reasons
           # - kerberos -> test not yet supported on windows
           # - load_balance -> would need to set up hostnames
+          Write-Host "Starting meson setup..."
           meson setup `
               --prefix=\postgresql `
               "--cmake-prefix-path=${deps}" `
@@ -142,6 +158,12 @@ jobs:
               -Dgssapi=disabled `
               -Dbuildtype=debugoptimized `
               b
+
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Meson setup failed with exit code $LASTEXITCODE"
+            exit 1
+          }
+          Write-Host "Meson setup completed successfully"
 
       - name: Build
         run: |
