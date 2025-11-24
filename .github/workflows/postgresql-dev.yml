@@ -85,35 +85,24 @@ jobs:
           cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
           git archive --format=tar.gz -o ../postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz --prefix=postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}/ ${{ env.POSTGRESQL-DEV_VERSION }}
 
-      # Optimize path length for Meson 1.9.1+ to avoid Windows 32KB PATH limit
-      # Meson adds all build output directories to PATH during tests,
-      # which can exceed the limit with 200+ test directories.
-      # Moving to \s\pg (short) and using SUBST saves ~50 chars per path
-      # = ~10KB total PATH reduction with 200 paths
-      - name: Setup Short Paths
+      - name: Configure
         run: |
-          # Move to short root path
+          # Optimize path length for Meson 1.9.1+ to avoid Windows 32KB PATH limit
+          # Move to short root path to minimize path length in Meson's PATH construction
           New-Item -ItemType Directory -Force -Path \s
           Move-Item postgresql-${{ env.POSTGRESQL-DEV_VERSION }} \s\pg
 
-          # Create virtual drive mapping to further shorten paths
-          # P:\b is only 4 chars vs ~55 chars for full GitHub Actions path
-          subst P: \s\pg
-
-          # Verify the mapping works
-          Write-Host "SUBST drive created:"
-          subst
-          Write-Host "`nDirectory contents:"
-          Get-ChildItem P:\ | Select-Object -First 5
-
-      - name: Configure
-        run: |
-          # don't use \path style paths for library search, link.exe ends up
-          # interpreting paths like that as flags!
-          # Resolve this BEFORE changing to P:\ drive
+          # Resolve builddeps before creating SUBST drive
           $deps = resolve-path /builddeps
 
-          # Use short SUBST path (P:) instead of long GitHub Actions path
+          # Create virtual drive mapping in same session as meson setup
+          # This mapping only persists for this PowerShell session
+          subst P: \s\pg
+
+          # Verify mapping
+          Write-Host "SUBST drive P: created, mapping to \s\pg"
+
+          # Change to the virtual drive
           cd P:\
 
           # can't enable some extra tests
@@ -135,11 +124,15 @@ jobs:
 
       - name: Build
         run: |
+          # Recreate SUBST mapping (each step is a new PowerShell session)
+          subst P: \s\pg
           cd P:\b
           ninja -j 1
 
       - name: Test
         run: |
+          # Recreate SUBST mapping (each step is a new PowerShell session)
+          subst P: \s\pg
           cd P:\b
 
           # use unix socket to prevent port conflicts
@@ -165,6 +158,8 @@ jobs:
 
       - name: Install
         run: |
+          # Recreate SUBST mapping (each step is a new PowerShell session)
+          subst P: \s\pg
           cd P:\b
 
           meson install --quiet
