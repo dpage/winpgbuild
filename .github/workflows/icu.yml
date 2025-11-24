@@ -22,8 +22,8 @@ jobs:
 
       - name: Download
         run: |
-          curl -L https://github.com/unicode-org/icu/releases/download/release-$(echo ${{ env.ICU_VERSION }} | sed 's/\./-/g')/icu4c-$(echo ${{ env.ICU_VERSION }} | sed 's/\./_/g')-src.tgz -o ./icu4c-${{ env.ICU_VERSION }}.tar.gz
-          tar zxvf ./icu4c-${{ env.ICU_VERSION }}.tar.gz
+          curl -L https://github.com/unicode-org/icu/releases/download/release-${{ env.ICU_VERSION }}/icu4c-${{ env.ICU_VERSION }}-sources.zip -o ./icu4c-${{ env.ICU_VERSION }}.zip
+          unzip -q ./icu4c-${{ env.ICU_VERSION }}.zip
         shell: bash
 
       - name: Build
@@ -80,7 +80,7 @@ jobs:
         with:
           if-no-files-found: error
           name: icu-${{ env.ICU_VERSION }}-src
-          path: icu4c-${{ env.ICU_VERSION }}.tar.gz
+          path: icu4c-${{ env.ICU_VERSION }}.zip
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4

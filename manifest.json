@@ -68,7 +68,7 @@
       },
       {
         "name": "diffutils",
-        "version": "3.11",
+        "version": "2.8.7-1",
         "source": "https://gnuwin32.sourceforge.net/packages/diffutils.htm",
         "licence": "https://git.savannah.gnu.org/cgit/diffutils.git/tree/COPYING"
       },
