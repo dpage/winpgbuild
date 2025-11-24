@@ -1,7 +1,33 @@
 # winpgbuild
-A repo containing Github actions for building PostgreSQL and it's dependencies 
+
+A repo containing Github actions for building PostgreSQL and it's dependencies
 on Windows. A number of build tools are also included to enable reproducable
 builds, though these are generally downloaded as pre-built utilities.
+
+## Build Status
+
+| Category | Workflow | Status |
+|----------|----------|--------|
+| **Core Libraries** | Build gettext | ![Build gettext](https://github.com/dpage/winpgbuild/actions/workflows/gettext.yml/badge.svg) |
+| | Build ICU | ![Build ICU](https://github.com/dpage/winpgbuild/actions/workflows/icu.yml/badge.svg) |
+| | Build KRB5 | ![Build KRB5](https://github.com/dpage/winpgbuild/actions/workflows/krb5.yml/badge.svg) |
+| | Build libiconv | ![Build libiconv](https://github.com/dpage/winpgbuild/actions/workflows/libiconv.yml/badge.svg) |
+| | Build libxml2 | ![Build libxml2](https://github.com/dpage/winpgbuild/actions/workflows/libxml2.yml/badge.svg) |
+| | Build libxslt | ![Build libxslt](https://github.com/dpage/winpgbuild/actions/workflows/libxslt.yml/badge.svg) |
+| | Build OpenSSL | ![Build OpenSSL](https://github.com/dpage/winpgbuild/actions/workflows/openssl.yml/badge.svg) |
+| | Build ossp-uuid | ![Build ossp-uuid](https://github.com/dpage/winpgbuild/actions/workflows/ossp-uuid.yml/badge.svg) |
+| **Compression** | Build lz4 | ![Build lz4](https://github.com/dpage/winpgbuild/actions/workflows/lz4.yml/badge.svg) |
+| | Build zlib | ![Build zlib](https://github.com/dpage/winpgbuild/actions/workflows/zlib.yml/badge.svg) |
+| | Build zstd | ![Build zstd](https://github.com/dpage/winpgbuild/actions/workflows/zstd.yml/badge.svg) |
+| **Build Tools** | Package diffutils | ![Package diffutils](https://github.com/dpage/winpgbuild/actions/workflows/diffutils.yml/badge.svg) |
+| | Package Meson | ![Package Meson](https://github.com/dpage/winpgbuild/actions/workflows/meson.yml/badge.svg) |
+| | Package Ninja | ![Package Ninja](https://github.com/dpage/winpgbuild/actions/workflows/ninja.yml/badge.svg) |
+| | Package pkgconf | ![Package pkgconf](https://github.com/dpage/winpgbuild/actions/workflows/pkgconf.yml/badge.svg) |
+| | Package winflexbison | ![Package winflexbison](https://github.com/dpage/winpgbuild/actions/workflows/winflexbison.yml/badge.svg) |
+| **Bundling** | Bundle dependencies | ![Bundle dependencies](https://github.com/dpage/winpgbuild/actions/workflows/bundle-deps.yml/badge.svg) |
+| | Set package versions | ![Set package versions](https://github.com/dpage/winpgbuild/actions/workflows/manifest.yml/badge.svg) |
+| **PostgreSQL** | Build PostgreSQL | ![Build PostgreSQL](https://github.com/dpage/winpgbuild/actions/workflows/postgresql.yml/badge.svg) |
+| | Build PostgreSQL (Dev) | ![Build PostgreSQL (Dev)](https://github.com/dpage/winpgbuild/actions/workflows/postgresql-dev.yml/badge.svg) |
 
 ## Automation
 We really need to automate the builds, as Github will only retain the artefacts
