@@ -88,43 +88,16 @@ jobs:
       - name: Configure
         run: |
           # Optimize path length for Meson 1.9.1+ to avoid Windows 32KB PATH limit
-          # Move to short root path to minimize path length in Meson's PATH construction
+          # Move to short root path: \s\pg\b instead of long GitHub Actions path
+          # This saves ~40 chars per path = ~8KB total with 200+ test directories
           New-Item -ItemType Directory -Force -Path \s
           Move-Item postgresql-${{ env.POSTGRESQL-DEV_VERSION }} \s\pg
 
-          # Verify the move succeeded
-          if (-not (Test-Path \s\pg)) {
-            Write-Error "Failed to move postgresql-${{ env.POSTGRESQL-DEV_VERSION }} to \s\pg"
-            exit 1
-          }
-          Write-Host "PostgreSQL source moved to \s\pg"
-          Get-ChildItem \s\pg | Select-Object -First 5
-
-          # Resolve builddeps before creating SUBST drive
+          # Resolve builddeps path
           $deps = resolve-path /builddeps
 
-          # Create virtual drive mapping in same session as meson setup
-          # This mapping only persists for this PowerShell session
-          subst P: \s\pg
-
-          # Verify SUBST succeeded
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "SUBST command failed with exit code $LASTEXITCODE"
-            exit 1
-          }
-
-          # Verify P:\ is accessible
-          if (-not (Test-Path P:\)) {
-            Write-Error "P:\ drive is not accessible after SUBST"
-            subst
-            exit 1
-          }
-
-          Write-Host "SUBST drive P: created successfully"
-          Get-ChildItem P:\ | Select-Object -First 5
-
-          # Change to the virtual drive
-          Set-Location P:\
+          # Change to source directory
+          cd \s\pg
 
           # can't enable some extra tests
           # - libpq_encryption -> fails for unknown reasons
@@ -145,16 +118,12 @@ jobs:
 
       - name: Build
         run: |
-          # Recreate SUBST mapping (each step is a new PowerShell session)
-          subst P: \s\pg
-          cd P:\b
+          cd \s\pg\b
           ninja -j 1
 
       - name: Test
         run: |
-          # Recreate SUBST mapping (each step is a new PowerShell session)
-          subst P: \s\pg
-          cd P:\b
+          cd \s\pg\b
 
           # use unix socket to prevent port conflicts
           $env:PG_TEST_USE_UNIX_SOCKETS = 1;
@@ -179,9 +148,7 @@ jobs:
 
       - name: Install
         run: |
-          # Recreate SUBST mapping (each step is a new PowerShell session)
-          subst P: \s\pg
-          cd P:\b
+          cd \s\pg\b
 
           meson install --quiet
 
