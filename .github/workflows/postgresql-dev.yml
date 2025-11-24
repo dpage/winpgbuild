@@ -85,9 +85,31 @@ jobs:
           cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
           git archive --format=tar.gz -o ../postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz --prefix=postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}/ ${{ env.POSTGRESQL-DEV_VERSION }}
 
+      # Optimize path length for Meson 1.9.1+ to avoid Windows 32KB PATH limit
+      # Meson adds all build output directories to PATH during tests,
+      # which can exceed the limit with 200+ test directories.
+      # Moving to \s\pg (short) and using SUBST saves ~50 chars per path
+      # = ~10KB total PATH reduction with 200 paths
+      - name: Setup Short Paths
+        run: |
+          # Move to short root path
+          New-Item -ItemType Directory -Force -Path \s
+          Move-Item postgresql-${{ env.POSTGRESQL-DEV_VERSION }} \s\pg
+
+          # Create virtual drive mapping to further shorten paths
+          # P:\b is only 4 chars vs ~55 chars for full GitHub Actions path
+          subst P: \s\pg
+
+          # Verify the mapping works
+          Write-Host "SUBST drive created:"
+          subst
+          Write-Host "`nDirectory contents:"
+          Get-ChildItem P:\ | Select-Object -First 5
+
       - name: Configure
         run: |
-          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
+          # Use short SUBST path (P:) instead of long GitHub Actions path
+          cd P:\
 
           # don't use \path style paths for library search, link.exe ends up
           # interpreting paths like that as flags!
@@ -108,16 +130,16 @@ jobs:
               -Db_pch=true `
               -Dgssapi=disabled `
               -Dbuildtype=debugoptimized `
-              build
+              b
 
       - name: Build
         run: |
-          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
+          cd P:\b
           ninja -j 1
 
       - name: Test
         run: |
-          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
+          cd P:\b
 
           # use unix socket to prevent port conflicts
           $env:PG_TEST_USE_UNIX_SOCKETS = 1;
@@ -134,15 +156,15 @@ jobs:
         with:
           name: test_logs
           path: |
-            postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\testrun\**\*.log
-            postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\testrun\**\regress_log_*
-            postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\testrun\**\*.diffs
-            postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\testrun\**\*.out
-            postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\meson-logs\testlog.txt
+            \s\pg\b\testrun\**\*.log
+            \s\pg\b\testrun\**\regress_log_*
+            \s\pg\b\testrun\**\*.diffs
+            \s\pg\b\testrun\**\*.out
+            \s\pg\b\meson-logs\testlog.txt
 
       - name: Install
         run: |
-          cd postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build
+          cd P:\b
 
           meson install --quiet
 
@@ -166,7 +188,7 @@ jobs:
         with:
           if-no-files-found: error
           name: meson_log
-          path: postgresql-${{ env.POSTGRESQL-DEV_VERSION }}\build\meson-logs\meson-log.txt
+          path: \s\pg\b\meson-logs\meson-log.txt
 
       - name: Package Release Assets
         shell: pwsh

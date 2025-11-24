@@ -89,6 +89,28 @@ jobs:
           curl https://ftp.postgresql.org/pub/source/v${{ matrix.version }}/postgresql-${{ matrix.version }}.tar.gz -o ./postgresql-${{ matrix.version }}.tar.gz
           tar zxvf postgresql-${{ matrix.version }}.tar.gz
 
+      # Optimize path length for Meson 1.9.1+ to avoid Windows 32KB PATH limit
+      # Meson adds all build output directories to PATH during tests,
+      # which can exceed the limit with 200+ test directories.
+      # Moving to \s\pg (short) and using SUBST saves ~50 chars per path
+      # = ~10KB total PATH reduction with 200 paths
+      - name: Setup Short Paths (meson)
+        run: |
+          # Move to short root path
+          New-Item -ItemType Directory -Force -Path \s
+          Move-Item postgresql-${{ matrix.version }} \s\pg
+
+          # Create virtual drive mapping to further shorten paths
+          # P:\b is only 4 chars vs ~55 chars for full GitHub Actions path
+          subst P: \s\pg
+
+          # Verify the mapping works
+          Write-Host "SUBST drive created:"
+          subst
+          Write-Host "`nDirectory contents:"
+          Get-ChildItem P:\ | Select-Object -First 5
+        if: ${{ fromJson(matrix.version) >= 17.0 }}
+
       - name: Configure (msvc)
         run: |
           cd postgresql-${{ matrix.version }}\src\tools\msvc
@@ -124,7 +146,8 @@ jobs:
 
       - name: Configure (meson)
         run: |
-          cd postgresql-${{ matrix.version }}
+          # Use short SUBST path (P:) instead of long GitHub Actions path
+          cd P:\
 
           # don't use \path style paths for library search, link.exe ends up
           # interpreting paths like that as flags!
@@ -145,7 +168,7 @@ jobs:
               -Db_pch=true `
               -Dgssapi=disabled `
               -Dbuildtype=debugoptimized `
-              build
+              b
         if: ${{ fromJson(matrix.version) >= 17.0 }}
 
       - name: Build (msvc)
@@ -157,7 +180,7 @@ jobs:
 
       - name: Build (meson)
         run: |
-          cd postgresql-${{ matrix.version }}\build
+          cd P:\b
           ninja -j 1
         if: ${{ fromJson(matrix.version) >= 17.0 }}
 
@@ -170,7 +193,7 @@ jobs:
 
       - name: Test (meson)
         run: |
-          cd postgresql-${{ matrix.version }}\build
+          cd P:\b
 
           # use unix socket to prevent port conflicts
           $env:PG_TEST_USE_UNIX_SOCKETS = 1;
@@ -188,11 +211,11 @@ jobs:
           if-no-files-found: ignore
           name: postgresql-${{ matrix.version }}-test-logs
           path: |
-            postgresql-${{ matrix.version }}\build\testrun\**\*.log
-            postgresql-${{ matrix.version }}\build\testrun\**\regress_log_*
-            postgresql-${{ matrix.version }}\build\testrun\**\*.diffs
-            postgresql-${{ matrix.version }}\build\testrun\**\*.out
-            postgresql-${{ matrix.version }}\build\meson-logs\testlog.txt
+            \s\pg\b\testrun\**\*.log
+            \s\pg\b\testrun\**\regress_log_*
+            \s\pg\b\testrun\**\*.diffs
+            \s\pg\b\testrun\**\*.out
+            \s\pg\b\meson-logs\testlog.txt
         if: always()
 
       - name: Install (msvc)
@@ -205,7 +228,7 @@ jobs:
 
       - name: Install (meson)
         run: |
-          cd postgresql-${{ matrix.version }}\build
+          cd P:\b
 
           meson install --quiet
         if: ${{ fromJson(matrix.version) >= 17.0 }}
@@ -239,7 +262,7 @@ jobs:
         with:
           if-no-files-found: ignore
           name: postgresql-${{ matrix.version }}-meson-log
-          path: postgresql-${{ matrix.version }}\build\meson-logs\meson-log.txt
+          path: \s\pg\b\meson-logs\meson-log.txt
         if: always()
 
       - name: Package Release Assets
