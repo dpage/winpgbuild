@@ -93,12 +93,10 @@ jobs:
           New-Item -ItemType Directory -Force -Path \s
           Move-Item postgresql-${{ env.POSTGRESQL-DEV_VERSION }} \s\pg
 
-          Write-Host "PostgreSQL moved to \s\pg"
-
           # Resolve builddeps path
           $deps = resolve-path /builddeps
 
-          # Change to source directory (no SUBST - just use the short path directly)
+          # Change to source directory
           cd \s\pg
 
           # can't enable some extra tests
