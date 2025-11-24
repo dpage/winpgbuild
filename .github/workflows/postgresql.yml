@@ -129,6 +129,14 @@ jobs:
           New-Item -ItemType Directory -Force -Path \s
           Move-Item postgresql-${{ matrix.version }} \s\pg
 
+          # Verify the move succeeded
+          if (-not (Test-Path \s\pg)) {
+            Write-Error "Failed to move postgresql-${{ matrix.version }} to \s\pg"
+            exit 1
+          }
+          Write-Host "PostgreSQL source moved to \s\pg"
+          Get-ChildItem \s\pg | Select-Object -First 5
+
           # Resolve builddeps before creating SUBST drive
           $deps = resolve-path /builddeps
 
@@ -136,11 +144,24 @@ jobs:
           # This mapping only persists for this PowerShell session
           subst P: \s\pg
 
-          # Verify mapping
-          Write-Host "SUBST drive P: created, mapping to \s\pg"
+          # Verify SUBST succeeded
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "SUBST command failed with exit code $LASTEXITCODE"
+            exit 1
+          }
+
+          # Verify P:\ is accessible
+          if (-not (Test-Path P:\)) {
+            Write-Error "P:\ drive is not accessible after SUBST"
+            subst
+            exit 1
+          }
+
+          Write-Host "SUBST drive P: created successfully"
+          Get-ChildItem P:\ | Select-Object -First 5
 
           # Change to the virtual drive
-          cd P:\
+          Set-Location P:\
 
           # can't enable some extra tests
           # - libpq_encryption -> fails for unknown reasons
