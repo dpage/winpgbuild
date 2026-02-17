@@ -8,7 +8,7 @@
       },
       {
         "name": "icu",
-        "version": "78.1",
+        "version": "78.2",
         "source": "https://icu.unicode.org/home",
         "licence": "https://github.com/unicode-org/icu/blob/main/LICENSE"
       },
@@ -20,7 +20,7 @@
       },
       {
         "name": "krb5",
-        "version": "1.22.1",
+        "version": "1.22.2",
         "source": "https://web.mit.edu/kerberos/",
         "licence": "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
       },
@@ -32,7 +32,7 @@
       },
       {
         "name": "libxslt",
-        "version": "1.1.43",
+        "version": "1.1.45",
         "source": "https://gitlab.gnome.org/GNOME/libxslt/",
         "licence": "https://gitlab.gnome.org/GNOME/libxslt/-/blob/master/Copyright?ref_type=heads"
       },
@@ -74,13 +74,13 @@
       },
       {
         "name": "meson",
-        "version": "1.9.1",
+        "version": "1.10.1",
         "source": "https://mesonbuild.com",
         "licence": "https://github.com/mesonbuild/meson/blob/master/COPYING"
       },
       {
         "name": "ninja",
-        "version": "1.13.1",
+        "version": "1.13.2",
         "source": "https://ninja-build.org",
         "licence": "https://github.com/ninja-build/ninja/blob/master/COPYING"
       },
@@ -104,7 +104,7 @@
       },
       {
         "name": "postgresql",
-        "version": "['18.1', '17.7', '16.11', '15.15', '14.20', '13.23']",
+        "version": "['18.2', '17.8', '16.12', '15.16', '14.21']",
         "source": "https://ftp.postgresql.org/pub/source/",
         "licence": "https://www.postgresql.org/about/licence/"
       }
