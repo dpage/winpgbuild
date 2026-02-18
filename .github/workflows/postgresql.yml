@@ -185,7 +185,7 @@ jobs:
           mkdir d:/sockets
           $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
 
-          meson test
+          meson test --no-rebuild
         if: ${{ fromJson(matrix.version) >= 17.0 }}
 
       - name: Upload Test Results
