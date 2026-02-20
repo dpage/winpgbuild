@@ -185,7 +185,17 @@ jobs:
           mkdir d:/sockets
           $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
 
-          meson test --suite setup --suite recovery --suite subscription --suite ecpg
+          meson test --suite setup --suite recovery --suite subscription
+        if: ${{ fromJson(matrix.version) >= 17.0 }}
+
+      - name: Test (meson) - ecpg
+        run: |
+          cd \s\pg\b
+
+          $env:PG_TEST_USE_UNIX_SOCKETS = 1;
+          $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
+
+          meson test --suite ecpg
         if: ${{ fromJson(matrix.version) >= 17.0 }}
 
       - name: Test (meson) - tools

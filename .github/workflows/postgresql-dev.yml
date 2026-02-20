@@ -132,7 +132,16 @@ jobs:
           mkdir d:/sockets
           $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
 
-          meson test --timeout-multiplier 2 --suite setup --suite recovery --suite subscription --suite ecpg
+          meson test --timeout-multiplier 2 --suite setup --suite recovery --suite subscription
+
+      - name: Test - ecpg
+        run: |
+          cd \s\pg\b
+
+          $env:PG_TEST_USE_UNIX_SOCKETS = 1;
+          $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
+
+          meson test --timeout-multiplier 2 --suite ecpg
 
       - name: Test - tools
         run: |
