@@ -121,7 +121,7 @@ jobs:
           cd \s\pg\b
           ninja -j 1
 
-      - name: Test
+      - name: Test - core
         run: |
           cd \s\pg\b
 
@@ -132,7 +132,25 @@ jobs:
           mkdir d:/sockets
           $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
 
-          meson test --no-rebuild --timeout-multiplier 2
+          meson test --timeout-multiplier 2 --suite setup --suite recovery --suite subscription
+
+      - name: Test - tools
+        run: |
+          cd \s\pg\b
+
+          $env:PG_TEST_USE_UNIX_SOCKETS = 1;
+          $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
+
+          meson test --no-rebuild --timeout-multiplier 2 --suite scripts --suite pg_verifybackup --suite pg_rewind --suite pg_combinebackup --suite pg_upgrade --suite amcheck --suite pg_amcheck --suite pg_basebackup --suite pg_dump --suite authentication --suite libpq --suite commit_ts --suite pg_ctl --suite test_misc
+
+      - name: Test - contrib & extensions
+        run: |
+          cd \s\pg\b
+
+          $env:PG_TEST_USE_UNIX_SOCKETS = 1;
+          $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
+
+          meson test --no-rebuild --timeout-multiplier 2 --no-suite setup --no-suite recovery --no-suite subscription --no-suite scripts --no-suite pg_verifybackup --no-suite pg_rewind --no-suite pg_combinebackup --no-suite pg_upgrade --no-suite amcheck --no-suite pg_amcheck --no-suite pg_basebackup --no-suite pg_dump --no-suite authentication --no-suite libpq --no-suite commit_ts --no-suite pg_ctl --no-suite test_misc
 
       - name: Upload Test Results
         if: ${{ !success() }}
