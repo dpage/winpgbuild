@@ -185,7 +185,7 @@ jobs:
           mkdir d:/sockets
           $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
 
-          meson test --suite setup --suite recovery --suite subscription
+          meson test --suite setup --suite recovery --suite subscription --suite ecpg
         if: ${{ fromJson(matrix.version) >= 17.0 }}
 
       - name: Test (meson) - tools
@@ -205,7 +205,7 @@ jobs:
           $env:PG_TEST_USE_UNIX_SOCKETS = 1;
           $env:PG_REGRESS_SOCK_DIR = "d:/sockets/"
 
-          meson test --no-rebuild --no-suite setup --no-suite recovery --no-suite subscription --no-suite scripts --no-suite pg_verifybackup --no-suite pg_rewind --no-suite pg_combinebackup --no-suite pg_upgrade --no-suite amcheck --no-suite pg_amcheck --no-suite pg_basebackup --no-suite pg_dump --no-suite authentication --no-suite libpq --no-suite commit_ts --no-suite pg_ctl --no-suite test_misc
+          meson test --no-rebuild --no-suite setup --no-suite recovery --no-suite subscription --no-suite ecpg --no-suite scripts --no-suite pg_verifybackup --no-suite pg_rewind --no-suite pg_combinebackup --no-suite pg_upgrade --no-suite amcheck --no-suite pg_amcheck --no-suite pg_basebackup --no-suite pg_dump --no-suite authentication --no-suite libpq --no-suite commit_ts --no-suite pg_ctl --no-suite test_misc
         if: ${{ fromJson(matrix.version) >= 17.0 }}
 
       - name: Upload Test Results
