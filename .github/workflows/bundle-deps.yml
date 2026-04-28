@@ -36,7 +36,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Download diffutils
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: diffutils.yml
           workflow_conclusion: success
@@ -45,7 +45,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download gettext
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: gettext.yml
           workflow_conclusion: success
@@ -54,7 +54,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download icu
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: icu.yml
           workflow_conclusion: success
@@ -63,7 +63,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download krb5
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: krb5.yml
           workflow_conclusion: success
@@ -72,7 +72,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download libiconv
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: libiconv.yml
           workflow_conclusion: success
@@ -81,7 +81,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download libxml2
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: libxml2.yml
           workflow_conclusion: success
@@ -90,7 +90,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download libxslt
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: libxslt.yml
           workflow_conclusion: success
@@ -99,7 +99,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download lz4
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: lz4.yml
           workflow_conclusion: success
@@ -108,7 +108,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download meson
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: meson.yml
           workflow_conclusion: success
@@ -117,7 +117,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download ninja
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: ninja.yml
           workflow_conclusion: success
@@ -126,7 +126,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download openssl
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: openssl.yml
           workflow_conclusion: success
@@ -135,7 +135,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download ossp-uuid
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: ossp-uuid.yml
           workflow_conclusion: success
@@ -144,7 +144,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download pkgconf
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: pkgconf.yml
           workflow_conclusion: success
@@ -153,7 +153,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download winflexbison
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: winflexbison.yml
           workflow_conclusion: success
@@ -162,7 +162,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download zlib
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: zlib.yml
           workflow_conclusion: success
@@ -171,7 +171,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download zstd
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: zstd.yml
           workflow_conclusion: success
@@ -189,7 +189,7 @@ jobs:
               \builddeps\html
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: all-deps-win64
@@ -200,11 +200,19 @@ jobs:
         run: |
           Compress-Archive /builddeps /postgresql-dependencies-latest.zip
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "dependencies-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "dependencies-latest"
-          title: "PostgreSQL Dependencies"
+          tag_name: "dependencies-latest"
+          target_commitish: ${{ github.sha }}
+          name: "PostgreSQL Dependencies"
+          prerelease: true
           files: |
             /postgresql-dependencies-latest.zip

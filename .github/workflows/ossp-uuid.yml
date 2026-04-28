@@ -34,10 +34,14 @@ jobs:
           curl https://salsa.debian.org/debian/ossp-uuid/-/archive/upstream/${{ env.OSSP-UUID_VERSION }}/ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}.tar.gz -o ./ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}.tar.gz
           tar zxvf ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}.tar.gz
 
-      - name: Configure
+      - name: Generate Configure Script
         run: |
           cd ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}
           autoreconf -fi
+
+      - name: Configure
+        run: |
+          cd ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}
           ./configure --prefix=$(pwd)/winpgbuild
         shell: bash
 
@@ -82,14 +86,14 @@ jobs:
           EOF
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}-src
           path: ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}.tar.gz
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: ossp-uuid-${{ env.OSSP-UUID_VERSION }}-win64
@@ -101,11 +105,19 @@ jobs:
           mv winpgbuild ossp-uuid
           zip -r ossp-uuid-latest.zip ossp-uuid
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "ossp-uuid-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "ossp-uuid-latest"
-          title: "ossp-uuid"
+          tag_name: "ossp-uuid-latest"
+          target_commitish: ${{ github.sha }}
+          name: "ossp-uuid"
+          prerelease: true
           files: |
             ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}/ossp-uuid-latest.zip

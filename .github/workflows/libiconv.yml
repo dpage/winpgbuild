@@ -55,14 +55,14 @@ jobs:
           cp winpgbuild/lib/libcharset.dll.a winpgbuild/lib/charset.lib
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: libiconv-${{ env.LIBICONV_VERSION }}-src
           path: libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: libiconv-${{ env.LIBICONV_VERSION }}-win64
@@ -74,11 +74,19 @@ jobs:
           mv winpgbuild libiconv
           zip -r libiconv-latest.zip libiconv
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "libiconv-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "libiconv-latest"
-          title: "libiconv"
+          tag_name: "libiconv-latest"
+          target_commitish: ${{ github.sha }}
+          name: "libiconv"
+          prerelease: true
           files: |
             libiconv-${{ env.LIBICONV_VERSION }}/libiconv-latest.zip

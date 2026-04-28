@@ -24,7 +24,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download libxml2
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: libxml2.yml
           workflow_conclusion: success
@@ -33,7 +33,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download zlib
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: zlib.yml
           workflow_conclusion: success
@@ -62,14 +62,14 @@ jobs:
           cmake --install build
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: libxslt-v${{ env.LIBXSLT_VERSION }}-src
           path: libxslt-v${{ env.LIBXSLT_VERSION }}.tar.gz
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: libxslt-${{ env.LIBXSLT_VERSION }}-win64
@@ -80,11 +80,19 @@ jobs:
         run: |
           Compress-Archive /libxslt /libxslt-latest.zip
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "libxslt-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "libxslt-latest"
-          title: "libxslt"
+          tag_name: "libxslt-latest"
+          target_commitish: ${{ github.sha }}
+          name: "libxslt"
+          prerelease: true
           files: |
             /libxslt-latest.zip

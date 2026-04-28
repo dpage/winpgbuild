@@ -24,7 +24,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download dependencies
-        uses: dawidd6/action-download-artifact@v7
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: bundle-deps.yml
           workflow_conclusion: success
@@ -74,7 +74,7 @@ jobs:
           icacls.exe . /inheritance:e /grant 'runneradmin:(OI)(CI)F'
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
             repository: postgres/postgres
             path: postgresql-${{ env.POSTGRESQL-DEV_VERSION }}
@@ -163,7 +163,7 @@ jobs:
 
       - name: Upload Test Results
         if: ${{ !success() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test_logs
           path: |
@@ -180,14 +180,14 @@ jobs:
           meson install --quiet
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}-src
           path: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}.tar.gz
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: postgresql-dev-${{ env.POSTGRESQL-DEV_VERSION }}-win64
@@ -195,7 +195,7 @@ jobs:
 
       - name: Upload Meson Log
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: meson_log
@@ -206,11 +206,19 @@ jobs:
         run: |
           Compress-Archive /postgresql /postgresql-${{ env.POSTGRESQL-DEV_VERSION }}-latest.zip
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "postgresql-${{ env.POSTGRESQL-DEV_VERSION }}-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "postgresql-${{ env.POSTGRESQL-DEV_VERSION }}-latest"
-          title: "PostgreSQL ${{ env.POSTGRESQL-DEV_VERSION }}"
+          tag_name: "postgresql-${{ env.POSTGRESQL-DEV_VERSION }}-latest"
+          target_commitish: ${{ github.sha }}
+          name: "PostgreSQL ${{ env.POSTGRESQL-DEV_VERSION }}"
+          prerelease: true
           files: |
             /postgresql-${{ env.POSTGRESQL-DEV_VERSION }}-latest.zip

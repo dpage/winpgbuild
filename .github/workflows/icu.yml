@@ -76,14 +76,14 @@ jobs:
         shell: cmd
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: icu-${{ env.ICU_VERSION }}-src
           path: icu4c-${{ env.ICU_VERSION }}.zip
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: icu-${{ env.ICU_VERSION }}-win64
@@ -94,11 +94,19 @@ jobs:
         run: |
           Compress-Archive /icu /icu-latest.zip
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "icu-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "icu-latest"
-          title: "icu"
+          tag_name: "icu-latest"
+          target_commitish: ${{ github.sha }}
+          name: "icu"
+          prerelease: true
           files: |
             /icu-latest.zip

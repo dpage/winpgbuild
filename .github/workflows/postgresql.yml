@@ -35,7 +35,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download dependencies
-        uses: dawidd6/action-download-artifact@v7
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: bundle-deps.yml
           workflow_conclusion: success
@@ -219,7 +219,7 @@ jobs:
         if: ${{ fromJson(matrix.version) >= 17.0 }}
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: ignore
           name: postgresql-${{ matrix.version }}-test-logs
@@ -247,14 +247,14 @@ jobs:
         if: ${{ fromJson(matrix.version) >= 17.0 }}
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: postgresql-${{ matrix.version }}-src
           path: postgresql-${{ matrix.version }}.tar.gz
 
       - name: Upload Config
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: postgresql-${{ matrix.version }}-config
@@ -264,14 +264,14 @@ jobs:
         if: ${{ fromJson(matrix.version) < 17.0 }}
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: postgresql-${{ matrix.version }}-win64
           path: /postgresql
 
       - name: Upload Meson Log
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: ignore
           name: postgresql-${{ matrix.version }}-meson-log
@@ -286,11 +286,19 @@ jobs:
           Compress-Archive /postgresql /postgresql-$($major_ver)-latest.zip
           Write-Output "majorVersion=$($major_ver)" >> $Env:GITHUB_OUTPUT
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "postgresql-${{ steps.majorVersion.outputs.majorVersion}}-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "postgresql-${{ steps.majorVersion.outputs.majorVersion}}-latest"
-          title: "PostgreSQL ${{ steps.majorVersion.outputs.majorVersion}}"
+          tag_name: "postgresql-${{ steps.majorVersion.outputs.majorVersion}}-latest"
+          target_commitish: ${{ github.sha }}
+          name: "PostgreSQL ${{ steps.majorVersion.outputs.majorVersion}}"
+          prerelease: true
           files: |
             /postgresql-${{ steps.majorVersion.outputs.majorVersion}}-latest.zip

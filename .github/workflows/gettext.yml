@@ -28,7 +28,7 @@ jobs:
           install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
 
       - name: Download libiconv
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: libiconv.yml
           workflow_conclusion: success
@@ -77,14 +77,14 @@ jobs:
           cp winpgbuild/lib/libasprintf.dll.a winpgbuild/lib/libasprintf.lib
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: gettext-${{ env.GETTEXT_VERSION }}-src
           path: gettext-${{ env.GETTEXT_VERSION }}.tar.gz
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: gettext-${{ env.GETTEXT_VERSION }}-win64
@@ -96,11 +96,19 @@ jobs:
           mv winpgbuild gettext
           zip -r gettext-latest.zip gettext
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "gettext-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "gettext-latest"
-          title: "gettext"
+          tag_name: "gettext-latest"
+          target_commitish: ${{ github.sha }}
+          name: "gettext"
+          prerelease: true
           files: |
             gettext-${{ env.GETTEXT_VERSION }}/gettext-latest.zip

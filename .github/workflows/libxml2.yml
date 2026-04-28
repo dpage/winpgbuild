@@ -22,7 +22,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download zlib
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: zlib.yml
           workflow_conclusion: success
@@ -51,14 +51,14 @@ jobs:
           cmake --install build
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: libxml2-v${{ env.LIBXML2_VERSION }}-src
           path: libxml2-v${{ env.LIBXML2_VERSION }}.tar.gz
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: libxml2-${{ env.LIBXML2_VERSION }}-win64
@@ -69,11 +69,19 @@ jobs:
         run: |
           Compress-Archive /libxml2 /libxml2-latest.zip
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "libxml2-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "libxml2-latest"
-          title: "libxml2"
+          tag_name: "libxml2-latest"
+          target_commitish: ${{ github.sha }}
+          name: "libxml2"
+          prerelease: true
           files: |
             /libxml2-latest.zip

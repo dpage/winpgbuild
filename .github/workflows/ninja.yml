@@ -30,7 +30,7 @@ jobs:
           ninja --version || true
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: ninja-${{ env.NINJA_VERSION }}-win64

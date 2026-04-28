@@ -28,7 +28,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download meson
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: meson.yml
           workflow_conclusion: success
@@ -37,7 +37,7 @@ jobs:
           if_no_artifact_found: fail
 
       - name: Download ninja
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: ninja.yml
           workflow_conclusion: success
@@ -74,14 +74,14 @@ jobs:
           cp \pkgconf\bin\pkgconf.exe \pkgconf\bin\pkg-config.exe
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: pkgconf-${{ env.PKGCONF_VERSION }}-src
           path: pkgconf-${{ env.PKGCONF_VERSION }}.tar.gz
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: pkgconf-${{ env.PKGCONF_VERSION }}-win64

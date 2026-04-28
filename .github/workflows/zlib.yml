@@ -68,14 +68,14 @@ jobs:
         shell: cmd
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: zlib-${{ env.ZLIB_VERSION }}-src
           path: zlib-${{ env.ZLIB_VERSION }}.tar.gz
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: zlib-${{ env.ZLIB_VERSION }}-win64
@@ -86,11 +86,19 @@ jobs:
         run: |
           Compress-Archive /zlib /zlib-latest.zip
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "zlib-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "zlib-latest"
-          title: "zlib"
+          tag_name: "zlib-latest"
+          target_commitish: ${{ github.sha }}
+          name: "zlib"
+          prerelease: true
           files: |
             /zlib-latest.zip

@@ -18,7 +18,7 @@ jobs:
     env:
       LZ4_VERSION: ${{needs.get-versions.outputs.LZ4_VERSION}}
     steps:
-      - uses: microsoft/setup-msbuild@v2
+      - uses: microsoft/setup-msbuild@v3
 
       - name: Download
         run: |
@@ -63,14 +63,14 @@ jobs:
         shell: cmd
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: lz4-${{ env.LZ4_VERSION }}-src
           path: lz4-${{ env.LZ4_VERSION }}.tar.gz
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: lz4-${{ env.LZ4_VERSION }}-win64
@@ -81,11 +81,19 @@ jobs:
         run: |
           Compress-Archive /lz4 /lz4-latest.zip
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "lz4-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "lz4-latest"
-          title: "lz4"
+          tag_name: "lz4-latest"
+          target_commitish: ${{ github.sha }}
+          name: "lz4"
+          prerelease: true
           files: |
             /lz4-latest.zip

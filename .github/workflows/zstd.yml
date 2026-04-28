@@ -18,7 +18,7 @@ jobs:
     env:
       ZSTD_VERSION: ${{needs.get-versions.outputs.ZSTD_VERSION}}
     steps:
-      - uses: microsoft/setup-msbuild@v2
+      - uses: microsoft/setup-msbuild@v3
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download
@@ -71,14 +71,14 @@ jobs:
         shell: cmd
 
       - name: Upload Source
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: zstd-${{ env.ZSTD_VERSION }}-src
           path: zstd-${{ env.ZSTD_VERSION }}.tar.gz
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           name: zstd-${{ env.ZSTD_VERSION }}-win64
@@ -89,11 +89,19 @@ jobs:
         run: |
           Compress-Archive /zstd /zstd-latest.zip
           
+      - name: Delete Existing Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "zstd-latest" --repo "${{ github.repository }}" --cleanup-tag --yes || true
+
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "zstd-latest"
-          title: "zstd"
+          tag_name: "zstd-latest"
+          target_commitish: ${{ github.sha }}
+          name: "zstd"
+          prerelease: true
           files: |
             /zstd-latest.zip
