@@ -26,18 +26,13 @@ jobs:
         with:
           msystem: UCRT64
           update: true
-          install: mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-libmd automake autoconf libtool pkg-config make zip patch tar
+          install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
 
       - name: Download
         # We get this from the Debian repo, as OSSP is basically unavailable these days
         run: |
           curl https://salsa.debian.org/debian/ossp-uuid/-/archive/upstream/${{ env.OSSP-UUID_VERSION }}/ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}.tar.gz -o ./ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}.tar.gz
           tar zxvf ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}.tar.gz
-
-      - name: Generate Configure Script
-        run: |
-          cd ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}
-          autoreconf -fi
 
       - name: Configure
         run: |
