@@ -37,6 +37,7 @@ jobs:
       - name: Configure
         run: |
           cd ossp-uuid-upstream-${{ env.OSSP-UUID_VERSION }}
+          autoreconf -fi
           ./configure --prefix=$(pwd)/winpgbuild
         shell: bash
 
