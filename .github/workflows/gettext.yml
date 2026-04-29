@@ -26,13 +26,10 @@ jobs:
           install: mingw-w64-ucrt-x86_64-gcc automake autoconf pkg-config make zip patch tar
 
       - name: Download libiconv
-        uses: dawidd6/action-download-artifact@v21
+        uses: actions/download-artifact@v7
         with:
-          workflow: libiconv.yml
-          workflow_conclusion: success
           name: libiconv-${{ env.LIBICONV_VERSION }}-win64
           path: /builddeps
-          if_no_artifact_found: fail
 
       - name: Download
         run: |

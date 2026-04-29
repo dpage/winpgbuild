@@ -23,13 +23,10 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download zlib
-        uses: dawidd6/action-download-artifact@v21
+        uses: actions/download-artifact@v7
         with:
-          workflow: zlib.yml
-          workflow_conclusion: success
           name: zlib-${{ env.ZLIB_VERSION }}-win64
           path: /build/zlib
-          if_no_artifact_found: fail
 
       - name: Download
         run: |

@@ -29,22 +29,16 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Download meson
-        uses: dawidd6/action-download-artifact@v21
+        uses: actions/download-artifact@v7
         with:
-          workflow: meson.yml
-          workflow_conclusion: success
           name: meson-${{ env.MESON_VERSION }}-win64
           path: /builddeps
-          if_no_artifact_found: fail
 
       - name: Download ninja
-        uses: dawidd6/action-download-artifact@v21
+        uses: actions/download-artifact@v7
         with:
-          workflow: ninja.yml
-          workflow_conclusion: success
           name: ninja-${{ env.NINJA_VERSION }}-win64
           path: /builddeps
-          if_no_artifact_found: fail
 
       - name: Add build deps to path
         run: |
