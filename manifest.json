@@ -58,7 +58,8 @@
         "name": "zlib",
         "version": "1.3.2",
         "source": "https://zlib.net/",
-        "licence": "https://zlib.net/zlib_license.html"
+        "licence": "https://zlib.net/zlib_license.html",
+        "spdx_license": "Zlib"
       },
       {
         "name": "zstd",
