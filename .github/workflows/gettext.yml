@@ -75,7 +75,7 @@ jobs:
           cp winpgbuild/lib/libasprintf.dll.a winpgbuild/lib/libasprintf.lib
 
       - name: Checkout SPDX action
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: _src
           sparse-checkout: |

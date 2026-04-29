@@ -28,7 +28,7 @@ jobs:
           ninja --version || true
 
       - name: Checkout SPDX action
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: _src
           sparse-checkout: |

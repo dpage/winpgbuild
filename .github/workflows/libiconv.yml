@@ -53,7 +53,7 @@ jobs:
           cp winpgbuild/lib/libcharset.dll.a winpgbuild/lib/charset.lib
 
       - name: Checkout SPDX action
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: _src
           sparse-checkout: |
