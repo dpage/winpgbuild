@@ -4,55 +4,64 @@
         "name": "gettext",
         "version": "1.0",
         "source": "https://www.gnu.org/software/gettext/",
-        "licence": "https://www.gnu.org/software/gettext/manual/html_node/GNU-GPL.html"
+        "licence": "https://www.gnu.org/software/gettext/manual/html_node/GNU-GPL.html",
+        "spdx_license": "GPL-3.0-or-later AND LGPL-2.1-or-later"
       },
       {
         "name": "icu",
         "version": "78.3",
         "source": "https://icu.unicode.org/home",
-        "licence": "https://github.com/unicode-org/icu/blob/main/LICENSE"
+        "licence": "https://github.com/unicode-org/icu/blob/main/LICENSE",
+        "spdx_license": "ICU"
       },
       {
         "name": "libiconv",
         "version": "1.19",
         "source": "https://www.gnu.org/software/libiconv/",
-        "licence": "https://www.gnu.org/licenses/lgpl-2.1.html"
+        "licence": "https://www.gnu.org/licenses/lgpl-2.1.html",
+        "spdx_license": "LGPL-2.1-or-later"
       },
       {
         "name": "krb5",
         "version": "1.22.2",
         "source": "https://web.mit.edu/kerberos/",
-        "licence": "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html"
+        "licence": "https://web.mit.edu/kerberos/krb5-1.21/doc/mitK5license.html",
+        "spdx_license": "MIT"
       },
       {
         "name": "libxml2",
         "version": "2.15.3",
         "source": "https://gitlab.gnome.org/GNOME/libxml2/",
-        "licence": "https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads"
+        "licence": "https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads",
+        "spdx_license": "MIT"
       },
       {
         "name": "libxslt",
         "version": "1.1.45",
         "source": "https://gitlab.gnome.org/GNOME/libxslt/",
-        "licence": "https://gitlab.gnome.org/GNOME/libxslt/-/blob/master/Copyright?ref_type=heads"
+        "licence": "https://gitlab.gnome.org/GNOME/libxslt/-/blob/master/Copyright?ref_type=heads",
+        "spdx_license": "MIT"
       },
       {
         "name": "lz4",
         "version": "1.10.0",
         "source": "https://lz4.org/",
-        "licence": "https://github.com/lz4/lz4/blob/dev/LICENSE"
+        "licence": "https://github.com/lz4/lz4/blob/dev/LICENSE",
+        "spdx_license": "BSD-2-Clause"
       },
       {
         "name": "openssl",
         "version": "3.0.20",
         "source": "https://openssl.org/",
-        "licence": "https://www.openssl.org/source/apache-license-2.0.txt"
+        "licence": "https://www.openssl.org/source/apache-license-2.0.txt",
+        "spdx_license": "Apache-2.0"
       },
       {
         "name": "ossp-uuid",
         "version": "1.6.2",
         "source": "https://salsa.debian.org/debian/ossp-uuid/",
-        "licence": "https://salsa.debian.org/debian/ossp-uuid/-/blob/master/README?ref_type=heads"
+        "licence": "https://salsa.debian.org/debian/ossp-uuid/-/blob/master/README?ref_type=heads",
+        "spdx_license": "MIT"
       },
       {
         "name": "zlib",
@@ -65,49 +74,57 @@
         "name": "zstd",
         "version": "1.5.7",
         "source": "https://facebook.github.io/zstd/",
-        "licence": "https://github.com/facebook/zstd/blob/dev/LICENSE"
+        "licence": "https://github.com/facebook/zstd/blob/dev/LICENSE",
+        "spdx_license": "BSD-3-Clause OR GPL-2.0-only"
       },
       {
         "name": "diffutils",
         "version": "2.8.7-1",
         "source": "https://gnuwin32.sourceforge.net/packages/diffutils.htm",
-        "licence": "https://git.savannah.gnu.org/cgit/diffutils.git/tree/COPYING"
+        "licence": "https://git.savannah.gnu.org/cgit/diffutils.git/tree/COPYING",
+        "spdx_license": "GPL-3.0-or-later"
       },
       {
         "name": "meson",
         "version": "1.11.1",
         "source": "https://mesonbuild.com",
-        "licence": "https://github.com/mesonbuild/meson/blob/master/COPYING"
+        "licence": "https://github.com/mesonbuild/meson/blob/master/COPYING",
+        "spdx_license": "Apache-2.0"
       },
       {
         "name": "ninja",
         "version": "1.13.2",
         "source": "https://ninja-build.org",
-        "licence": "https://github.com/ninja-build/ninja/blob/master/COPYING"
+        "licence": "https://github.com/ninja-build/ninja/blob/master/COPYING",
+        "spdx_license": "Apache-2.0"
       },
       {
         "name": "pkgconf",
         "version": "2.5.1",
         "source": "http://pkgconf.org",
-        "licence": "https://github.com/pkgconf/pkgconf/blob/master/COPYING"
+        "licence": "https://github.com/pkgconf/pkgconf/blob/master/COPYING",
+        "spdx_license": "ISC"
       },
       {
         "name": "winflexbison",
         "version": "2.5.25",
         "source": "https://github.com/lexxmark/winflexbison",
-        "licence": "https://github.com/lexxmark/winflexbison/blob/master/flex/src/COPYING"
+        "licence": "https://github.com/lexxmark/winflexbison/blob/master/flex/src/COPYING",
+        "spdx_license": "BSD-3-Clause AND GPL-3.0-or-later"
       },
       {
         "name": "postgresql-dev",
         "version": "master",
         "source": "https://github.com/postgres/postgres",
-        "licence": "https://www.postgresql.org/about/licence/"
+        "licence": "https://www.postgresql.org/about/licence/",
+        "spdx_license": "PostgreSQL"
       },
       {
         "name": "postgresql",
         "version": "['18.3', '17.9', '16.13', '15.17', '14.22']",
         "source": "https://ftp.postgresql.org/pub/source/",
-        "licence": "https://www.postgresql.org/about/licence/"
+        "licence": "https://www.postgresql.org/about/licence/",
+        "spdx_license": "PostgreSQL"
       }
     ]
   }

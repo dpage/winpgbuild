@@ -65,39 +65,19 @@ jobs:
           >> \zlib\lib\pkgconfig\zlib.pc echo Cflags: -I${includedir}
         shell: cmd
 
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: _src
+          sparse-checkout: |
+            .github/actions/generate-spdx
+          sparse-checkout-cone-mode: false
+
       - name: Generate SPDX manifest
-        shell: pwsh
-        run: |
-          $url = "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/manifest.json"
-          $manifest = (Invoke-WebRequest -Uri $url -UseBasicParsing).Content | ConvertFrom-Json
-          $pkg = $manifest.packages | Where-Object { $_.name -eq 'zlib' }
-          $now = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
-          $doc = [ordered]@{
-            spdxVersion       = "SPDX-2.3"
-            dataLicense       = "CC0-1.0"
-            SPDXID            = "SPDXRef-DOCUMENT"
-            name              = "zlib-$($pkg.version)"
-            documentNamespace = "https://github.com/${{ github.repository }}/spdx/zlib-$($pkg.version)-${{ github.run_id }}"
-            creationInfo      = [ordered]@{
-              created  = $now
-              creators = @("Tool: dpage/winpgbuild")
-            }
-            packages          = @(
-              [ordered]@{
-                SPDXID           = "SPDXRef-Package-zlib"
-                name             = $pkg.name
-                versionInfo      = $pkg.version
-                downloadLocation = "NOASSERTION"
-                homepage         = $pkg.source
-                licenseDeclared  = $pkg.spdx_license
-                licenseConcluded = $pkg.spdx_license
-                filesAnalyzed    = $false
-                copyrightText    = "NOASSERTION"
-              }
-            )
-          }
-          New-Item -ItemType Directory -Path /zlib/MANIFESTS -Force | Out-Null
-          $doc | ConvertTo-Json -Depth 10 | Set-Content /zlib/MANIFESTS/zlib.spdx.json -Encoding UTF8
+        uses: ./_src/.github/actions/generate-spdx
+        with:
+          package: zlib
+          install-dir: /zlib
 
       - name: Upload Source
         uses: actions/upload-artifact@v7

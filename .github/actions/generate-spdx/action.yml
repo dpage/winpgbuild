@@ -1,0 +1,68 @@
+name: Generate SPDX manifest
+description: >
+  Writes a SPDX 2.3 JSON document for a single package into
+  <install-dir>/MANIFESTS/<package>.spdx.json, sourced from manifest.json
+  at the current commit. Designed to ship inside the binary artifact so
+  downstream bundlers (bundle-deps, postgresql) collect each package's
+  manifest automatically when they extract upstream artifacts.
+
+inputs:
+  package:
+    description: Package name. Must match an entry in manifest.json.
+    required: true
+  install-dir:
+    description: >
+      Install directory the manifest is written under. The file lands at
+      <install-dir>/MANIFESTS/<package>.spdx.json.
+    required: true
+  version:
+    description: >
+      Override the version from manifest.json. Use for matrix builds
+      (e.g. postgresql) where manifest.json holds a list rather than a
+      single version. Leave empty for normal leaves.
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Generate SPDX manifest
+      shell: pwsh
+      run: |
+        $url = "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/manifest.json"
+        $manifest = (Invoke-WebRequest -Uri $url -UseBasicParsing).Content | ConvertFrom-Json
+        $pkg = $manifest.packages | Where-Object { $_.name -eq '${{ inputs.package }}' }
+        if (-not $pkg) {
+          throw "Package '${{ inputs.package }}' not found in manifest.json"
+        }
+        $version  = if ('${{ inputs.version }}') { '${{ inputs.version }}' } else { $pkg.version }
+        $license  = if ($pkg.spdx_license)       { $pkg.spdx_license }       else { 'NOASSERTION' }
+        $now = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        $doc = [ordered]@{
+          spdxVersion       = "SPDX-2.3"
+          dataLicense       = "CC0-1.0"
+          SPDXID            = "SPDXRef-DOCUMENT"
+          name              = "${{ inputs.package }}-$version"
+          documentNamespace = "https://github.com/${{ github.repository }}/spdx/${{ inputs.package }}-$version-${{ github.run_id }}"
+          creationInfo      = [ordered]@{
+            created  = $now
+            creators = @("Tool: dpage/winpgbuild")
+          }
+          packages          = @(
+            [ordered]@{
+              SPDXID           = "SPDXRef-Package-${{ inputs.package }}"
+              name             = $pkg.name
+              versionInfo      = $version
+              downloadLocation = "NOASSERTION"
+              homepage         = $pkg.source
+              licenseDeclared  = $license
+              licenseConcluded = $license
+              filesAnalyzed    = $false
+              copyrightText    = "NOASSERTION"
+            }
+          )
+        }
+        $manifestDir = Join-Path '${{ inputs.install-dir }}' 'MANIFESTS'
+        New-Item -ItemType Directory -Path $manifestDir -Force | Out-Null
+        $outPath = Join-Path $manifestDir '${{ inputs.package }}.spdx.json'
+        $doc | ConvertTo-Json -Depth 10 | Set-Content $outPath -Encoding UTF8
