@@ -60,6 +60,20 @@ jobs:
           >> \openssl\lib\pkgconfig\openssl.pc echo Cflags: -I${includedir}
         shell: cmd
 
+      - name: Checkout SPDX action
+        uses: actions/checkout@v4
+        with:
+          path: _src
+          sparse-checkout: |
+            .github/actions/generate-spdx
+          sparse-checkout-cone-mode: false
+
+      - name: Generate SPDX manifest
+        uses: ./_src/.github/actions/generate-spdx
+        with:
+          package: openssl
+          install-dir: /openssl
+
       - name: Upload Source
         uses: actions/upload-artifact@v7
         with:

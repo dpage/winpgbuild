@@ -71,6 +71,20 @@ jobs:
           # that way we don't need to tell meson about the non-standard name
           cp \pkgconf\bin\pkgconf.exe \pkgconf\bin\pkg-config.exe
 
+      - name: Checkout SPDX action
+        uses: actions/checkout@v4
+        with:
+          path: _src
+          sparse-checkout: |
+            .github/actions/generate-spdx
+          sparse-checkout-cone-mode: false
+
+      - name: Generate SPDX manifest
+        uses: ./_src/.github/actions/generate-spdx
+        with:
+          package: pkgconf
+          install-dir: /pkgconf
+
       - name: Upload Source
         uses: actions/upload-artifact@v7
         with:

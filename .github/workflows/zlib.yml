@@ -65,7 +65,7 @@ jobs:
           >> \zlib\lib\pkgconfig\zlib.pc echo Cflags: -I${includedir}
         shell: cmd
 
-      - name: Checkout
+      - name: Checkout SPDX action
         uses: actions/checkout@v4
         with:
           path: _src

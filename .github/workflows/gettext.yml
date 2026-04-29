@@ -74,6 +74,20 @@ jobs:
           cp winpgbuild/lib/libintl.dll.a winpgbuild/lib/libintl.lib
           cp winpgbuild/lib/libasprintf.dll.a winpgbuild/lib/libasprintf.lib
 
+      - name: Checkout SPDX action
+        uses: actions/checkout@v4
+        with:
+          path: _src
+          sparse-checkout: |
+            .github/actions/generate-spdx
+          sparse-checkout-cone-mode: false
+
+      - name: Generate SPDX manifest
+        uses: ./_src/.github/actions/generate-spdx
+        with:
+          package: gettext
+          install-dir: gettext-${{ env.GETTEXT_VERSION }}/winpgbuild
+
       - name: Upload Source
         uses: actions/upload-artifact@v7
         with:

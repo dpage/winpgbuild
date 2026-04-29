@@ -177,6 +177,28 @@ jobs:
 
           meson install --quiet
 
+      - name: Checkout SPDX action
+        uses: actions/checkout@v4
+        with:
+          path: _src
+          sparse-checkout: |
+            .github/actions/generate-spdx
+          sparse-checkout-cone-mode: false
+
+      - name: Copy dependency SPDX manifests
+        shell: pwsh
+        run: |
+          if (Test-Path /builddeps/MANIFESTS) {
+            New-Item -ItemType Directory -Path /postgresql/MANIFESTS -Force | Out-Null
+            Copy-Item /builddeps/MANIFESTS/*.spdx.json /postgresql/MANIFESTS/
+          }
+
+      - name: Generate SPDX manifest
+        uses: ./_src/.github/actions/generate-spdx
+        with:
+          package: postgresql-dev
+          install-dir: /postgresql
+
       - name: Upload Source
         uses: actions/upload-artifact@v7
         with:

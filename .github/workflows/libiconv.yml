@@ -52,6 +52,20 @@ jobs:
           cp winpgbuild/lib/libiconv.dll.a winpgbuild/lib/iconv.lib
           cp winpgbuild/lib/libcharset.dll.a winpgbuild/lib/charset.lib
 
+      - name: Checkout SPDX action
+        uses: actions/checkout@v4
+        with:
+          path: _src
+          sparse-checkout: |
+            .github/actions/generate-spdx
+          sparse-checkout-cone-mode: false
+
+      - name: Generate SPDX manifest
+        uses: ./_src/.github/actions/generate-spdx
+        with:
+          package: libiconv
+          install-dir: libiconv-${{ env.LIBICONV_VERSION }}/winpgbuild
+
       - name: Upload Source
         uses: actions/upload-artifact@v7
         with:
