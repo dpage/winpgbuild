@@ -1,9 +1,9 @@
-name: Build All (orchestrator)
+name: Build All
 
-# Single-run DAG that builds everything in dependency order, replacing the
-# per-workflow cron schedule (where each workflow is timed by hand to land
-# after its deps). Triggered manually here while we experiment; once promoted
-# to main it would replace the individual crons.
+# Single-run DAG that builds everything in dependency order. The only
+# scheduled workflow in the repo - leaf workflows are still callable on
+# demand via workflow_dispatch / workflow_call, but their crons have been
+# removed in favour of this one.
 #
 # IMPORTANT: GitHub Actions limits a workflow to 20 unique reusable workflows
 # in its full call tree. We are AT that limit (19 leaves + manifest.yml).
@@ -11,6 +11,8 @@ name: Build All (orchestrator)
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "00 00 * * *"
 
 jobs:
   # Tier 0 — no artifact dependencies.
