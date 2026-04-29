@@ -1,0 +1,85 @@
+name: Build All (orchestrator)
+
+# Single-run DAG that builds everything in dependency order, replacing the
+# per-workflow cron schedule (where each workflow is timed by hand to land
+# after its deps). Triggered manually here while we experiment; once promoted
+# to main it would replace the individual crons.
+#
+# IMPORTANT: GitHub Actions limits a workflow to 20 unique reusable workflows
+# in its full call tree. We are AT that limit (19 leaves + manifest.yml).
+# Adding a new package will require splitting into staged orchestrators.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  # Tier 0 — no artifact dependencies.
+  meson:
+    uses: ./.github/workflows/meson.yml
+  ninja:
+    uses: ./.github/workflows/ninja.yml
+  openssl:
+    uses: ./.github/workflows/openssl.yml
+  zlib:
+    uses: ./.github/workflows/zlib.yml
+  zstd:
+    uses: ./.github/workflows/zstd.yml
+  lz4:
+    uses: ./.github/workflows/lz4.yml
+  libiconv:
+    uses: ./.github/workflows/libiconv.yml
+  icu:
+    uses: ./.github/workflows/icu.yml
+  krb5:
+    uses: ./.github/workflows/krb5.yml
+  ossp-uuid:
+    uses: ./.github/workflows/ossp-uuid.yml
+  diffutils:
+    uses: ./.github/workflows/diffutils.yml
+  winflexbison:
+    uses: ./.github/workflows/winflexbison.yml
+
+  # Tier 1
+  pkgconf:
+    needs: [meson, ninja]
+    uses: ./.github/workflows/pkgconf.yml
+  libxml2:
+    needs: [zlib]
+    uses: ./.github/workflows/libxml2.yml
+  gettext:
+    needs: [libiconv]
+    uses: ./.github/workflows/gettext.yml
+
+  # Tier 2
+  libxslt:
+    needs: [zlib, libxml2]
+    uses: ./.github/workflows/libxslt.yml
+
+  # Tier 3
+  bundle-deps:
+    needs:
+      - meson
+      - ninja
+      - openssl
+      - zlib
+      - zstd
+      - lz4
+      - libiconv
+      - icu
+      - krb5
+      - ossp-uuid
+      - diffutils
+      - winflexbison
+      - pkgconf
+      - libxml2
+      - gettext
+      - libxslt
+    uses: ./.github/workflows/bundle-deps.yml
+
+  # Tier 4
+  postgresql:
+    needs: [bundle-deps]
+    uses: ./.github/workflows/postgresql.yml
+  postgresql-dev:
+    needs: [bundle-deps]
+    uses: ./.github/workflows/postgresql-dev.yml
