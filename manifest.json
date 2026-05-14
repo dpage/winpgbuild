@@ -121,7 +121,7 @@
       },
       {
         "name": "postgresql",
-        "version": "['18.3', '17.9', '16.13', '15.17', '14.22']",
+        "version": "['18.4', '17.10', '16.14', '15.18', '14.23']",
         "source": "https://ftp.postgresql.org/pub/source/",
         "licence": "https://www.postgresql.org/about/licence/",
         "spdx_license": "PostgreSQL"
