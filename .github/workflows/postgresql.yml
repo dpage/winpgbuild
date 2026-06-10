@@ -195,7 +195,7 @@ jobs:
               "-DPG_TEST_EXTRA=ldap ssl" `
               -Duuid=ossp `
               -Db_pch=true `
-              -Dgssapi=$gssapi `
+              "-Dgssapi=$gssapi" `
               -Dbuildtype=debugoptimized `
               b
         if: ${{ fromJson(matrix.version) >= 17.0 }}
