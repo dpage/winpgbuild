@@ -63,6 +63,20 @@ jobs:
           copy \builddeps\bin\libzstd.dll \postgresql\bin\
           copy \builddeps\bin\zlib1.dll \postgresql\bin\
 
+      # GSSAPI (MIT Kerberos) is only enabled for PG18+ (see the meson
+      # Configure step), so only those builds need the krb5 runtime DLLs that
+      # libpq's gssapi support links against.
+      - name: Install GSSAPI runtime dependencies
+        run: |
+          copy \builddeps\bin\gssapi64.dll \postgresql\bin\
+          copy \builddeps\bin\krb5_64.dll \postgresql\bin\
+          copy \builddeps\bin\comerr64.dll \postgresql\bin\
+          copy \builddeps\bin\k5sprt64.dll \postgresql\bin\
+          copy \builddeps\bin\xpprof64.dll \postgresql\bin\
+          copy \builddeps\bin\krbcc64.dll \postgresql\bin\
+        shell: cmd
+        if: ${{ fromJson(matrix.version) >= 18.0 }}
+
       - name: Add build deps to path
         run: |
           # so binaries and libraries can be found/run
@@ -134,6 +148,15 @@ jobs:
           # Change to source directory
           cd \s\pg
 
+          # GSSAPI (MIT Kerberos) can only be enabled on PG18+. The Windows
+          # build of libpq with both OpenSSL and GSSAPI enabled fails to
+          # compile on older branches because <wincrypt.h> #defines X509_NAME,
+          # clobbering OpenSSL's typedef. That was fixed upstream by the commit
+          # adding src/include/libpq/pg-gssapi.h, which is present in PG18 and
+          # master but was not back-patched to 17 or earlier.
+          $pgMajor = [int]( '${{ matrix.version }}'.Split('.')[0] )
+          $gssapi = if ($pgMajor -ge 18) { 'enabled' } else { 'disabled' }
+
           # can't enable some extra tests
           # - libpq_encryption -> fails for unknown reasons
           # - kerberos -> test not yet supported on windows
@@ -147,7 +170,7 @@ jobs:
               "-DPG_TEST_EXTRA=ldap ssl" `
               -Duuid=ossp `
               -Db_pch=true `
-              -Dgssapi=disabled `
+              -Dgssapi=$gssapi `
               -Dbuildtype=debugoptimized `
               b
         if: ${{ fromJson(matrix.version) >= 17.0 }}

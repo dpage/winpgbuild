@@ -52,6 +52,18 @@ jobs:
           copy \builddeps\bin\libzstd.dll \postgresql\bin\
           copy \builddeps\bin\zlib1.dll \postgresql\bin\
 
+      # GSSAPI (MIT Kerberos) is enabled for the dev (master) build, so bundle
+      # the krb5 runtime DLLs that libpq's gssapi support links against.
+      - name: Install GSSAPI runtime dependencies
+        run: |
+          copy \builddeps\bin\gssapi64.dll \postgresql\bin\
+          copy \builddeps\bin\krb5_64.dll \postgresql\bin\
+          copy \builddeps\bin\comerr64.dll \postgresql\bin\
+          copy \builddeps\bin\k5sprt64.dll \postgresql\bin\
+          copy \builddeps\bin\xpprof64.dll \postgresql\bin\
+          copy \builddeps\bin\krbcc64.dll \postgresql\bin\
+        shell: cmd
+
       - name: Add build deps to path
         run: |
           # so binaries and libraries can be found/run
@@ -110,7 +122,7 @@ jobs:
               "-DPG_TEST_EXTRA=ldap ssl" `
               -Duuid=ossp `
               -Db_pch=true `
-              -Dgssapi=disabled `
+              -Dgssapi=enabled `
               -Dbuildtype=debugoptimized `
               b
 
