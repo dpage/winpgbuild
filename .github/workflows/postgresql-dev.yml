@@ -24,11 +24,36 @@ jobs:
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
 
+      # When run via build-all (workflow_call), the all-deps-win64 artifact is
+      # produced by the bundle-deps job earlier in the same run, so this
+      # same-run lookup succeeds. continue-on-error lets a standalone dispatch
+      # (where no such artifact exists) fall through to the release fallback
+      # below instead of failing the job.
       - name: Download dependencies
+        id: download-deps
         uses: actions/download-artifact@v7
+        continue-on-error: true
         with:
           name: all-deps-win64
           path: /builddeps
+
+      # Standalone dispatch has no same-run artifact; pull the dependencies
+      # from the dependencies-latest release published by bundle-deps. The
+      # release archive has a top-level builddeps/ directory, so extracting to
+      # the filesystem root reproduces the \builddeps layout. Skipped on
+      # build-all runs, where the step above already succeeded.
+      - name: Download dependencies (release fallback)
+        if: steps.download-deps.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release download dependencies-latest `
+              --repo ${{ github.repository }} `
+              --pattern postgresql-dependencies-latest.zip `
+              --dir $env:RUNNER_TEMP
+          Expand-Archive `
+              -Path $env:RUNNER_TEMP\postgresql-dependencies-latest.zip `
+              -DestinationPath \ -Force
 
       # Copy libraries requires at runtime to installation directory.
       #
