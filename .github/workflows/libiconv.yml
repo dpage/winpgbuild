@@ -28,7 +28,13 @@ jobs:
       
       - name: Download
         run: |
-          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ env.LIBICONV_VERSION }}.tar.gz -o ./libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
+          # ftp.gnu.org is intermittently unroutable from the runners, so fall
+          # back to a mirror rather than failing the entire build.
+          for host in https://ftp.gnu.org/pub/gnu https://mirrors.kernel.org/gnu; do
+            curl -fL --retry 3 --retry-delay 5 --retry-all-errors --connect-timeout 30 \
+              $host/libiconv/libiconv-${{ env.LIBICONV_VERSION }}.tar.gz \
+              -o ./libiconv-${{ env.LIBICONV_VERSION }}.tar.gz && break
+          done
           tar zxvf libiconv-${{ env.LIBICONV_VERSION }}.tar.gz
       - name: Configure
         run: |
