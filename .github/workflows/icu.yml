@@ -23,7 +23,7 @@ jobs:
 
       - name: Download
         run: |
-          curl -L https://github.com/unicode-org/icu/releases/download/release-${{ env.ICU_VERSION }}/icu4c-${{ env.ICU_VERSION }}-sources.zip -o ./icu4c-${{ env.ICU_VERSION }}.zip
+          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 https://github.com/unicode-org/icu/releases/download/release-${{ env.ICU_VERSION }}/icu4c-${{ env.ICU_VERSION }}-sources.zip -o ./icu4c-${{ env.ICU_VERSION }}.zip
           unzip -q ./icu4c-${{ env.ICU_VERSION }}.zip
         shell: bash
 

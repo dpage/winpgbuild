@@ -24,7 +24,7 @@ jobs:
 
       - name: Download
         run: |
-          curl https://kerberos.org/dist/krb5/1.22/krb5-${{ env.KRB5_VERSION }}.tar.gz -o ./krb5-${{ env.KRB5_VERSION }}.tar.gz
+          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 https://kerberos.org/dist/krb5/1.22/krb5-${{ env.KRB5_VERSION }}.tar.gz -o ./krb5-${{ env.KRB5_VERSION }}.tar.gz
           tar zxvf krb5-${{ env.KRB5_VERSION }}.tar.gz
 
       - name: Configure

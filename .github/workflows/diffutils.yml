@@ -19,14 +19,14 @@ jobs:
     steps:
       - name: Download
         run: |
-          curl -L -o diffutils.zip "https://downloads.sourceforge.net/project/gnuwin32/diffutils/${{ env.DIFFUTILS_VERSION }}/diffutils-${{ env.DIFFUTILS_VERSION }}-bin.zip"
+          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 -o diffutils.zip "https://downloads.sourceforge.net/project/gnuwin32/diffutils/${{ env.DIFFUTILS_VERSION }}/diffutils-${{ env.DIFFUTILS_VERSION }}-bin.zip"
           mkdir diffutils
           cd diffutils
           unzip ../diffutils.zip
 
       - name: Download dependencies
         run: |
-          curl -L -o diffutils-deps.zip "https://downloads.sourceforge.net/project/gnuwin32/diffutils/${{ env.DIFFUTILS_VERSION }}/diffutils-${{ env.DIFFUTILS_VERSION }}-dep.zip"
+          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 -o diffutils-deps.zip "https://downloads.sourceforge.net/project/gnuwin32/diffutils/${{ env.DIFFUTILS_VERSION }}/diffutils-${{ env.DIFFUTILS_VERSION }}-dep.zip"
           cd diffutils
           unzip ../diffutils-deps.zip
 

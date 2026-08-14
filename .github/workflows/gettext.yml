@@ -33,12 +33,12 @@ jobs:
 
       - name: Download
         run: |
-          curl https://ftp.gnu.org/pub/gnu/gettext/gettext-${{ env.GETTEXT_VERSION }}.tar.gz -o ./gettext-${{ env.GETTEXT_VERSION }}.tar.gz
+          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 https://ftp.gnu.org/pub/gnu/gettext/gettext-${{ env.GETTEXT_VERSION }}.tar.gz -o ./gettext-${{ env.GETTEXT_VERSION }}.tar.gz
           tar zxvf gettext-${{ env.GETTEXT_VERSION }}.tar.gz
 
       - name: Patch
         run: |
-          curl https://raw.githubusercontent.com/vslavik/gettext-tools-windows/refs/heads/master/patches/gettext-0.23-pthread_sigmask.patch -o gettext-0.23-pthread_sigmask.patch
+          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 https://raw.githubusercontent.com/vslavik/gettext-tools-windows/refs/heads/master/patches/gettext-0.23-pthread_sigmask.patch -o gettext-0.23-pthread_sigmask.patch
           cd gettext-${{ env.GETTEXT_VERSION }}
           patch -p1 < ../gettext-0.23-pthread_sigmask.patch
 

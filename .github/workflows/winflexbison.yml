@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Download
         run: |
-          curl -L -o winflexbison.zip "https://github.com/lexxmark/winflexbison/releases/download/v${{ env.WINFLEXBISON_VERSION }}/win_flex_bison-${{ env.WINFLEXBISON_VERSION }}.zip"
+          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 -o winflexbison.zip "https://github.com/lexxmark/winflexbison/releases/download/v${{ env.WINFLEXBISON_VERSION }}/win_flex_bison-${{ env.WINFLEXBISON_VERSION }}.zip"
           mkdir winflexbison
           cd winflexbison
           unzip ../winflexbison.zip

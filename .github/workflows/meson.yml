@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Download
         run: |
-          curl.exe -L -o meson.tar.gz https://github.com/mesonbuild/meson/releases/download/${{ env.MESON_VERSION }}/meson-${{ env.MESON_VERSION }}.tar.gz
+          curl.exe -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 -o meson.tar.gz https://github.com/mesonbuild/meson/releases/download/${{ env.MESON_VERSION }}/meson-${{ env.MESON_VERSION }}.tar.gz
 
           mkdir -p /meson/mesonbuild
           mkdir -p /meson/bin

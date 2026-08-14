@@ -23,7 +23,7 @@ jobs:
 
       - name: Download
         run: |
-          curl -L https://www.openssl.org/source/openssl-${{ env.OPENSSL_VERSION }}.tar.gz -o ./openssl-${{ env.OPENSSL_VERSION }}.tar.gz
+          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 https://www.openssl.org/source/openssl-${{ env.OPENSSL_VERSION }}.tar.gz -o ./openssl-${{ env.OPENSSL_VERSION }}.tar.gz
           tar zxvf openssl-${{ env.OPENSSL_VERSION }}.tar.gz
 
       - name: Configure

@@ -123,7 +123,7 @@ jobs:
 
       - name: Download
         run: |
-          curl https://ftp.postgresql.org/pub/source/v${{ matrix.version }}/postgresql-${{ matrix.version }}.tar.gz -o ./postgresql-${{ matrix.version }}.tar.gz
+          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 https://ftp.postgresql.org/pub/source/v${{ matrix.version }}/postgresql-${{ matrix.version }}.tar.gz -o ./postgresql-${{ matrix.version }}.tar.gz
           tar zxvf postgresql-${{ matrix.version }}.tar.gz
 
       - name: Configure (msvc)

@@ -38,7 +38,7 @@ jobs:
 
       - name: Download
         run: |
-          curl https://gitlab.gnome.org/GNOME/libxslt/-/archive/v${{ env.LIBXSLT_VERSION }}/libxslt-v${{ env.LIBXSLT_VERSION }}.tar.gz -o ./libxslt-v${{ env.LIBXSLT_VERSION }}.tar.gz
+          curl -fL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 https://gitlab.gnome.org/GNOME/libxslt/-/archive/v${{ env.LIBXSLT_VERSION }}/libxslt-v${{ env.LIBXSLT_VERSION }}.tar.gz -o ./libxslt-v${{ env.LIBXSLT_VERSION }}.tar.gz
           tar zxvf libxslt-v${{ env.LIBXSLT_VERSION }}.tar.gz
 
       - name: Configure
