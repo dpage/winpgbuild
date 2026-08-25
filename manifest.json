@@ -51,7 +51,7 @@
       },
       {
         "name": "openssl",
-        "version": "3.5.7",
+        "version": "3.5.8",
         "source": "https://openssl.org/",
         "licence": "https://www.openssl.org/source/apache-license-2.0.txt",
         "spdx_license": "Apache-2.0"
